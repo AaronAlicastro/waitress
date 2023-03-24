@@ -1,23 +1,13 @@
-import React, { Component } from "react";
-import { QrReader } from "react-qr-reader";
+import React from "react";
+import QrScanner from "./components/QrScanner";
 
-class App extends Component {
-  render() {
-    return <div>
-      <button>CAmbiar camara</button>
+function App() {
 
-      <div className="margin">
-        <QrReader
-          onResult={(result, error) => {
-            if (!!result) {
-              console.log(result.text);
-            }
-          }}
-          constraints={{ facingMode: "environment" }}
-        />
-      </div>
+  return <div>
+    <div className="margin">
+      <QrScanner />
     </div>
-  }
+  </div>
 }
 
 export default App;

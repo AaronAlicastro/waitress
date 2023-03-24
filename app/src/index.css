@@ -4,6 +4,23 @@ body {
   font-family: sans-serif;
 }
 
+.alertaPersonalizada {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fff;
+  padding: 20px;
+  border: 1px solid #000;
+  border-radius: 8px;
+  min-width: 200px;
+}
+
+.alertaPersonalizada_span {
+  margin-right: 20px;
+  word-wrap: break-word;
+  max-width: 80%;
+}
+
 .margin {
   margin: 20px 0;
   width: 300px;
