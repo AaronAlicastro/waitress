@@ -1,0 +1,25 @@
+footer {
+    position: fixed;
+    width: 100vw;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 var(--general_space);
+    box-sizing: border-box;
+    font-size: var(--font_small);
+    background: var(--back);
+}
+
+footer > div {
+    width: 50px;
+    height: 50px;
+    background: var(--unicode_thing);
+    border-radius: 8px;
+}
+
+footer img {
+    width: 100%;
+    object-fit: cover;
+}

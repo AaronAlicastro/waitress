@@ -1,0 +1,33 @@
+.infoGeneral_subtitle {
+    display: inline-block;
+    font-size: var(--font_medium);
+    width: 100vw;
+    text-align: center;
+}
+
+.infoGeneral_tilte {
+    text-align: center;
+    padding: 0 var(--general_space);
+    box-sizing: border-box;
+    word-break: break-word
+}
+
+.infoGeneral_details {
+    font-size: var(--font_medium);
+    padding: var(--general_space);
+    box-sizing: border-box;
+    text-align: center;
+    list-style: none
+}
+
+.infoGeneral_details li {
+    margin: 10px 0;
+}
+
+.infoGeneral_actionsToDo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 var(--general_space);
+    box-sizing: border-box;
+}

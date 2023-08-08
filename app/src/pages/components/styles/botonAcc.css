@@ -1,0 +1,8 @@
+.botonAcc {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: none;
+    font-size: var(--font_big);
+    background: var(--second_back);
+}

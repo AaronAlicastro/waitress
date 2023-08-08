@@ -1,7 +1,33 @@
-body {
+:root {
+  /* backgorund */
+  --back: #fff;
+  --second_back: #eb9d74e3;
+  --action: #ffcd5076;
+  --unicode_thing: #000032;
+  --shadow: #e1e1e143;
+
+  /* font style */
+  --font_color: #000;
+  --font_big: 48px;
+  --font_medium_big: 32px;
+  --font_medium: 26px;
+  --font_small: 16px;
+
+  /* margin */
+  --general_top_app: 100px;
+  --general_bottom_app: 60px;
+  --general_space: 20px;
+}
+
+* {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
+  color: var(--font_color);
+}
+
+body {
+  font-size: var(--font_big);
 }
 
 .alertaPersonalizada {
@@ -9,7 +35,7 @@ body {
   justify-content: space-between;
   align-items: center;
   background: #fff;
-  padding: 20px;
+  padding: var(--general_space);
   border: 1px solid #000;
   border-radius: 8px;
   min-width: 200px;
@@ -21,7 +47,16 @@ body {
   max-width: 80%;
 }
 
-.margin {
-  margin: 20px 0;
-  width: 300px;
+.pageDivApp {
+  margin-top: var(--general_top_app);
+  margin-bottom: var(--general_bottom_app);
+}
+
+/* generales */
+
+.flexRowCenter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: var(--general_space);
 }

@@ -1,0 +1,16 @@
+.listItems {
+    padding: var(--general_space);
+    box-sizing: border-box;
+    font-size: var(--font_medium);
+    display: flex;
+    flex-direction: column;
+}
+
+.listItems_item {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 5px 0;
+    background: var(--action);
+    box-shadow: 1px 1px 1px 1px var(--shadow);
+}

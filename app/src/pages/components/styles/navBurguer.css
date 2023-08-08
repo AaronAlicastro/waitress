@@ -1,0 +1,49 @@
+.navBurguer {
+    position: relative;
+}
+
+.navBurguer > div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--general_space);
+}
+
+.navBurguer_options {
+    font-size: var(--font_medium_big);
+    list-style: none;
+}
+
+.navBurguerSide {
+    box-shadow: 1.2px 1.2px 1.2px 2px var(--shadow);
+    position: absolute;
+    width: 100%;
+    background: var(--back);
+    left: -100vw;
+    list-style: none;
+}
+
+.navBurguerSide li {
+    text-align: center;
+    font-size: var(--font_medium_big);
+    padding: 5px 0;
+    border-bottom: 1px solid var(--shadow);
+}
+
+@keyframes openNavBurguerSide {
+    from {
+        left: -100vw;
+    }
+    to {
+        left: 0;
+    }
+}
+
+@keyframes closeNavBurguerSide {
+    from {
+        left: 0;
+    }
+    to {
+        left: -100vw;
+    }
+}
