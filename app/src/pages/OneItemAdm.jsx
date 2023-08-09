@@ -24,7 +24,7 @@ function OneItemAdm(props) {
         <span className="infoGeneral_subtitle"> {props.producto._id} </span>
 
         <h3 className="infoGeneral_tilte"> {props.producto.name} </h3>
-        <h5 className="infoGeneral_tilte"> {props.producto.valor} $ </h5>
+        <h5 className="infoGeneral_tilte"> {props.producto.value} $ </h5>
 
         <ul className="infoGeneral_details">
             Ingredientes:

@@ -28,7 +28,9 @@ function PrincipalViewAdm(props) {
                         }}
                     />
                     <div className="flexRowCenter">
-                        <BotonAcc onClick={() => { console.log(2) }}>
+                        <BotonAcc onClick={() => {
+                            props.goToView("addProductAdm", {});
+                        }}>
                             <IconContext.Provider value={{ size: "0.7em" }}>
                                 <FaPlus />
                             </IconContext.Provider>
@@ -44,7 +46,9 @@ function PrincipalViewAdm(props) {
                         }}
                     />
                     <div className="flexRowCenter">
-                        <BotonAcc onClick={() => { console.log(2) }}>
+                        <BotonAcc onClick={() => {
+                            props.goToView("addWorkerAdm", {});
+                        }}>
                             <IconContext.Provider value={{ size: "0.7em" }}>
                                 <FaPlus />
                             </IconContext.Provider>
@@ -60,7 +64,9 @@ function PrincipalViewAdm(props) {
                         }}
                     />
                     <div className="flexRowCenter">
-                        <BotonAcc onClick={() => { console.log(2) }}>
+                        <BotonAcc onClick={() => {
+                            props.goToView("addTableAdm", {});
+                        }}>
                             <IconContext.Provider value={{ size: "0.7em" }}>
                                 <FaPlus />
                             </IconContext.Provider>

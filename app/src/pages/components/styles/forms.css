@@ -1,0 +1,157 @@
+.form a {
+  color: var(--second_back);
+}
+
+.form a:focus {
+  color: var(--font_color);
+}
+
+.form h2 {
+  font-weight: 700;
+  font-size: calc(var(--font-size) * 1.5);
+}
+
+.form {
+  position: relative;
+  width: 100%;
+  max-width: 350px;
+  margin: 0 auto;
+  transform: skewY(-5deg) translateY(10%) scale(0.94);
+  transition: box-shadow var(--duration) var(--ease), transform var(--duration) var(--ease);
+}
+
+.form:before {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  background-color: var(--shadow);
+  width: 25%;
+  height: 100%;
+  transition: background-color var(--duration) var(--ease), transform var(--duration) var(--ease);
+}
+
+.form:before {
+  top: 0;
+  right: calc(100% - 1px);
+  transform-origin: 100% 100%;
+  transform: skewY(-35deg) scaleX(-1);
+  z-index: -1;
+}
+
+.form:hover,
+.form:focus-within {
+  transform: scale(1.0001);
+  box-shadow: 0 1rem 3rem var(--shadow);
+}
+
+.form:hover:before,
+.form:focus-within:before {
+  background: var(--second_back);
+  width: 0;
+  height: 0;
+}
+
+.form-inner {
+  padding: var(--space-xl);
+  background-color: var(--back);
+  z-index: 1;
+  border-left: 1e-16px solid var(--shadow);
+}
+
+.form-inner>*+* {
+  margin-top: var(--space-xl);
+}
+
+.input-wrapper:focus-within label {
+  color: var(--action);
+}
+
+.input-wrapper:focus-within input,
+.input-wrapper:focus-within textarea {
+  border-color: var(--action);
+}
+
+.input-wrapper+.input-wrapper {
+  margin-top: var(--space-l);
+}
+
+.input-group {
+  position: relative;
+}
+
+.input-group input,
+.input-group textarea {
+  border-radius: var(--base-border-radius);
+  padding-left: calc(var(--space-s) + 60px);
+}
+
+label {
+  font-size: calc(var(--font-size) / 1.65);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.065rem;
+  display: block;
+  margin-bottom: var(--space-xs);
+  color: var(--second_back);
+}
+
+.form input,
+.form textarea {
+  flex: 1 1 0;
+  width: 100%;
+  outline: none;
+  padding: var(--space-m);
+  font-size: var(--font-size);
+  color: var(--font_color);
+  border: 2px solid var(--second_back);
+}
+
+.form textarea {
+  min-width: 100%;
+  resize: vertical;
+}
+
+.form input:focus,
+.form textarea:focus {
+  color: var(--font_color);
+}
+
+.btn-group {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.btn-group>*+* {
+  margin-left: var(--space-s);
+}
+
+.btn_form {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  outline: none;
+  padding: var(--space-m) var(--space-l);
+  cursor: pointer;
+  border: 2px solid transparent;
+  border-radius: var(--base-border-radius);
+  font-size: calc(var(--font-size) / 1.65);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.065rem;
+  background-color: var(--second_back);
+  border-color: var(--second_back);
+  color: var(--back);
+}
+
+.btn_form:focus {
+  background-color: var(--unicode_thing);
+  border-color: var(--unicode_thing);
+}
+
+.btn--text {
+  font-size: calc(var(--font-size) / 1.5);
+  padding: 0;
+}
