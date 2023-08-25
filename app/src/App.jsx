@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import PrincipalViewAdm from "./pages/PrincipalViewAdm";
-import OneItemAdm from "./pages/OneItemAdm";
-import OneWorkerAdm from "./pages/OneWorkerAdm";
-import OneTableAdm from "./pages/OneTableAdm";
-import AddProductAdm from "./pages/AddProductAdm";
-import AddWorkerAdm from "./pages/AddWorkerAdm";
-import AddTableAdm from "./pages/AddTableAdm";
+import OneItemAdm from "./pages/views/OneItemAdm";
+import OneWorkerAdm from "./pages/views/OneWorkerAdm";
+import OneTableAdm from "./pages/views/OneTableAdm";
+import AddWorkerAdm from "./pages/views/AddWorkerAdm";
+import AddTableAdm from "./pages/views/AddTableAdm";
+import AddProductAdm from "./pages/views/AddProductAdm";
+import IngreToProduct from "./pages/views/IngreToProduct";
 
 let dataBase = {
   productos: [
@@ -69,7 +70,6 @@ let dataBase = {
 class App extends Component {
   constructor(props) {
     super(props);
-    this.sufijo = "Adm";
     this.aVer = window.localStorage.getItem("viewActual") || "principalViewAdm";
 
     this.ventanas = {
@@ -95,10 +95,6 @@ class App extends Component {
         goToView={(view, dataView) => this.goToView(view, dataView)}
         table={table}
       />,
-      addProductAdm: (lastView) => <AddProductAdm
-        lastView={lastView}
-        goToView={(view, dataView) => this.goToView(view, dataView)}
-      />,
       addWorkerAdm: (lastView) => <AddWorkerAdm
         lastView={lastView}
         goToView={(view, dataView) => this.goToView(view, dataView)}
@@ -106,6 +102,15 @@ class App extends Component {
       addTableAdm: (lastView) => <AddTableAdm
         lastView={lastView}
         goToView={(view, dataView) => this.goToView(view, dataView)}
+      />,
+      addProductAdm: (lastView) => <AddProductAdm
+        lastView={lastView}
+        goToView={(view, dataView) => this.goToView(view, dataView)}
+      />,
+      ingreToProduct: (lastView, ingres) => <IngreToProduct
+        lastView={lastView}
+        goToView={(view, dataView) => this.goToView(view, dataView)}
+        ingres={ingres}
       />
     }
 
@@ -114,10 +119,11 @@ class App extends Component {
 
     this.state = {
       lastView: {
-        view: "principalView" + this.sufijo,
+        // view: this.aVer,
+        view: "principalViewAdm",
         dataView: {}
       },
-      view: "principalViewAdm",
+      view: "addProductAdm",
       // view: this.aVer,
       dataView: {}
     }

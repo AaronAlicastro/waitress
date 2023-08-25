@@ -10,6 +10,9 @@ function Forms(props) {
             {
                 props.campos.map(cp => {
                     key++;
+                    if (cp.type == "no-input") {
+                        return cp.data;
+                    }
                     return <div className="input-wrapper" key={key}>
                         <label htmlFor={cp.leyenda}>{cp.placeholder}</label>
                         <div className="input-group">
@@ -18,12 +21,14 @@ function Forms(props) {
                                     <textarea
                                         name={cp.leyenda}
                                         placeholder={cp.placeholder}
+                                        defaultValue={cp.value}
                                     ></textarea>
                                     :
                                     <input
                                         name={cp.leyenda}
                                         type={cp.type || "text"}
                                         placeholder={cp.placeholder}
+                                        defaultValue={cp.value}
                                     />
                             }
                         </div>

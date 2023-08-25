@@ -73,3 +73,10 @@ body {
   align-items: center;
   padding: var(--general_space);
 }
+
+.info_text {
+  margin: var(--general_space);
+  box-sizing: border-box;
+  text-align: justify;
+  font-size: var(--font_small);
+}

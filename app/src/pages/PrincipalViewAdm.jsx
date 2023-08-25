@@ -3,11 +3,11 @@ import { IconContext } from "react-icons";
 import {
     FaPlus
 } from "react-icons/fa";
-import SideBoardFloat from "./components/SideBoardFloat";
-import NavBurguer from "./components/NavBurguer";
-import Footer from "./components/Footer";
-import BotonAcc from "./components/BotonAcc";
-import List from "./components/List";
+import SideBoardFloat from "./views/components/SideBoardFloat";
+import NavBurguer from "./views/components/NavBurguer";
+import Footer from "./views/components/Footer";
+import BotonAcc from "./views/components/BotonAcc";
+import List from "./views/components/List";
 
 function PrincipalViewAdm(props) {
     return <div className="pageDivApp">

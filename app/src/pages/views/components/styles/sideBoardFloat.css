@@ -1,3 +1,8 @@
+.sideBoardFloat_closer {
+    position: relative;
+    z-index: 1;
+}
+
 .sideBoardFloat {
     position: absolute;
     width: 100vw;
