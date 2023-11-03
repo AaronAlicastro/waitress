@@ -7,6 +7,7 @@ import AddWorkerAdm from "./pages/views/AddWorkerAdm";
 import AddTableAdm from "./pages/views/AddTableAdm";
 import AddProductAdm from "./pages/views/AddProductAdm";
 import IngreToProduct from "./pages/views/IngreToProduct";
+import PrincipalViewWorker from "./pages/PrincipalViewWorker";
 
 let dataBase = {
   productos: [
@@ -111,7 +112,15 @@ class App extends Component {
         lastView={lastView}
         goToView={(view, dataView) => this.goToView(view, dataView)}
         ingres={ingres}
-      />
+      />,
+
+      // workers
+      principalViewWorker: () => <PrincipalViewWorker
+        goToView={(view, dataView) => this.goToView(view, dataView)}
+        productos={dataBase.productos}
+        workers={dataBase.workers}
+        tables={dataBase.tables}
+      />,
     }
 
     if (this.aVer == "oneItemAdm") this.aVer = "principalViewAdm";
@@ -123,7 +132,7 @@ class App extends Component {
         view: "principalViewAdm",
         dataView: {}
       },
-      view: "addProductAdm",
+      view: "principalViewWorker",
       // view: this.aVer,
       dataView: {}
     }
