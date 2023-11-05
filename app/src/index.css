@@ -74,6 +74,13 @@ body {
   padding: var(--general_space);
 }
 
+.flexRowAround {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: var(--general_space);
+}
+
 .info_text {
   margin: var(--general_space);
   box-sizing: border-box;

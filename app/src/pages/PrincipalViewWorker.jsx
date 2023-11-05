@@ -1,8 +1,4 @@
 import React, { useState } from "react";
-// import { IconContext } from "react-icons";
-// import {
-//     FaPlus
-// } from "react-icons/fa";
 import SideBoardFloat from "./views/components/SideBoardFloat";
 import Footer from "./views/components/Footer";
 import BigBoton from "./views/components/BigBoton";
@@ -14,7 +10,8 @@ function PrincipalViewWorker(props) {
     let viewToShow = {
         "beginning": <div className="flexRowCenter">
             <BigBoton
-                onClick={() => setView("QRscanner")}
+                // onClick={() => setView("QRscanner")}
+                onClick={() => props.goToView("tableListener", {})}
             >Atender mesa</BigBoton>
         </div>,
         "QRscanner": <div className="flexRowCenter">

@@ -8,8 +8,13 @@ import AddTableAdm from "./pages/views/AddTableAdm";
 import AddProductAdm from "./pages/views/AddProductAdm";
 import IngreToProduct from "./pages/views/IngreToProduct";
 import PrincipalViewWorker from "./pages/PrincipalViewWorker";
+import TableListener from "./pages/views/TableListener";
+import AddProductToTable from "./pages/views/AddProductToTable";
+import EditProctToOrder from "./pages/views/EditProctToOrder";
+import FinalCheck from "./pages/views/FinalCheck";
 
 let dataBase = {
+  // adm
   productos: [
     {
       _id: "001",
@@ -65,6 +70,61 @@ let dataBase = {
       _id: "table_4",
       number: 4
     }
+  ],
+
+  // workers
+  orders: [
+    {
+      number: 1,
+      table: {
+        _id: "table_1",
+        number: 1
+      },
+      productsAsked: [
+        {
+          _id: "001",
+          name: "Hamburguesa",
+          value: 200,
+          ingre: [
+            { name: "queso", value: 0 },
+            { name: "pan", value: 0 },
+            { name: "carne", value: 200 }
+          ],
+          without: ["carne"]
+        },
+        {
+          _id: "002",
+          name: "Perro caliente",
+          value: 500,
+          ingre: [
+            { name: "queso", value: 0 },
+            { name: "pan", value: 0 },
+            { name: "salchicha", value: 500 }
+          ],
+          without: []
+        }
+      ]
+    },
+    {
+      number: 2,
+      table: {
+        _id: "table_3",
+        number: 2
+      },
+      productsAsked: [
+        {
+          _id: "001",
+          name: "Hamburguesa",
+          value: 200,
+          ingre: [
+            { name: "queso", value: 0 },
+            { name: "pan", value: 0 },
+            { name: "carne", value: 200 }
+          ],
+          without: []
+        }
+      ]
+    },
   ]
 }
 
@@ -117,10 +177,32 @@ class App extends Component {
       // workers
       principalViewWorker: () => <PrincipalViewWorker
         goToView={(view, dataView) => this.goToView(view, dataView)}
-        productos={dataBase.productos}
-        workers={dataBase.workers}
-        tables={dataBase.tables}
       />,
+      tableListener: (lastView) => <TableListener
+        lastView={lastView}
+        goToView={(view, dataView) => this.goToView(view, dataView)}
+        orders={dataBase.orders}
+        tableChoosen={{ _id: "table_1" }}
+        products={dataBase.productos}
+      />,
+      addProductToTable: (lastView, data) => <AddProductToTable
+        lastView={lastView}
+        goToView={(view, dataView) => this.goToView(view, dataView)}
+        tableChoosen={data.tableChoosen}
+        products={data.products}
+      />,
+      editProctToOrder: (lastView, data) => <EditProctToOrder
+        lastView={lastView}
+        goToView={(view, dataView) => this.goToView(view, dataView)}
+        tableChoosen={data.tableChoosen}
+        products={data.products}
+        productChoosen={data.productChoosen}
+      />,
+      finalCheck: (_, data) => <FinalCheck
+        goToView={(view, dataView) => this.goToView(view, dataView)}
+        total={data.total}
+        tableChoosen={data.tableChoosen}
+      />
     }
 
     if (this.aVer == "oneItemAdm") this.aVer = "principalViewAdm";
@@ -129,7 +211,7 @@ class App extends Component {
     this.state = {
       lastView: {
         // view: this.aVer,
-        view: "principalViewAdm",
+        view: "principalViewWorker",
         dataView: {}
       },
       view: "principalViewWorker",
