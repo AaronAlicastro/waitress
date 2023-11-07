@@ -12,6 +12,7 @@ import TableListener from "./pages/views/TableListener";
 import AddProductToTable from "./pages/views/AddProductToTable";
 import EditProctToOrder from "./pages/views/EditProctToOrder";
 import FinalCheck from "./pages/views/FinalCheck";
+import Welcome from "./pages/Welcome";
 
 let dataBase = {
   // adm
@@ -131,9 +132,14 @@ let dataBase = {
 class App extends Component {
   constructor(props) {
     super(props);
-    this.aVer = window.localStorage.getItem("viewActual") || "principalViewAdm";
+    this.aVer = window.localStorage.getItem("viewActual") || "welcome";
 
     this.ventanas = {
+      // welcome
+      welcome: () => <Welcome
+        goToView={(view, dataView) => this.goToView(view, dataView)}
+      />,
+
       // adm
       principalViewAdm: () => <PrincipalViewAdm
         goToView={(view, dataView) => this.goToView(view, dataView)}
@@ -210,12 +216,12 @@ class App extends Component {
 
     this.state = {
       lastView: {
-        // view: this.aVer,
-        view: "principalViewWorker",
+        // view: "principalViewWorker",
+        view: this.aVer,
         dataView: {}
       },
-      view: "principalViewWorker",
-      // view: this.aVer,
+      // view: "principalViewWorker",
+      view: this.aVer,
       dataView: {}
     }
   }

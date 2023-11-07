@@ -8,6 +8,7 @@
 .infoGeneral_tilte {
     text-align: center;
     padding: 0 var(--general_space);
+    margin: var(--general_space) 0;
     box-sizing: border-box;
     word-break: break-word
 }
