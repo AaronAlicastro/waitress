@@ -5,15 +5,15 @@ import {
 } from "react-icons/fa";
 import "./styles/navBurguer.css";
 
-function NavBurguer({ opciones, content }) {
+function NavBurguer({ opciones, content, Pseleccion }) {
     let key = 0;
-    let [seleccion, setSeleccion] = useState(0);
+    let [seleccion, setSeleccion] = useState(Pseleccion || 0);
 
     return <div>
         <nav className="navBurguer">
             <div onClick={() => {
                 let navbur = document.querySelector(".navBurguerSide");
-                navbur.style.animation = "openNavBurguerSide .8s forwards";
+                navbur.style.animation = "openNavBurguerSide .4s forwards";
             }}>
                 <ul className="navBurguer_options">
                     <li> {opciones[seleccion]} </li>

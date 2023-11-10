@@ -11,15 +11,16 @@ function IngreToProduct(props) {
             onClick={() => props.goToView(props.lastView.view, props.lastView.dataView)}
         />
         <Forms
+            id="form_addIngreToProduct"
             title="Agregar ingrediente"
             campos={[
                 {
-                    leyenda: "ingreName",
+                    leyenda: "name",
                     placeholder: "Nombre del ingrediente"
                 },
                 {
                     type: "Number",
-                    leyenda: "ingreValue",
+                    leyenda: "value",
                     placeholder: "Valor del ingrediente"
                 },
                 {
@@ -34,6 +35,10 @@ function IngreToProduct(props) {
                 }
             ]}
             btn_text="Guardar"
+            onClick={(entrences) => {
+                props.ingres.push(entrences);
+                props.goToView("addProductAdm", props.ingres);
+            }}
         />
         <Footer />
     </div>;

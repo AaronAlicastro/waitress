@@ -18,7 +18,7 @@
     padding: var(--general_space);
     box-sizing: border-box;
     text-align: center;
-    list-style: none
+    list-style: none;
 }
 
 .infoGeneral_details li {
@@ -31,6 +31,32 @@
     align-items: center;
     padding: 0 var(--general_space);
     box-sizing: border-box;
+}
+
+.general_btn {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    outline: none;
+    padding: var(--space-m) var(--space-l);
+    cursor: pointer;
+    border: 2px solid transparent;
+    border-radius: var(--base-border-radius);
+    font-size: calc(var(--font-size) / 1.65);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.065rem;
+    background-color: var(--second_back);
+    border-color: var(--second_back);
+    color: var(--back);
+    margin: var(--general_space);
+}
+
+.general_btn:focus, .general_btn:hover {
+    background-color: var(--unicode_thing);
+    border-color: var(--unicode_thing);
 }
 
 /* bill counter */

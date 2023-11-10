@@ -20,16 +20,16 @@ function OneItemAdm(props) {
             onClick={() => props.goToView(props.lastView.view, props.lastView.dataView)}
         />
 
-        <QrMaker value={props.producto._id} />
-        <span className="infoGeneral_subtitle"> {props.producto._id} </span>
+        <QrMaker value={props.product._id} />
+        <span className="infoGeneral_subtitle"> {props.product._id} </span>
 
-        <h3 className="infoGeneral_tilte"> {props.producto.name} </h3>
-        <h5 className="infoGeneral_tilte"> {props.producto.value} $ </h5>
+        <h3 className="infoGeneral_tilte"> {props.product.name} </h3>
+        <h5 className="infoGeneral_tilte"> {props.product.price} $ </h5>
 
         <ul className="infoGeneral_details">
             Ingredientes:
             {
-                props.producto.ingre.map(ingre => {
+                props.product.ingre.map(ingre => {
                     key++;
                     return <li key={key}> {ingre.name} </li>
                 })

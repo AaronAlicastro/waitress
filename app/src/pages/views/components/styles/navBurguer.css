@@ -21,6 +21,7 @@
     background: var(--back);
     left: -100vw;
     list-style: none;
+    z-index: 1000;
 }
 
 .navBurguerSide li {

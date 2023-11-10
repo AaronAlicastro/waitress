@@ -1,7 +1,7 @@
 import React from "react";
 import "./styles/list.css";
 
-function List({ list, onClick }) {
+function List({ list, onClick, constData }) {
     let key = 100;
     return <div className="listItems">
         {
@@ -16,6 +16,7 @@ function List({ list, onClick }) {
                 </div>
             })
         }
+        { constData }
     </div>
 }
 

@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Querys from "./logic/querys";
 import PrincipalViewAdm from "./pages/PrincipalViewAdm";
 import OneItemAdm from "./pages/views/OneItemAdm";
 import OneWorkerAdm from "./pages/views/OneWorkerAdm";
@@ -13,6 +14,7 @@ import AddProductToTable from "./pages/views/AddProductToTable";
 import EditProctToOrder from "./pages/views/EditProctToOrder";
 import FinalCheck from "./pages/views/FinalCheck";
 import Welcome from "./pages/Welcome";
+import Loading from "./pages/Loading";
 
 let dataBase = {
   // adm
@@ -132,87 +134,91 @@ let dataBase = {
 class App extends Component {
   constructor(props) {
     super(props);
-    this.aVer = window.localStorage.getItem("viewActual") || "welcome";
+    this.aVer = "welcome";
+    this.querys = new Querys();
 
     this.ventanas = {
+      // loading
+      loading: () => <Loading />,
+
       // welcome
       welcome: () => <Welcome
-        goToView={(view, dataView) => this.goToView(view, dataView)}
+        goToView={(view, dataView, fun) => this.renderViewCarga(view, dataView, fun)}
+        querys={this.querys}
       />,
 
       // adm
-      principalViewAdm: () => <PrincipalViewAdm
-        goToView={(view, dataView) => this.goToView(view, dataView)}
-        productos={dataBase.productos}
-        workers={dataBase.workers}
-        tables={dataBase.tables}
+      principalViewAdm: (_, seleccion) => <PrincipalViewAdm
+        goToView={(view, dataView, fun) => this.renderViewCarga(view, dataView, fun)}
+        querys={this.querys}
+        seleccion={seleccion}
       />,
       oneItemAdm: (lastView, item) => <OneItemAdm
         lastView={lastView}
-        goToView={(view, dataView) => this.goToView(view, dataView)}
-        producto={item}
+        goToView={(view, dataView, fun) => this.renderViewCarga(view, dataView, fun)}
+        product={item}
       />,
       oneWorkerAdm: (lastView, worker) => <OneWorkerAdm
         lastView={lastView}
-        goToView={(view, dataView) => this.goToView(view, dataView)}
+        goToView={(view, dataView, fun) => this.renderViewCarga(view, dataView, fun)}
         worker={worker}
       />,
       oneTableAdm: (lastView, table) => <OneTableAdm
         lastView={lastView}
-        goToView={(view, dataView) => this.goToView(view, dataView)}
+        goToView={(view, dataView, fun) => this.renderViewCarga(view, dataView, fun)}
         table={table}
       />,
       addWorkerAdm: (lastView) => <AddWorkerAdm
         lastView={lastView}
-        goToView={(view, dataView) => this.goToView(view, dataView)}
+        goToView={(view, dataView, fun) => this.renderViewCarga(view, dataView, fun)}
+        querys={this.querys}
       />,
       addTableAdm: (lastView) => <AddTableAdm
         lastView={lastView}
-        goToView={(view, dataView) => this.goToView(view, dataView)}
+        goToView={(view, dataView, fun) => this.renderViewCarga(view, dataView, fun)}
+        querys={this.querys}
       />,
-      addProductAdm: (lastView) => <AddProductAdm
-        lastView={lastView}
-        goToView={(view, dataView) => this.goToView(view, dataView)}
+      addProductAdm: (_, ingres) => <AddProductAdm
+        goToView={(view, dataView, fun) => this.renderViewCarga(view, dataView, fun)}
+        ingres={ingres}
+        querys={this.querys}
       />,
       ingreToProduct: (lastView, ingres) => <IngreToProduct
         lastView={lastView}
-        goToView={(view, dataView) => this.goToView(view, dataView)}
+        goToView={(view, dataView, fun) => this.renderViewCarga(view, dataView, fun)}
         ingres={ingres}
       />,
 
       // workers
       principalViewWorker: () => <PrincipalViewWorker
-        goToView={(view, dataView) => this.goToView(view, dataView)}
+        goToView={(view, dataView, fun) => this.renderViewCarga(view, dataView, fun)}
       />,
       tableListener: (lastView) => <TableListener
         lastView={lastView}
-        goToView={(view, dataView) => this.goToView(view, dataView)}
+        goToView={(view, dataView, fun) => this.renderViewCarga(view, dataView, fun)}
         orders={dataBase.orders}
         tableChoosen={{ _id: "table_1" }}
         products={dataBase.productos}
       />,
       addProductToTable: (lastView, data) => <AddProductToTable
         lastView={lastView}
-        goToView={(view, dataView) => this.goToView(view, dataView)}
+        goToView={(view, dataView, fun) => this.renderViewCarga(view, dataView, fun)}
         tableChoosen={data.tableChoosen}
         products={data.products}
       />,
       editProctToOrder: (lastView, data) => <EditProctToOrder
         lastView={lastView}
-        goToView={(view, dataView) => this.goToView(view, dataView)}
+        goToView={(view, dataView, fun) => this.renderViewCarga(view, dataView, fun)}
         tableChoosen={data.tableChoosen}
         products={data.products}
         productChoosen={data.productChoosen}
       />,
       finalCheck: (_, data) => <FinalCheck
-        goToView={(view, dataView) => this.goToView(view, dataView)}
+        goToView={(view, dataView, fun) => this.renderViewCarga(view, dataView, fun)}
         total={data.total}
         tableChoosen={data.tableChoosen}
       />
     }
-
-    if (this.aVer == "oneItemAdm") this.aVer = "principalViewAdm";
-    else if (this.aVer == "oneWorkerAdm") this.aVer = "principalViewAdm";
 
     this.state = {
       lastView: {
@@ -220,7 +226,6 @@ class App extends Component {
         view: this.aVer,
         dataView: {}
       },
-      // view: "principalViewWorker",
       view: this.aVer,
       dataView: {}
     }
@@ -237,16 +242,16 @@ class App extends Component {
       dataView
     });
   }
-  // renderViewCarga(vista, fun) {
-  //   if (vista) this.goToView(vista);
-  //   else {
-  //     let actualView = this.state.view;
-  //     this.setState({ view: "viewCarga" });
-  //     fun(vista2 => {
-  //       setTimeout(() => this.goToView(vista2 || actualView), 300);
-  //     });
-  //   }
-  // }
+  renderViewCarga(vista, dataView, fun) {
+    if (vista) this.goToView(vista, dataView);
+    else {
+      let actualView = this.state.view;
+      this.setState({ view: "loading" });
+      fun((vista2, dataView2) => {
+        setTimeout(() => this.goToView(vista2 || actualView, dataView2), 300);
+      });
+    }
+  }
 
   render() {
     return this.ventanas[this.state.view](this.state.lastView, this.state.dataView);

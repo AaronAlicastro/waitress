@@ -3,7 +3,6 @@ const Schema = mongoose.Schema;
 
 const tables = new Schema({
     manager: String,
-    worker: String,
     number: Number
 });
 

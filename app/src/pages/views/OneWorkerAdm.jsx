@@ -17,11 +17,10 @@ function OneWorkerAdm(props) {
             onClick={() => props.goToView(props.lastView.view, props.lastView.dataView)}
         />
 
-        <h3 className="infoGeneral_tilte"> {props.worker._id} </h3>
+        <h3 className="infoGeneral_tilte"> {props.worker.name} </h3>
         <ul className="infoGeneral_details">
-            <li> {props.worker.name} </li>
-            <li> {props.worker.email} </li>
-            <li> {props.worker.phone} </li>
+            <li> Correo: {props.worker.email} </li>
+            <li> Teléfono: {props.worker.phone} </li>
         </ul>
 
         <div className="infoGeneral_actionsToDo">

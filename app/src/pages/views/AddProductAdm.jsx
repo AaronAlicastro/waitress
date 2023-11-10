@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { IconContext } from "react-icons";
 import {
     FaPlus
 } from "react-icons/fa";
+import { useAlert } from "react-alert";
 import Footer from "./components/Footer";
 import Forms from "./components/Forms";
 import SideBoardFloat from "./components/SideBoardFloat";
@@ -10,23 +11,16 @@ import FloatBack from "./components/FloatBack";
 import BotonAcc from "./components/BotonAcc";
 
 function AddProductAdm(props) {
-    let ingres = props.ingres || [
-        {
-            name: "pera",
-            valor: 3
-        },
-        {
-            name: "mango",
-            valor: 5
-        }
-    ];
-
-    return <div className="pageDivApp">
-        <SideBoardFloat />
-        <FloatBack
-            onClick={() => props.goToView(props.lastView.view, props.lastView.dataView)}
-        />
-        <Forms
+    let [formView, setViewForm] = useState("front");
+    let [ingres, setIngres] = useState((props.ingres || []));
+    let alert = useAlert();
+    let changeData = () => {
+        if (formView == "front") setViewForm("change");
+        else setViewForm("front");
+    }
+    let renderForm = {
+        front: () => <Forms
+            id="form_createProductAdm"
             title="Registrar producto"
             campos={[
                 {
@@ -34,7 +28,7 @@ function AddProductAdm(props) {
                     placeholder: "Nombre",
                 },
                 {
-                    leyenda: "value",
+                    leyenda: "price",
                     placeholder: "Valor",
                     type: "Number"
                 },
@@ -42,7 +36,12 @@ function AddProductAdm(props) {
                     type: "no-input",
                     data: <div className="flexRowCenter" key={new Date() + "" + i}>
                         <input type="text" value={ig.name} disabled />
-                        <button className="btn_form">X</button>
+                        <button className="btn_form" onClick={e => {
+                            e.preventDefault();
+                            ingres.splice(i, 1);
+                            setIngres(ingres);
+                            changeData();
+                        }}>X</button>
                     </div>,
                 })),
                 {
@@ -60,7 +59,27 @@ function AddProductAdm(props) {
                 }
             ]}
             btn_text="Registrar"
+            onClick={(entrences) => {
+                entrences.ingre = ingres;
+                props.goToView(false, {}, (fun) => {
+                    props.querys.createProduct(entrences, (somethingWrog) => {
+                        if (somethingWrog) {
+                            alert.show("Algo ha salido mal, comprueba la conexión a internet");
+                            fun(false, ingres);
+                        } else fun("principalViewAdm", 0);
+                    });
+                });
+            }}
+        />,
+        change: () => renderForm.front()
+    }
+
+    return <div className="pageDivApp">
+        <SideBoardFloat />
+        <FloatBack
+            onClick={() => props.goToView("principalViewAdm", 0)}
         />
+        {renderForm[formView]()}
         <Footer />
     </div>;
 }
