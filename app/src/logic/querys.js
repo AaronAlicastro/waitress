@@ -78,6 +78,41 @@ export default class Querys {
             }
         });
     }
+    async editProduct(data, fun) {
+        data.REACT_APP_PASSWORD = this.REACT_APP_PASSWORD;
+        
+        let pt = await fetch(this.URL + "/product", {
+            method: "PUT",
+            mode: "cors",
+            body: JSON.stringify(data)
+        });
+        pt.json().then(r => {
+            if (r.not_found) fun(r.not_found);
+            else {
+                this.products = this.products.map(tb => {
+                    if (tb._id == r.product._id) return r.product;
+                    return tb;
+                });
+                fun();
+            }
+        });
+    }
+    async deleteProduct(data, fun) {
+        data.REACT_APP_PASSWORD = this.REACT_APP_PASSWORD;
+        
+        let pt = await fetch(this.URL + "/product", {
+            method: "DELETE",
+            mode: "cors",
+            body: JSON.stringify(data)
+        });
+        pt.json().then(r => {
+            if (r.not_found) fun(r.not_found);
+            else {
+                this.products = this.products.filter(tb => tb._id != r.found);
+                fun();
+            }
+        });
+    }
 
     // tables
     async createTable(data, fun) {
@@ -117,6 +152,41 @@ export default class Querys {
             }
         });
     }
+    async editTable(data, fun) {
+        data.REACT_APP_PASSWORD = this.REACT_APP_PASSWORD;
+        
+        let pt = await fetch(this.URL + "/table", {
+            method: "PUT",
+            mode: "cors",
+            body: JSON.stringify(data)
+        });
+        pt.json().then(r => {
+            if (r.not_found) fun(r.not_found);
+            else {
+                this.tables = this.tables.map(tb => {
+                    if (tb._id == r.table._id) return r.table;
+                    return tb;
+                });
+                fun();
+            }
+        });
+    }
+    async deleteTable(data, fun) {
+        data.REACT_APP_PASSWORD = this.REACT_APP_PASSWORD;
+        
+        let pt = await fetch(this.URL + "/table", {
+            method: "DELETE",
+            mode: "cors",
+            body: JSON.stringify(data)
+        });
+        pt.json().then(r => {
+            if (r.not_found) fun(r.not_found);
+            else {
+                this.tables = this.tables.filter(tb => tb._id != r.found);
+                fun();
+            }
+        });
+    }
 
     // workers
     async createWorker(data, fun) {
@@ -153,6 +223,41 @@ export default class Querys {
                     this.workers.push(...r.workers);
                     fun();
                 } else fun(false, "No hay más trabajadores por cargar");
+            }
+        });
+    }
+    async editWorker(data, fun) {
+        data.REACT_APP_PASSWORD = this.REACT_APP_PASSWORD;
+        
+        let pt = await fetch(this.URL + "/worker", {
+            method: "PUT",
+            mode: "cors",
+            body: JSON.stringify(data)
+        });
+        pt.json().then(r => {
+            if (r.not_found) fun(r.not_found);
+            else {
+                this.workers = this.workers.map(tb => {
+                    if (tb._id == r.worker._id) return r.worker;
+                    return tb;
+                });
+                fun();
+            }
+        });
+    }
+    async deleteWorker(data, fun) {
+        data.REACT_APP_PASSWORD = this.REACT_APP_PASSWORD;
+        
+        let pt = await fetch(this.URL + "/worker", {
+            method: "DELETE",
+            mode: "cors",
+            body: JSON.stringify(data)
+        });
+        pt.json().then(r => {
+            if (r.not_found) fun(r.not_found);
+            else {
+                this.workers = this.workers.filter(tb => tb._id != r.found);
+                fun();
             }
         });
     }

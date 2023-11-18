@@ -23,13 +23,28 @@ function OneTableAdm(props) {
         <h3 style={{ textAlign: "center" }}> {props.table.number} </h3>
 
         <div className="infoGeneral_actionsToDo">
-            <BotonAcc onClick={() => console.log(3)}>
+            <BotonAcc onClick={() => props.goToView("addTableAdm", {
+                invertView: true,
+                table: props.table
+            })}>
                 <IconContext.Provider value={{ size: "0.7em" }}>
                     <FaPen />
                 </IconContext.Provider>
             </BotonAcc>
 
-            <BotonAcc onClick={() => console.log(3)}>
+            <BotonAcc onClick={() => {
+                let pre = window.confirm("¿Desea eliminar esta mesa?");
+                if (pre) {
+                    props.goToView(false, {}, (fun) => {
+                        props.querys.deleteTable({ _id: props.table._id }, (somethingWrong) => {
+                            if (somethingWrong) {
+                                alert.show("Algo ha salido mal, comprueba la conexión a internet");
+                                fun(false, props.table);
+                            } else fun("principalViewAdm", 2);
+                        });
+                    });
+                }
+            }}>
                 <IconContext.Provider value={{ size: "0.7em" }}>
                     <FaTrash />
                 </IconContext.Provider>

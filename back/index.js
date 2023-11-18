@@ -80,6 +80,28 @@ app.post("/products/:page", (req, res) => {
         } else res.send({ not_found: true });
     });
 });
+app.put("/product", (req, res) => {
+    req.addListener("data", async data => {
+        data = JSON.parse(data.toString());
+        if (await managerPassword.compare(process.env.APP_PASSWORD, data.REACT_APP_PASSWORD)) {
+            let product = await schema_products.findById(data._id);
+            product.name = data.name;
+            product.price = data.price;
+            product.ingre = data.ingre;
+            await product.save();
+            res.send({ product });
+        } else res.send({ not_found: true });
+    });
+});
+app.delete("/product", (req, res) => {
+    req.addListener("data", async data => {
+        data = JSON.parse(data.toString());
+        if (await managerPassword.compare(process.env.APP_PASSWORD, data.REACT_APP_PASSWORD)) {
+            await schema_products.findByIdAndDelete(data._id);
+            res.send({ found: data._id });
+        } else res.send({ not_found: true });
+    });
+});
 
 // tables
 app.post("/create/table", (req, res) => {
@@ -102,6 +124,26 @@ app.post("/tables/:page", (req, res) => {
         } else res.send({ not_found: true });
     });
 });
+app.put("/table", (req, res) => {
+    req.addListener("data", async data => {
+        data = JSON.parse(data.toString());
+        if (await managerPassword.compare(process.env.APP_PASSWORD, data.REACT_APP_PASSWORD)) {
+            let table = await schema_tables.findById(data._id);
+            table.number = data.number;
+            await table.save();
+            res.send({ table });
+        } else res.send({ not_found: true });
+    });
+});
+app.delete("/table", (req, res) => {
+    req.addListener("data", async data => {
+        data = JSON.parse(data.toString());
+        if (await managerPassword.compare(process.env.APP_PASSWORD, data.REACT_APP_PASSWORD)) {
+            await schema_tables.findByIdAndDelete(data._id);
+            res.send({ found: data._id });
+        } else res.send({ not_found: true });
+    });
+});
 
 // workers from adm interface
 app.post("/create/worker", (req, res) => {
@@ -121,6 +163,29 @@ app.post("/workers/:page", (req, res) => {
         if (await managerPassword.compare(process.env.APP_PASSWORD, data.REACT_APP_PASSWORD)) {
             let workers = await schema_workers.find({ manager: data.manager }).skip(page).limit(10);
             res.send({ workers });
+        } else res.send({ not_found: true });
+    });
+});
+app.put("/worker", (req, res) => {
+    req.addListener("data", async data => {
+        data = JSON.parse(data.toString());
+        if (await managerPassword.compare(process.env.APP_PASSWORD, data.REACT_APP_PASSWORD)) {
+            let worker = await schema_workers.findById(data._id);
+            worker.name = data.name;
+            worker.phone = data.phone;
+            worker.email = data.email;
+            worker.password = await managerPassword.encrypt(data.password);
+            await worker.save();
+            res.send({ worker });
+        } else res.send({ not_found: true });
+    });
+});
+app.delete("/worker", (req, res) => {
+    req.addListener("data", async data => {
+        data = JSON.parse(data.toString());
+        if (await managerPassword.compare(process.env.APP_PASSWORD, data.REACT_APP_PASSWORD)) {
+            await schema_workers.findByIdAndDelete(data._id);
+            res.send({ found: data._id });
         } else res.send({ not_found: true });
     });
 });

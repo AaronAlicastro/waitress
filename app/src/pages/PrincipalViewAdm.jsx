@@ -64,9 +64,7 @@ function PrincipalViewAdm(props) {
                         </div>
                     }
                     <div className="flexRowCenter">
-                        <BotonAcc onClick={() => {
-                            props.goToView("addProductAdm", null);
-                        }}>
+                        <BotonAcc onClick={() => props.goToView("addProductAdm", {})}>
                             <IconContext.Provider value={{ size: "0.7em" }}>
                                 <FaPlus />
                             </IconContext.Provider>

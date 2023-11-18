@@ -14,7 +14,7 @@ function OneWorkerAdm(props) {
     return <div className="pageDivApp">
         <SideBoardFloat />
         <FloatBack
-            onClick={() => props.goToView(props.lastView.view, props.lastView.dataView)}
+            onClick={() => props.goToView("principalViewAdm", 1)}
         />
 
         <h3 className="infoGeneral_tilte"> {props.worker.name} </h3>
@@ -24,13 +24,28 @@ function OneWorkerAdm(props) {
         </ul>
 
         <div className="infoGeneral_actionsToDo">
-            <BotonAcc onClick={() => console.log(3)}>
+            <BotonAcc onClick={() => props.goToView("addWorkerAdm", {
+                invertView: true,
+                worker: props.worker
+            })}>
                 <IconContext.Provider value={{ size: "0.7em" }}>
                     <FaPen />
                 </IconContext.Provider>
             </BotonAcc>
 
-            <BotonAcc onClick={() => console.log(3)}>
+            <BotonAcc onClick={() => {
+                let pre = window.confirm("¿Desea eliminar este trabajador?");
+                if (pre) {
+                    props.goToView(false, {}, (fun) => {
+                        props.querys.deleteWorker({ _id: props.worker._id }, (somethingWrong) => {
+                            if (somethingWrong) {
+                                alert.show("Algo ha salido mal, comprueba la conexión a internet");
+                                fun(false, props.worker);
+                            } else fun("principalViewAdm", 1);
+                        });
+                    });
+                }
+            }}>
                 <IconContext.Provider value={{ size: "0.7em" }}>
                     <FaTrash />
                 </IconContext.Provider>

@@ -157,36 +157,47 @@ class App extends Component {
         lastView={lastView}
         goToView={(view, dataView, fun) => this.renderViewCarga(view, dataView, fun)}
         product={item}
+        querys={this.querys}
       />,
       oneWorkerAdm: (lastView, worker) => <OneWorkerAdm
         lastView={lastView}
         goToView={(view, dataView, fun) => this.renderViewCarga(view, dataView, fun)}
         worker={worker}
+        querys={this.querys}
       />,
       oneTableAdm: (lastView, table) => <OneTableAdm
         lastView={lastView}
         goToView={(view, dataView, fun) => this.renderViewCarga(view, dataView, fun)}
         table={table}
-      />,
-      addWorkerAdm: (lastView) => <AddWorkerAdm
-        lastView={lastView}
-        goToView={(view, dataView, fun) => this.renderViewCarga(view, dataView, fun)}
         querys={this.querys}
       />,
-      addTableAdm: (lastView) => <AddTableAdm
+      addWorkerAdm: (lastView, data) => <AddWorkerAdm
         lastView={lastView}
         goToView={(view, dataView, fun) => this.renderViewCarga(view, dataView, fun)}
+        invertView={data.invertView}
+        worker={data.worker}
         querys={this.querys}
       />,
-      addProductAdm: (_, ingres) => <AddProductAdm
-        goToView={(view, dataView, fun) => this.renderViewCarga(view, dataView, fun)}
-        ingres={ingres}
-        querys={this.querys}
-      />,
-      ingreToProduct: (lastView, ingres) => <IngreToProduct
+      addTableAdm: (lastView, data) => <AddTableAdm
         lastView={lastView}
         goToView={(view, dataView, fun) => this.renderViewCarga(view, dataView, fun)}
-        ingres={ingres}
+        invertView={data.invertView}
+        table={data.table}
+        querys={this.querys}
+      />,
+      addProductAdm: (_, data) => <AddProductAdm
+        goToView={(view, dataView, fun) => this.renderViewCarga(view, dataView, fun)}
+        invertView={data.invertView}
+        ingres={data.ingres}
+        product={data.product}
+        querys={this.querys}
+      />,
+      ingreToProduct: (lastView, data) => <IngreToProduct
+        lastView={lastView}
+        goToView={(view, dataView, fun) => this.renderViewCarga(view, dataView, fun)}
+        invertView={data.invertView}
+        ingres={data.ingres}
+        product={data.product}
       />,
 
       // workers

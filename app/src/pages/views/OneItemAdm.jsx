@@ -37,13 +37,29 @@ function OneItemAdm(props) {
         </ul>
 
         <div className="infoGeneral_actionsToDo">
-            <BotonAcc onClick={() => console.log(3)}>
+            <BotonAcc onClick={() => props.goToView("addProductAdm", {
+                invertView: true,
+                ingres: props.product.ingre,
+                product: props.product
+            })}>
                 <IconContext.Provider value={{ size: "0.7em" }}>
                     <FaPen />
                 </IconContext.Provider>
             </BotonAcc>
 
-            <BotonAcc onClick={() => console.log(3)}>
+            <BotonAcc onClick={() => {
+                let pre = window.confirm("¿Desea eliminar este producto?");
+                if (pre) {
+                    props.goToView(false, {}, (fun) => {
+                        props.querys.deleteProduct({ _id: props.product._id }, (somethingWrog) => {
+                            if (somethingWrog) {
+                                alert.show("Algo ha salido mal, comprueba la conexión a internet");
+                                fun(false, props.product);
+                            } else fun("principalViewAdm", 0);
+                        });
+                    });
+                }
+            }}>
                 <IconContext.Provider value={{ size: "0.7em" }}>
                     <FaTrash />
                 </IconContext.Provider>

@@ -37,7 +37,11 @@ function IngreToProduct(props) {
             btn_text="Guardar"
             onClick={(entrences) => {
                 props.ingres.push(entrences);
-                props.goToView("addProductAdm", props.ingres);
+                props.goToView("addProductAdm", {
+                    ingres: props.ingres,
+                    product: props.product,
+                    invertView: props.invertView
+                });
             }}
         />
         <Footer />
