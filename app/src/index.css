@@ -52,6 +52,7 @@ body {
   border: 1px solid #000;
   border-radius: 8px;
   min-width: 200px;
+  z-index: 1000000000000000000000000000;
 }
 
 .alertaPersonalizada_span {

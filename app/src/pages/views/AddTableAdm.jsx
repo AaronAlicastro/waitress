@@ -9,7 +9,10 @@ function AddTableAdm(props) {
     let alert = useAlert();
     let chooseView = (invert) => {
         return <div className="pageDivApp">
-            <SideBoardFloat />
+            <SideBoardFloat
+                userName={props.querys.user.name}
+                userId={props.querys.user._id}
+            />
             <FloatBack
                 onClick={() => props.goToView(props.lastView.view, props.lastView.dataView)}
             />

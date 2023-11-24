@@ -15,14 +15,17 @@ function PrincipalViewWorker(props) {
             >Atender mesa</BigBoton>
         </div>,
         "QRscanner": <div className="flexRowCenter">
-            <div style={{minWidth: "300px", minHeight: "450px"}}>
+            <div style={{ minWidth: "300px", minHeight: "450px" }}>
                 <QrScanner />
             </div>
         </div>
     }
 
     return <div className="pageDivApp">
-        <SideBoardFloat />
+        <SideBoardFloat
+            userName={props.querys.user.name}
+            userId={props.querys.user._id}
+        />
         {(view == "QRscanner") ? <FloatBack onClick={() => setView("beginning")} /> : ""}
         {viewToShow[view]}
         <Footer />

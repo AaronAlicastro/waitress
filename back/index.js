@@ -21,39 +21,52 @@ const schema_tables = require("./files/db_schemas/tables");
 
 // users
 app.post("/verify/user", (req, res) => {
+    const verifyAndSend = async (password, user) => {
+        if (await managerPassword.compare(password, user.password)) {
+            res.send({ user });
+        } else res.send({ not_found: true });
+    }
+
     req.addListener("data", async data => {
         data = JSON.parse(data.toString());
         if (await managerPassword.compare(process.env.APP_PASSWORD, data.REACT_APP_PASSWORD)) {
             let [manager] = await schema_managers.find({ email: data.email });
             let [worker] = await schema_workers.find({ email: data.email });
-            if (manager) {
-                if (await managerPassword.compare(data.password, manager.password)) {
-                    res.send({ user: manager });
-                } else res.send({ not_found: true });
-            }
-            else if (worker) {
-                if (await managerPassword.compare(data.password, worker.password)) {
-                    res.send({ user: worker });
-                } else res.send({ not_found: true });
-            } else res.send({ not_found: true });
+            if (manager) verifyAndSend(data.password, manager);
+            else if (worker) verifyAndSend(data.password, worker);
+            else res.send({ not_found: true });
         } else res.send({ not_found: true });
     });
 });
-app.post("/edit/user", (req, res) => {
+app.put("/user", (req, res) => {
     req.addListener("data", async data => {
         data = JSON.parse(data.toString());
         if (await managerPassword.compare(process.env.APP_PASSWORD, data.REACT_APP_PASSWORD)) {
-            let [manager] = await schema_managers.find({ email: data.email });
-            let [worker] = await schema_workers.find({ email: data.email });
+            let manager = await schema_managers.findById(data._id);
             if (manager) {
+                manager.name = data.name;
+                manager.email = data.email;
                 manager.password = await managerPassword.encrypt(data.password);
                 await manager.save();
-                res.send({ found: true })
+                res.send({ user: manager })
+            }
+            else res.send({ not_found: true });
+        } else res.send({ not_found: true });
+    });
+});
+app.delete("/user", (req, res) => {
+    req.addListener("data", async data => {
+        data = JSON.parse(data.toString());
+        if (await managerPassword.compare(process.env.APP_PASSWORD, data.REACT_APP_PASSWORD)) {
+            let manager = await schema_managers.findById( data._id );
+            let worker = await schema_workers.findById( data._id );
+            if (manager) {
+                await manager.remove();
+                res.send({ found: true });
             }
             else if (worker) {
-                worker.password = await managerPassword.encrypt(data.password);
-                await worker.save();
-                res.send({ found: true })
+                await worker.remove();
+                res.send({ found: true });
             } else res.send({ not_found: true });
         } else res.send({ not_found: true });
     });

@@ -198,11 +198,14 @@ class App extends Component {
         invertView={data.invertView}
         ingres={data.ingres}
         product={data.product}
+        userName={this.querys.user.name}
+        userId={this.querys.user._id}
       />,
 
       // workers
       principalViewWorker: () => <PrincipalViewWorker
         goToView={(view, dataView, fun) => this.renderViewCarga(view, dataView, fun)}
+        querys={this.querys}
       />,
       tableListener: (lastView) => <TableListener
         lastView={lastView}
@@ -210,12 +213,16 @@ class App extends Component {
         orders={dataBase.orders}
         tableChoosen={{ _id: "table_1" }}
         products={dataBase.productos}
+        userName={this.querys.user.name}
+        userId={this.querys.user._id}
       />,
       addProductToTable: (lastView, data) => <AddProductToTable
         lastView={lastView}
         goToView={(view, dataView, fun) => this.renderViewCarga(view, dataView, fun)}
         tableChoosen={data.tableChoosen}
         products={data.products}
+        userName={this.querys.user.name}
+        userId={this.querys.user._id}
       />,
       editProctToOrder: (lastView, data) => <EditProctToOrder
         lastView={lastView}
@@ -223,11 +230,15 @@ class App extends Component {
         tableChoosen={data.tableChoosen}
         products={data.products}
         productChoosen={data.productChoosen}
+        userName={this.querys.user.name}
+        userId={this.querys.user._id}
       />,
       finalCheck: (_, data) => <FinalCheck
         goToView={(view, dataView, fun) => this.renderViewCarga(view, dataView, fun)}
         total={data.total}
         tableChoosen={data.tableChoosen}
+        userName={this.querys.user.name}
+        userId={this.querys.user._id}
       />
     }
 

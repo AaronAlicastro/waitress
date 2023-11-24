@@ -39,6 +39,37 @@ export default class Querys {
             }
         });
     }
+    async editUser(data, fun) {
+        data.REACT_APP_PASSWORD = this.REACT_APP_PASSWORD;
+        let pt = await fetch(this.URL + "/user", {
+            method: "PUT",
+            mode: "cors",
+            body: JSON.stringify(data)
+        });
+        pt.json().then(r => {
+            if (r.not_found) fun(r.not_found);
+            else fun();
+        });
+    }
+    async deleteUser(userId, fun) {
+        let data = {
+            REACT_APP_PASSWORD: this.REACT_APP_PASSWORD,
+            userId
+        };
+        let pt = await fetch(this.URL + "/user", {
+            method: "DELETE",
+            mode: "cors",
+            body: JSON.stringify(data)
+        });
+        pt.json().then(r => {
+            if (r.not_found) fun(r.not_found);
+            else {
+                if (!r.user.manager) this.IsManager = true;
+                this.user = r.user;
+                fun();
+            }
+        });
+    }
 
     // products
     async createProduct(data, fun) {

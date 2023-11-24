@@ -6,7 +6,10 @@ import Forms from "./components/Forms";
 
 function FinalCheck(props) {
     return <div className="pageDivApp">
-        <SideBoardFloat />
+        <SideBoardFloat
+            userName={props.userName}
+            userId={props.userId}
+        />
         <FloatBack onClick={() => props.goToView("principalViewWorker", {})} />
         <Forms
             title="Cuenta de la mesa 3"

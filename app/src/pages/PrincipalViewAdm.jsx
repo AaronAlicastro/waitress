@@ -22,7 +22,10 @@ function PrincipalViewAdm(props) {
     }
 
     return <div className="pageDivApp">
-        <SideBoardFloat />
+        <SideBoardFloat
+            userName={props.querys.user.name}
+            userId={props.querys.user._id}
+        />
         <NavBurguer
             Pseleccion={props.seleccion}
             opciones={[

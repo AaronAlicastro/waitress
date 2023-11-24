@@ -95,7 +95,10 @@ function AddProductAdm(props) {
     }
 
     return <div className="pageDivApp">
-        <SideBoardFloat />
+        <SideBoardFloat
+            userName={props.querys.user.name}
+            userId={props.querys.user._id}
+        />
         <FloatBack
             onClick={() => props.goToView("principalViewAdm", 0)}
         />

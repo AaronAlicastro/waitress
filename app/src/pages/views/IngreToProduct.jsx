@@ -6,7 +6,10 @@ import SideBoardFloat from "./components/SideBoardFloat";
 
 function IngreToProduct(props) {
     return <div className="pageDivApp">
-        <SideBoardFloat />
+        <SideBoardFloat
+            userName={props.userName}
+            userId={props.userId}
+        />
         <FloatBack
             onClick={() => props.goToView(props.lastView.view, props.lastView.dataView)}
         />

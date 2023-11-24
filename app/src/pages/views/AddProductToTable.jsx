@@ -12,7 +12,10 @@ import BotonAcc from "./components/BotonAcc";
 
 function AddProductToTable(props) {
     return <div className="pageDivApp">
-        <SideBoardFloat />
+        <SideBoardFloat
+            userName={props.userName}
+            userId={props.userId}
+        />
         <FloatBack onClick={() => {
             let pre = window.confirm("¿Desea cancelar el pedido?");
             if (pre) props.goToView("tableListener", {});

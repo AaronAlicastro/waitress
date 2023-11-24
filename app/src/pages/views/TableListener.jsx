@@ -14,7 +14,11 @@ import BotonAcc from "./components/BotonAcc";
 
 function TableListener(props) {
     return <div className="pageDivApp">
-        <SideBoardFloat />
+        <SideBoardFloat
+            userName={props.userName}
+            userId={props.userId}
+        />
+
         <FloatBack onClick={() => props.goToView(props.lastView.view, props.lastView.dataView)} />
         <h2 className="infoGeneral_tilte">MS 3</h2>
         <List
