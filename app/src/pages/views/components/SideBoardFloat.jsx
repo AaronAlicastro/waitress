@@ -20,7 +20,20 @@ function SideBoardFloat(props) {
             <div>{props.userId}</div>
             <ul>
                 <li className="account_events" onClick={() => {
-                    // querys.deleteUser(props.userId);
+                    let pre = window.confirm("¿Desea eliminar la cuenta?");
+                    if (pre) {
+                        setView("viewCarga")
+                        querys.deleteUser(props.userId, (somthingWrong) => {
+                            if (somthingWrong) {
+                                alert.show("Ha ocurrido un error al intentar, verifique el internet");
+                                setView("editUser");
+                            }
+                            else {
+                                window.alert("Eliminado con éxito. Ahora cerraremos sesión para actualizar datos");
+                                window.history.go(0);
+                            }
+                        });
+                    }
                 }}>Eliminar cuenta</li>
 
                 <li className="account_events" onClick={() => setView("editUser")}>Editar cuenta</li>
@@ -64,16 +77,23 @@ function SideBoardFloat(props) {
                         delete entrences.password1;
                         delete entrences.password2;
                         querys.editUser(entrences, (somthingWrong) => {
-                            if (somthingWrong) alert.show("Ha ocurrido un error al intentar");
+                            if (somthingWrong) {
+                                alert.show("Ha ocurrido un error al intentar, verifique si tiene permiso para editar");
+                                setView("editUser");
+                            }
                             else {
                                 window.alert("Editado con éxito. Ahora cerraremos sesión para actualizar datos");
                                 window.history.go(0);
                             }
                         });
+                        setView("viewCarga");
                     } else alert.show("Las contraseñas no son iguales");
                 }}
                 btn_second={<span className="btn--text" onClick={() => setView("principal")} > Cancelar </span>}
             />
+        </div>,
+        viewCarga: <div className="sideBoardFloat_container">
+            <h2>Ejecutando tarea...</h2>
         </div>
     };
 
@@ -98,7 +118,7 @@ function SideBoardFloat(props) {
                 sideBoardFloat.style.animation = "closeSideBoard .8s forwards";
                 closerSpan[1].style.display = "none";
                 closerSpan[0].style.display = "flex";
-                setView("principal");
+                if (view != "viewCarga") setView("principal");
             }}>
                 <IconContext.Provider value={{ size: "0.7em" }}>
                     <FaAngleUp />

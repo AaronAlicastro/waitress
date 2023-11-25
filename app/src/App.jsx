@@ -207,31 +207,25 @@ class App extends Component {
         goToView={(view, dataView, fun) => this.renderViewCarga(view, dataView, fun)}
         querys={this.querys}
       />,
-      tableListener: (lastView) => <TableListener
-        lastView={lastView}
+      tableListener: () => <TableListener
         goToView={(view, dataView, fun) => this.renderViewCarga(view, dataView, fun)}
-        orders={dataBase.orders}
-        tableChoosen={{ _id: "table_1" }}
-        products={dataBase.productos}
-        userName={this.querys.user.name}
-        userId={this.querys.user._id}
+        querys={this.querys}
       />,
-      addProductToTable: (lastView, data) => <AddProductToTable
-        lastView={lastView}
+      addProductToTable: (_, data) => <AddProductToTable
         goToView={(view, dataView, fun) => this.renderViewCarga(view, dataView, fun)}
-        tableChoosen={data.tableChoosen}
-        products={data.products}
-        userName={this.querys.user.name}
-        userId={this.querys.user._id}
+        querys={this.querys}
+        productsAsked={data.productsAsked || []}
+        total={data.total || 0}
       />,
       editProctToOrder: (lastView, data) => <EditProctToOrder
         lastView={lastView}
         goToView={(view, dataView, fun) => this.renderViewCarga(view, dataView, fun)}
-        tableChoosen={data.tableChoosen}
-        products={data.products}
-        productChoosen={data.productChoosen}
+        tableChoosen={this.querys.tableChoosen}
         userName={this.querys.user.name}
         userId={this.querys.user._id}
+        productChoosen={data.productChoosen}
+        productsAsked={data.productsAsked}
+        total={data.total || 0}
       />,
       finalCheck: (_, data) => <FinalCheck
         goToView={(view, dataView, fun) => this.renderViewCarga(view, dataView, fun)}

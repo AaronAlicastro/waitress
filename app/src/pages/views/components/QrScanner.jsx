@@ -7,17 +7,17 @@ import { QrReader } from "react-qr-reader";
 import { useAlert } from "react-alert";
 import BotonAcc from "./BotonAcc";
 
-function QrScanner(props) {
+function QrScanner({ getResult }) {
     let alert = useAlert();
     let [typeOfCamera, SetTypeOfCamera] = useState("user");
 
     return <div>
         <QrReader
             onResult={(result, e) => {
-                if (e.name != "NotAllowedError") {
-                    if (result) if (result.text) {
-                        console.log(result);
-                    }
+                let comparar = "";
+                if (e) comparar = e.name;
+                if (comparar != "NotAllowedError") {
+                    if (result) if (result.text) getResult(result.text);
                 } else alert.show("Debes dar permiso a la cámara")
             }}
             constraints={{ facingMode: typeOfCamera }}

@@ -5,16 +5,29 @@ config();
 
 export default class Querys {
     constructor() {
+        // general
         this.URL = "http://localhost:4200";
         this.IsManager = false;
-        this.user = {};
-        this.workers = [];
-        this.tables = [];
-        this.products = [];
         this.REACT_APP_PASSWORD = "";
         this.encrypt(process.env.REACT_APP_PASSWORD).then(r => {
             this.REACT_APP_PASSWORD = r;
         });
+        
+        // user
+        this.user = {};
+        
+        // workers
+        this.workers = [];
+
+        // tables
+        this.tables = [];
+        this.tableChoosen = {}
+        
+        // products
+        this.products = [];
+
+        // orders
+        this.orders = [];
     }
 
     // security
@@ -33,9 +46,11 @@ export default class Querys {
         pt.json().then(r => {
             if (r.not_found) fun(r.not_found);
             else {
-                if (!r.user.manager) this.IsManager = true;
                 this.user = r.user;
-                fun();
+                if (!r.user.manager) {
+                    this.IsManager = true;
+                    fun(false, this.IsManager);
+                } else fun(false, this.IsManager);
             }
         });
     }
@@ -54,7 +69,7 @@ export default class Querys {
     async deleteUser(userId, fun) {
         let data = {
             REACT_APP_PASSWORD: this.REACT_APP_PASSWORD,
-            userId
+            _id: userId
         };
         let pt = await fetch(this.URL + "/user", {
             method: "DELETE",
@@ -63,11 +78,7 @@ export default class Querys {
         });
         pt.json().then(r => {
             if (r.not_found) fun(r.not_found);
-            else {
-                if (!r.user.manager) this.IsManager = true;
-                this.user = r.user;
-                fun();
-            }
+            else fun();
         });
     }
 
@@ -145,6 +156,25 @@ export default class Querys {
         });
     }
 
+    // orders
+    async createOrder(data, fun) {
+        data.REACT_APP_PASSWORD = this.REACT_APP_PASSWORD;
+        data.manager = this.user.manager;
+
+        let pt = await fetch(this.URL + "/create/order", {
+            method: "POST",
+            mode: "cors",
+            body: JSON.stringify(data)
+        });
+        pt.json().then(r => {
+            if (r.not_found) fun(r.not_found);
+            else {
+                this.orders.push(r.newOrder);
+                fun();
+            }
+        });
+    }
+
     // tables
     async createTable(data, fun) {
         data.REACT_APP_PASSWORD = this.REACT_APP_PASSWORD;
@@ -180,6 +210,27 @@ export default class Querys {
                     this.tables.push(...r.tables);
                     fun();
                 } else fun(false, "No hay más mesas por cargar");
+            }
+        });
+    }
+    async getOneTable(tableId, fun) {
+        let data = {
+            REACT_APP_PASSWORD: this.REACT_APP_PASSWORD,
+            _id: tableId,
+            manager: this.user.manager
+        }
+        let pt = await fetch(this.URL + "/table", {
+            method: "POST",
+            mode: "cors",
+            body: JSON.stringify(data)
+        });
+        pt.json().then(r => {
+            if (r.not_found) fun(r.not_found);
+            else {
+                this.tableChoosen = r.table;
+                this.products = r.products;
+                this.orders = r.orders;
+                fun();
             }
         });
     }

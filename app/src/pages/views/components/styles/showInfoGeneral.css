@@ -59,6 +59,18 @@
     border-color: var(--unicode_thing);
 }
 
+/* checkList */
+
+.checkList {
+    background: var(--shadow);
+    margin: var(--general_space) 0;
+    flex-wrap: wrap;
+}
+
+.checkList > span {
+    font-size: var(--font_medium);
+}
+
 /* bill counter */
 
 .billCounter_container {

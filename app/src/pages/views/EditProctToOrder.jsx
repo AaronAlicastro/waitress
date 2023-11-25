@@ -11,12 +11,19 @@ import Footer from "./components/Footer";
 import FloatBack from "./components/FloatBack";
 import Billcounter from "./components/Billcounter";
 import BotonAcc from "./components/BotonAcc";
+import { useAlert } from "react-alert";
 
 function EditProctToOrder(props) {
+    let alert = useAlert();
     let [view, setView] = useState("billCounter");
-    let mientras = [...props.products.find(pr => pr.name == props.productChoosen).ingre];
+    // mientras is to avoid editing the principal product
+    let mientras = [...props.productChoosen.ingre];
     let [ingreWorked, setIngreWorked] = useState(mientras);
-    let key = 0, productCount = 0;
+    let [without, setWithout] = useState([]);
+    let [totalProduct, setTotalProduct] = useState(0);
+    let [productCount, setProductCount] = useState(0);
+    let key = 0;
+
     let confirmIngreChange = (change) => {
         if (view == "confirmIngre") setView("confirmIngreChange");
         else setView("confirmIngre");
@@ -24,10 +31,11 @@ function EditProctToOrder(props) {
     }
     let viewToShow = {
         billCounter: () => <Billcounter
-            title={props.productChoosen}
+            title={props.productChoosen.name}
             answer={(answer) => {
                 if (answer) {
-                    productCount = answer;
+                    setProductCount(answer);
+                    setTotalProduct((props.productChoosen.price * answer));
                     setView("confirmIngre");
                 } else props.goToView(props.lastView.view, props.lastView.dataView);
             }}
@@ -41,7 +49,11 @@ function EditProctToOrder(props) {
                         return <div key={key} className="flexRowCenter">
                             <span style={{ marginRight: "var(--general_space)" }}>{ingre.name}</span>
                             <button className="btn_form" onClick={() => {
-                                ingreWorked.splice(i, 1);
+                                let ingreQuitado = ingreWorked.splice(i, 1)[0];
+                                without.push(ingreQuitado.name);
+
+                                setTotalProduct((totalProduct - ingreQuitado.value));
+                                setWithout(without);
                                 confirmIngreChange(ingreWorked);
                             }}>
                                 <IconContext.Provider value={{ size: "0.7em" }}>
@@ -53,7 +65,9 @@ function EditProctToOrder(props) {
                 }
                 <div className="flexRowAround">
                     <BotonAcc onClick={() => {
-                        mientras = [...props.products.find(pr => pr.name == props.productChoosen).ingre];
+                        let mientras = [...props.productChoosen.ingre];
+                        setTotalProduct((props.productChoosen.price * productCount));
+                        setWithout([]);
                         confirmIngreChange(mientras);
                     }}>
                         <IconContext.Provider value={{ size: "0.7em" }}>
@@ -62,7 +76,16 @@ function EditProctToOrder(props) {
                     </BotonAcc>
 
                     <BotonAcc onClick={() => {
-                        props.goToView("tableListener", {});
+                        props.productsAsked.push({
+                            product: props.productChoosen.name,
+                            productCount,
+                            totalProduct,
+                            without
+                        });
+                        props.goToView("addProductToTable", {
+                            productsAsked: props.productsAsked,
+                            total: (props.total + totalProduct)
+                        });
                     }}>
                         <IconContext.Provider value={{ size: "0.7em" }}>
                             <FaCheck />

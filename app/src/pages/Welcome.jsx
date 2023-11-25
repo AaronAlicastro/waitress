@@ -27,11 +27,14 @@ function Welcome(props) {
             btn_text="Iniciar"
             onClick={(entrences) => {
                 props.goToView(false, {}, (fun) => {
-                    props.querys.verifiUser(entrences, (not_found) => {
+                    props.querys.verifiUser(entrences, (not_found, IsManager) => {
                         if (not_found) {
                             alert.show("Usuario no encontrado");
                             fun();
-                        } else fun("principalViewAdm");
+                        } else {
+                            if (IsManager) fun("principalViewAdm");
+                            else fun("principalViewWorker");
+                        }
                     });
                 });
             }}

@@ -10,13 +10,22 @@ function PrincipalViewWorker(props) {
     let viewToShow = {
         "beginning": <div className="flexRowCenter">
             <BigBoton
-                // onClick={() => setView("QRscanner")}
-                onClick={() => props.goToView("tableListener", {})}
+                onClick={() => setView("QRscanner")}
+            // onClick={() => props.goToView("tableListener", {})}
             >Atender mesa</BigBoton>
         </div>,
         "QRscanner": <div className="flexRowCenter">
             <div style={{ minWidth: "300px", minHeight: "450px" }}>
-                <QrScanner />
+                <QrScanner
+                    getResult={(result) => {
+                        props.goToView(false, {}, (fun) => {
+                            props.querys.getOneTable(result, (somethingWrong) => {
+                                if (somethingWrong) fun();
+                                else fun("tableListener");
+                            });
+                        });
+                    }}
+                />
             </div>
         </div>
     }

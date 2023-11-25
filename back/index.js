@@ -16,8 +16,9 @@ mongoose.connect(process.env.LINK_DB)
 const managerPassword = require("./files/managerPassword");
 const schema_managers = require("./files/db_schemas/managers");
 const schema_workers = require("./files/db_schemas/workers");
-const schema_products = require("./files/db_schemas/products");
 const schema_tables = require("./files/db_schemas/tables");
+const schema_products = require("./files/db_schemas/products");
+const schema_orders = require("./files/db_schemas/orders");
 
 // users
 app.post("/verify/user", (req, res) => {
@@ -58,16 +59,11 @@ app.delete("/user", (req, res) => {
     req.addListener("data", async data => {
         data = JSON.parse(data.toString());
         if (await managerPassword.compare(process.env.APP_PASSWORD, data.REACT_APP_PASSWORD)) {
-            let manager = await schema_managers.findById( data._id );
-            let worker = await schema_workers.findById( data._id );
-            if (manager) {
-                await manager.remove();
-                res.send({ found: true });
-            }
-            else if (worker) {
-                await worker.remove();
-                res.send({ found: true });
-            } else res.send({ not_found: true });
+            let manager = await schema_managers.findByIdAndDelete(data._id);
+            let worker = await schema_workers.findByIdAndDelete(data._id);
+            if (manager) res.send({ found: true });
+            else if (worker) res.send({ found: true });
+            else res.send({ not_found: true });
         } else res.send({ not_found: true });
     });
 });
@@ -116,6 +112,18 @@ app.delete("/product", (req, res) => {
     });
 });
 
+// orders
+app.post("/create/order", (req, res) => {
+    req.addListener("data", async data => {
+        data = JSON.parse(data.toString());
+        if (await managerPassword.compare(process.env.APP_PASSWORD, data.REACT_APP_PASSWORD)) {
+            let newOrder = new schema_orders(data);
+            await newOrder.save();
+            res.send({ newOrder });
+        } else res.send({ not_found: true });
+    });
+});
+
 // tables
 app.post("/create/table", (req, res) => {
     req.addListener("data", async data => {
@@ -134,6 +142,20 @@ app.post("/tables/:page", (req, res) => {
         if (await managerPassword.compare(process.env.APP_PASSWORD, data.REACT_APP_PASSWORD)) {
             let tables = await schema_tables.find({ manager: data.manager }).skip(page).limit(10);
             res.send({ tables });
+        } else res.send({ not_found: true });
+    });
+});
+app.post("/table", (req, res) => {
+    req.addListener("data", async data => {
+        data = JSON.parse(data.toString());
+        if (await managerPassword.compare(process.env.APP_PASSWORD, data.REACT_APP_PASSWORD)) {
+            let table = await schema_tables.findById(data._id);
+            if (table) {
+                let products = await schema_products.find({ manager: data.manager });
+                let orders = await schema_orders.find({ manager: data.manager, table: data._id }); // orders of the current table
+                res.send({ table, products, orders });
+            }
+            else res.send({ not_found: true });
         } else res.send({ not_found: true });
     });
 });

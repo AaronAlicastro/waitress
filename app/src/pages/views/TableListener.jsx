@@ -15,14 +15,14 @@ import BotonAcc from "./components/BotonAcc";
 function TableListener(props) {
     return <div className="pageDivApp">
         <SideBoardFloat
-            userName={props.userName}
-            userId={props.userId}
+            userName={props.querys.user.name}
+            userId={props.querys.user._id}
         />
 
-        <FloatBack onClick={() => props.goToView(props.lastView.view, props.lastView.dataView)} />
-        <h2 className="infoGeneral_tilte">MS 3</h2>
+        <FloatBack onClick={() => props.goToView("principalViewWorker")} />
+        <h2 className="infoGeneral_tilte">MS {props.querys.tableChoosen.number}</h2>
         <List
-            list={props.orders.map(or => "Pedido " + or.number)}
+            list={ props.querys.orders.map(or => "Pedido " + or.number) }
             onClick={(ls) => {
                 console.log(ls)
             }}
@@ -32,7 +32,7 @@ function TableListener(props) {
                 let pre = window.confirm("¿Desea finalizar y sacar cuentas del pedido?");
                 if (pre) props.goToView("finalCheck", {
                     total: 1000,
-                    tableChoosen: props.tableChoosen
+                    tableChoosen: props.querys.tableChoosen
                 });
             }}>
                 <IconContext.Provider value={{ size: "0.7em" }}>
@@ -41,8 +41,8 @@ function TableListener(props) {
             </BotonAcc>
 
             <BotonAcc onClick={() => props.goToView("addProductToTable", {
-                tableChoosen: props.tableChoosen,
-                products: props.products
+                tableChoosen: props.querys.tableChoosen,
+                products: props.querys.products
             })}>
                 <IconContext.Provider value={{ size: "0.7em" }}>
                     <FaPlus />
