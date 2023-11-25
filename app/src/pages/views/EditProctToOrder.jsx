@@ -11,20 +11,50 @@ import Footer from "./components/Footer";
 import FloatBack from "./components/FloatBack";
 import Billcounter from "./components/Billcounter";
 import BotonAcc from "./components/BotonAcc";
-import { useAlert } from "react-alert";
+import { areEquals } from "../../logic/generalFunctions";
 
 function EditProctToOrder(props) {
-    let alert = useAlert();
     let [view, setView] = useState("billCounter");
     // mientras is to avoid editing the principal product
     let mientras = [...props.productChoosen.ingre];
     let [ingreWorked, setIngreWorked] = useState(mientras);
-    let [without, setWithout] = useState([]);
-    let [totalProduct, setTotalProduct] = useState(0);
-    let [productCount, setProductCount] = useState(0);
+
+    // this is the new order that the waiter is working on
+    let [currentProductsAsked, setCurrentProductsAsked] = useState([]);
+    let [without, setWithout] = useState([]); // to become individual the new order
+
+    // to calculate the total new order
+    let [totalProduct, setTotalProduct] = useState(0); // current product's price in base of customer's order
+    let [productCount, setProductCount] = useState(0); // the current count of the current customer's order
+    let [currentProductCount, setCurrentProductCount] = useState(1); // to follow each order as individual order
+    let [currentTotal, setCurrentTotal] = useState(0); // to add the last total to the current total.
     let key = 0;
 
-    let confirmIngreChange = (change) => {
+    const addNewProductAsked = () => {
+        currentProductsAsked.push({
+            product: props.productChoosen.name,
+            productCount: 1,
+            totalProduct,
+            without
+        });
+        setCurrentProductsAsked(currentProductsAsked);
+    }
+    const addProductAskedOlder = () => {
+        let allWithout = currentProductsAsked.map(pr => pr.without), withoutEdited = false;
+        allWithout.find((wh, i) => {
+            if (areEquals(wh, without)) {
+                withoutEdited = true;
+                currentProductsAsked[i].productCount += 1;
+                currentProductsAsked[i].totalProduct += totalProduct;
+                return true;
+            }
+            return false;
+        });
+        if (!withoutEdited) addNewProductAsked();
+        else setCurrentProductsAsked(currentProductsAsked);
+    };
+
+    const confirmIngreChange = (change) => {
         if (view == "confirmIngre") setView("confirmIngreChange");
         else setView("confirmIngre");
         setIngreWorked(change);
@@ -35,14 +65,16 @@ function EditProctToOrder(props) {
             answer={(answer) => {
                 if (answer) {
                     setProductCount(answer);
-                    setTotalProduct((props.productChoosen.price * answer));
+                    setTotalProduct(props.productChoosen.price);
+                    setCurrentTotal(props.productChoosen.price);
                     setView("confirmIngre");
                 } else props.goToView(props.lastView.view, props.lastView.dataView);
             }}
         />,
         confirmIngre: () => {
             return <div>
-                <h2 className="infoGeneral_details">Confirma los ingredientes</h2>
+                <h2 className="infoGeneral_details">Has elegido ({productCount}) productos</h2>
+                <h3 className="infoGeneral_details">Confirma los ingredientes del n° ({currentProductCount}) </h3>
                 {
                     ingreWorked.map((ingre, i) => {
                         key++;
@@ -66,7 +98,7 @@ function EditProctToOrder(props) {
                 <div className="flexRowAround">
                     <BotonAcc onClick={() => {
                         let mientras = [...props.productChoosen.ingre];
-                        setTotalProduct((props.productChoosen.price * productCount));
+                        setTotalProduct(props.productChoosen.price);
                         setWithout([]);
                         confirmIngreChange(mientras);
                     }}>
@@ -76,16 +108,23 @@ function EditProctToOrder(props) {
                     </BotonAcc>
 
                     <BotonAcc onClick={() => {
-                        props.productsAsked.push({
-                            product: props.productChoosen.name,
-                            productCount,
-                            totalProduct,
-                            without
-                        });
-                        props.goToView("addProductToTable", {
-                            productsAsked: props.productsAsked,
-                            total: (props.total + totalProduct)
-                        });
+                        if (currentProductCount < productCount) {
+                            let mientras = [...props.productChoosen.ingre];
+                            if (currentProductsAsked.length) addProductAskedOlder();
+                            else addNewProductAsked();
+
+                            setCurrentProductCount(currentProductCount + 1);
+                            setWithout([]);
+                            confirmIngreChange(mientras);
+                        } else {
+                            addProductAskedOlder();
+                            props.goToView("addProductToTable", {
+                                productsAsked: [...props.productsAsked, ...currentProductsAsked],
+                                total: (props.total + currentTotal)
+                            });
+                        }
+                        setTotalProduct(props.productChoosen.price);
+                        setCurrentTotal(currentTotal + totalProduct);
                     }}>
                         <IconContext.Provider value={{ size: "0.7em" }}>
                             <FaCheck />

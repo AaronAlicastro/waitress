@@ -7,7 +7,7 @@
     position: absolute;
     width: 100vw;
     height: 100vh;
-    bottom: calc(100vh - 100px);
+    bottom: calc(100vh - 60px);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -15,17 +15,15 @@
 
 .closerSpan {
     display: flex;
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    border-bottom-right-radius: 30px;
     background: var(--action);
-    justify-content: end;
-    align-items: flex-end;
+    justify-content: center;
+    align-items: center;
     padding: var(--general_space);
     box-sizing: border-box;
     position: relative;
-    left: -40px;
-    top: -40px;
 }
 
 .closerSpan:nth-child(2) {
@@ -34,7 +32,7 @@
 
 @keyframes openSideBoard {
     from {
-        bottom: calc(100vh - 100px);
+        bottom: calc(100vh - 60px);
     }
 
     to {
@@ -48,7 +46,7 @@
     }
 
     to {
-        bottom: calc(100vh - 100px);
+        bottom: calc(100vh - 60px);
     }
 }
 

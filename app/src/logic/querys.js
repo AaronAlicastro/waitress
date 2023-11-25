@@ -174,6 +174,48 @@ export default class Querys {
             }
         });
     }
+    async editOrder(data, fun) {
+        data.REACT_APP_PASSWORD = this.REACT_APP_PASSWORD;
+
+        let pt = await fetch(this.URL + "/order", {
+            method: "PUT",
+            mode: "cors",
+            body: JSON.stringify(data)
+        });
+        pt.json().then(r => {
+            if (r.not_found) fun(r.not_found);
+            else fun();
+        });
+    }
+    async deleteOrder(data, fun) {
+        data.REACT_APP_PASSWORD = this.REACT_APP_PASSWORD;
+
+        let pt = await fetch(this.URL + "/order", {
+            method: "DELETE",
+            mode: "cors",
+            body: JSON.stringify(data)
+        });
+        pt.json().then(r => {
+            if (r.not_found) fun(r.not_found);
+            else fun();
+        });
+    }
+    async deleteOrdersOfTable(data, fun) {
+        data.REACT_APP_PASSWORD = this.REACT_APP_PASSWORD;
+
+        let pt = await fetch(this.URL + "/orders/table", {
+            method: "DELETE",
+            mode: "cors",
+            body: JSON.stringify(data)
+        });
+        pt.json().then(r => {
+            if (r.not_found) fun(r.not_found);
+            else {
+                this.orders = [];
+                fun();
+            }
+        });
+    }
 
     // tables
     async createTable(data, fun) {

@@ -15,6 +15,7 @@ import EditProctToOrder from "./pages/views/EditProctToOrder";
 import FinalCheck from "./pages/views/FinalCheck";
 import Welcome from "./pages/Welcome";
 import Loading from "./pages/Loading";
+import EditOrDeleteOrder from "./pages/views/EditOrDeleteOrder";
 
 let dataBase = {
   // adm
@@ -220,19 +221,21 @@ class App extends Component {
       editProctToOrder: (lastView, data) => <EditProctToOrder
         lastView={lastView}
         goToView={(view, dataView, fun) => this.renderViewCarga(view, dataView, fun)}
-        tableChoosen={this.querys.tableChoosen}
         userName={this.querys.user.name}
         userId={this.querys.user._id}
         productChoosen={data.productChoosen}
         productsAsked={data.productsAsked}
         total={data.total || 0}
       />,
+      editOrDeleteOrder: (_, data) => <EditOrDeleteOrder
+        goToView={(view, dataView, fun) => this.renderViewCarga(view, dataView, fun)}
+        querys={this.querys}
+        orderChoosen={data.orderChoosen}
+        orderChoosen_number={data.orderChoosen_number}
+      />,
       finalCheck: (_, data) => <FinalCheck
         goToView={(view, dataView, fun) => this.renderViewCarga(view, dataView, fun)}
-        total={data.total}
-        tableChoosen={data.tableChoosen}
-        userName={this.querys.user.name}
-        userId={this.querys.user._id}
+        querys={this.querys}
       />
     }
 

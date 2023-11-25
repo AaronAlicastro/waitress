@@ -123,6 +123,36 @@ app.post("/create/order", (req, res) => {
         } else res.send({ not_found: true });
     });
 });
+app.put("/order", (req, res) => {
+    req.addListener("data", async data => {
+        data = JSON.parse(data.toString());
+        if (await managerPassword.compare(process.env.APP_PASSWORD, data.REACT_APP_PASSWORD)) {
+            let order = await schema_orders.findById(data._id);
+            order.productsAsked = data.productsAsked;
+            order.total = data.total;
+            await order.save();
+            res.send({ found: true });
+        } else res.send({ not_found: true });
+    });
+});
+app.delete("/order", (req, res) => {
+    req.addListener("data", async data => {
+        data = JSON.parse(data.toString());
+        if (await managerPassword.compare(process.env.APP_PASSWORD, data.REACT_APP_PASSWORD)) {
+            await schema_orders.findByIdAndDelete(data._id);
+            res.send({ found: true });
+        } else res.send({ not_found: true });
+    });
+});
+app.delete("/orders/table", (req, res) => {
+    req.addListener("data", async data => {
+        data = JSON.parse(data.toString());
+        if (await managerPassword.compare(process.env.APP_PASSWORD, data.REACT_APP_PASSWORD)) {
+            await schema_orders.deleteMany({ manager: data.manager, table: data.table }, { multi: true });
+            res.send({ found: true });
+        } else res.send({ not_found: true });
+    });
+});
 
 // tables
 app.post("/create/table", (req, res) => {

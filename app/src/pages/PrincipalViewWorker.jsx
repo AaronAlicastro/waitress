@@ -9,10 +9,7 @@ function PrincipalViewWorker(props) {
     let [view, setView] = useState("beginning");
     let viewToShow = {
         "beginning": <div className="flexRowCenter">
-            <BigBoton
-                onClick={() => setView("QRscanner")}
-            // onClick={() => props.goToView("tableListener", {})}
-            >Atender mesa</BigBoton>
+            <BigBoton onClick={() => setView("QRscanner")} >Atender mesa</BigBoton>
         </div>,
         "QRscanner": <div className="flexRowCenter">
             <div style={{ minWidth: "300px", minHeight: "450px" }}>

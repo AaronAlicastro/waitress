@@ -8,6 +8,8 @@ const orders = new Schema({
     productsAsked: [
         {
             product: String,
+            productCount: Number,
+            totalProduct: Number,
             without: [String]
         }
     ],
