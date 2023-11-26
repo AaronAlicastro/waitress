@@ -11,3 +11,24 @@ export function areEquals(...arrays) {
     } 
     return false;
 }
+
+export class ObjectsInteractivesOver {
+    constructor() {
+        this.objectsWorked = [];
+    }
+
+    setObjectsWorked(objs) {
+        this.objectsWorked = objs;
+    }
+
+    verifyInteraction(principalObject, clientX, clientY) {
+        let currentObjects = this.objectsWorked.filter(objs => objs != principalObject);
+        return currentObjects.find(ob => {
+            if (
+                clientX > ob.offsetLeft && clientX < (ob.offsetLeft + ob.offsetWidth) && // X
+                clientY > ob.offsetTop && clientY < (ob.offsetTop + ob.offsetHeight) // Y
+            ) return true;
+            return false;
+        });
+    }
+}
