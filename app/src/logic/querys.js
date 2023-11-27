@@ -6,7 +6,7 @@ config();
 export default class Querys {
     constructor() {
         // general
-        this.URL = "http://localhost:4200";
+        this.URL = process.env.URL_BACK;
         this.IsManager = false;
         this.REACT_APP_PASSWORD = "";
         this.encrypt(process.env.REACT_APP_PASSWORD).then(r => {

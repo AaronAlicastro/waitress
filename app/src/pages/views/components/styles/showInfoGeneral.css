@@ -91,6 +91,14 @@
     word-break: break-all;
 }
 
+.billCounter_container input:disabled {
+    background: var(--back);
+    border: 1px solid var(--unicode_thing);
+    border-radius: 8px;
+    box-shadow: inset 1px 1px 1px 1px var(--shadow),
+    inset -1px -1px 1px 1px var(--shadow);
+}
+
 .billCounterNumbers {
     display: grid;
     place-items: center;

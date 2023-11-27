@@ -1,6 +1,7 @@
 :root {
   /* backgorund */
   --back: #fff;
+  --app_back: #f9fcfd;
   --second_back: #eb9d74e3;
   --action: #ffcd5076;
   --unicode_thing: #000032;
@@ -11,6 +12,7 @@
   --font_big: 48px;
   --font_medium_big: 32px;
   --font_medium: 26px;
+  --font_small_meduim: 20px;
   --font_small: 16px;
 
   /* margin */
@@ -41,6 +43,7 @@
 
 body {
   font-size: var(--font_big);
+  background: var(--app_back);
 }
 
 .alertaPersonalizada {
@@ -48,8 +51,8 @@ body {
   justify-content: space-between;
   align-items: center;
   background: #fff;
+  border: .0000000001px solid var(--shadow);
   padding: var(--general_space);
-  border: 1px solid #000;
   border-radius: 8px;
   min-width: 200px;
   z-index: 1000000000000000000000000000;
@@ -59,7 +62,7 @@ body {
   margin-right: 20px;
   word-wrap: break-word;
   max-width: 80%;
-  font-size: var(--font_medium);
+  font-size: var(--font_small_meduim);
 }
 
 .pageDivApp {

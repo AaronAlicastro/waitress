@@ -9,7 +9,7 @@ footer {
     padding: 0 var(--general_space);
     box-sizing: border-box;
     font-size: var(--font_small);
-    background: var(--back);
+    background: var(--app_back);
 }
 
 footer > div {

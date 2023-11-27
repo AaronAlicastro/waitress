@@ -241,7 +241,6 @@ class App extends Component {
 
     this.state = {
       lastView: {
-        // view: "principalViewWorker",
         view: this.aVer,
         dataView: {}
       },
@@ -251,7 +250,6 @@ class App extends Component {
   }
 
   goToView(vista, dataView) {
-    window.localStorage.setItem("viewActual", vista);
     this.setState({
       lastView: {
         view: this.state.view,

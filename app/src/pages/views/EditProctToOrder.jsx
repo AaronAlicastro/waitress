@@ -66,7 +66,6 @@ function EditProctToOrder(props) {
                 if (answer) {
                     setProductCount(answer);
                     setTotalProduct(props.productChoosen.price);
-                    setCurrentTotal(props.productChoosen.price);
                     setView("confirmIngre");
                 } else props.goToView(props.lastView.view, props.lastView.dataView);
             }}
@@ -96,16 +95,18 @@ function EditProctToOrder(props) {
                     })
                 }
                 <div className="flexRowAround">
-                    <BotonAcc onClick={() => {
-                        let mientras = [...props.productChoosen.ingre];
-                        setTotalProduct(props.productChoosen.price);
-                        setWithout([]);
-                        confirmIngreChange(mientras);
-                    }}>
-                        <IconContext.Provider value={{ size: "0.7em" }}>
-                            <FaUndoAlt />
-                        </IconContext.Provider>
-                    </BotonAcc>
+                    {
+                        (ingreWorked.length != props.productChoosen.ingre.length) ? <BotonAcc onClick={() => {
+                            let mientras = [...props.productChoosen.ingre];
+                            setTotalProduct(props.productChoosen.price);
+                            setWithout([]);
+                            confirmIngreChange(mientras);
+                        }}>
+                            <IconContext.Provider value={{ size: "0.7em" }}>
+                                <FaUndoAlt />
+                            </IconContext.Provider>
+                        </BotonAcc> : ""
+                    }
 
                     <BotonAcc onClick={() => {
                         if (currentProductCount < productCount) {
@@ -120,11 +121,11 @@ function EditProctToOrder(props) {
                             addProductAskedOlder();
                             props.goToView("addProductToTable", {
                                 productsAsked: [...props.productsAsked, ...currentProductsAsked],
-                                total: (props.total + currentTotal)
+                                total: (props.total + currentTotal + totalProduct /* this last value add the last price selected by the user. That value will not be added twice because the state will not be used */)
                             });
                         }
-                        setTotalProduct(props.productChoosen.price);
                         setCurrentTotal(currentTotal + totalProduct);
+                        setTotalProduct(props.productChoosen.price);
                     }}>
                         <IconContext.Provider value={{ size: "0.7em" }}>
                             <FaCheck />
