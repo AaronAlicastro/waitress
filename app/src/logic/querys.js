@@ -1,12 +1,9 @@
 import bcryptjs from "bcryptjs";
-import { config } from "dotenv";
-
-config();
 
 export default class Querys {
     constructor() {
         // general
-        this.URL = process.env.URL_BACK;
+        this.URL = process.env.REACT_APP_URL_BACK;
         this.IsManager = false;
         this.REACT_APP_PASSWORD = "";
         this.encrypt(process.env.REACT_APP_PASSWORD).then(r => {

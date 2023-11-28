@@ -1,12 +1,10 @@
 {
-  "homepage": "https://aaronalicastro.github.io/waitress/",
+  "homepage": "https://waitress-app.onrender.com",
   "name": "waitress",
   "version": "1.0.0",
   "private": true,
   "dependencies": {
     "bcryptjs": "^2.4.3",
-    "dotenv": "^16.3.1",
-    "gh-pages": "^5.0.0",
     "react": "^18.2.0",
     "react-alert": "^7.0.3",
     "react-dom": "^18.2.0",
@@ -19,8 +17,6 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "eject": "react-scripts eject"
   }
 }
