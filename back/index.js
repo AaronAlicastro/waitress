@@ -5,254 +5,369 @@ const mongoose = require("mongoose");
 require("dotenv").config();
 const app = express();
 
+// configs
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
 
-mongoose.connect(process.env.LINK_DB)
-    .then(e => console.log("Data base is connected"))
-    .catch(error => console.log("Something is wrong", error));
+// data base connection
+mongoose
+  .connect(process.env.LINK_DB)
+  .then((e) => console.log("Data base is connected"))
+  .catch((error) => console.log("Something is wrong", error));
 
-const managerPassword = require("./files/managerPassword");
+// data base schemas
 const schema_managers = require("./files/db_schemas/managers");
 const schema_workers = require("./files/db_schemas/workers");
 const schema_tables = require("./files/db_schemas/tables");
 const schema_products = require("./files/db_schemas/products");
 const schema_orders = require("./files/db_schemas/orders");
 
+// managers
+const {
+  compare,
+  verifyServer,
+  serviceErrorHandler,
+} = require("./files/logic/queriesManager");
+
 // users
 app.post("/verify/user", (req, res) => {
-    const verifyAndSend = async (password, user) => {
-        if (await managerPassword.compare(password, user.password)) {
-            res.send({ user });
-        } else res.send({ not_found: true });
-    }
+  const { service_key } = req.headers;
+  const { email, password } = req.body;
+  const verifyPasswords = async (user) => {
+    if (await compare(password, user.password)) res.send({ user });
+    else serviceErrorHandler.not_found(res);
+  };
 
-    req.addListener("data", async data => {
-        data = JSON.parse(data.toString());
-        if (await managerPassword.compare(process.env.APP_PASSWORD, data.REACT_APP_PASSWORD)) {
-            let [manager] = await schema_managers.find({ email: data.email });
-            let [worker] = await schema_workers.find({ email: data.email });
-            if (manager) verifyAndSend(data.password, manager);
-            else if (worker) verifyAndSend(data.password, worker);
-            else res.send({ not_found: true });
-        } else res.send({ not_found: true });
-    });
+  verifyServer(
+    service_key,
+    async () => {
+      const manager = await schema_managers.findOne({ email });
+      const worker = await schema_workers.findOne({ email });
+
+      if (manager) verifyPasswords(manager);
+      else if (worker) verifyPasswords(worker);
+    },
+    () => serviceErrorHandler.not_found(res)
+  );
 });
+
 app.put("/user", (req, res) => {
-    req.addListener("data", async data => {
-        data = JSON.parse(data.toString());
-        if (await managerPassword.compare(process.env.APP_PASSWORD, data.REACT_APP_PASSWORD)) {
-            let manager = await schema_managers.findById(data._id);
-            if (manager) {
-                manager.name = data.name;
-                manager.email = data.email;
-                manager.password = await managerPassword.encrypt(data.password);
-                await manager.save();
-                res.send({ user: manager })
-            }
-            else res.send({ not_found: true });
-        } else res.send({ not_found: true });
-    });
+  const { service_key } = req.headers;
+
+  verifyServer(
+    service_key,
+    async () => {
+      const manager = await schema_managers.findById(req.body._id);
+
+      manager.name = req.body.name;
+      manager.email = req.body.email;
+      manager.password = await managerPassword.encrypt(req.body.password);
+
+      await manager.save();
+      res.send({ edited: true });
+    },
+    () => serviceErrorHandler.not_found(res)
+  );
 });
+
 app.delete("/user", (req, res) => {
-    req.addListener("data", async data => {
-        data = JSON.parse(data.toString());
-        if (await managerPassword.compare(process.env.APP_PASSWORD, data.REACT_APP_PASSWORD)) {
-            let manager = await schema_managers.findByIdAndDelete(data._id);
-            let worker = await schema_workers.findByIdAndDelete(data._id);
-            if (manager) res.send({ found: true });
-            else if (worker) res.send({ found: true });
-            else res.send({ not_found: true });
-        } else res.send({ not_found: true });
-    });
+  const { service_key } = req.headers;
+
+  verifyServer(
+    service_key,
+    async () => {
+      const manager = await schema_managers.findByIdAndDelete(req.body._id);
+      const worker = await schema_workers.findByIdAndDelete(req.body._id);
+
+      if (manager) res.send({ found: true });
+      else if (worker) res.send({ found: true });
+      else serviceErrorHandler.not_found(res);
+    },
+    () => serviceErrorHandler.not_found(res)
+  );
 });
 
 // products
 app.post("/create/product", (req, res) => {
-    req.addListener("data", async data => {
-        data = JSON.parse(data.toString());
-        if (await managerPassword.compare(process.env.APP_PASSWORD, data.REACT_APP_PASSWORD)) {
-            let newProduct = new schema_products(data);
-            await newProduct.save();
-            res.send({ newProduct });
-        } else res.send({ not_found: true });
-    });
+  const { service_key } = req.headers;
+
+  verifyServer(
+    service_key,
+    async () => {
+      const newProduct = new schema_products(req.body);
+      await newProduct.save();
+
+      res.send({ newProduct });
+    },
+    () => serviceErrorHandler.not_found(res)
+  );
 });
+
 app.post("/products/:page", (req, res) => {
-    req.addListener("data", async data => {
-        let page = parseInt(req.params.page);
-        data = JSON.parse(data.toString());
-        if (await managerPassword.compare(process.env.APP_PASSWORD, data.REACT_APP_PASSWORD)) {
-            let products = await schema_products.find({ manager: data.manager }).skip(page).limit(10);
-            res.send({ products });
-        } else res.send({ not_found: true });
-    });
+  const { service_key } = req.headers;
+  const page = parseInt(req.params.page);
+
+  verifyServer(
+    service_key,
+    async () => {
+      const products = await schema_products
+        .find({ manager: req.body.manager })
+        .skip(page)
+        .limit(10);
+
+      res.send({ products });
+    },
+    () => serviceErrorHandler.not_found(res)
+  );
 });
+
 app.put("/product", (req, res) => {
-    req.addListener("data", async data => {
-        data = JSON.parse(data.toString());
-        if (await managerPassword.compare(process.env.APP_PASSWORD, data.REACT_APP_PASSWORD)) {
-            let product = await schema_products.findById(data._id);
-            product.name = data.name;
-            product.price = data.price;
-            product.ingre = data.ingre;
-            await product.save();
-            res.send({ product });
-        } else res.send({ not_found: true });
-    });
+  const { service_key } = req.headers;
+
+  verifyServer(
+    service_key,
+    async () => {
+      const product = await schema_products.findById(req.body._id);
+
+      product.name = req.body.name;
+      product.price = req.body.price;
+      product.ingre = req.body.ingre;
+
+      await product.save();
+      res.send({ product });
+    },
+    () => serviceErrorHandler.not_found(res)
+  );
 });
+
 app.delete("/product", (req, res) => {
-    req.addListener("data", async data => {
-        data = JSON.parse(data.toString());
-        if (await managerPassword.compare(process.env.APP_PASSWORD, data.REACT_APP_PASSWORD)) {
-            await schema_products.findByIdAndDelete(data._id);
-            res.send({ found: data._id });
-        } else res.send({ not_found: true });
-    });
+  const { service_key } = req.headers;
+
+  verifyServer(
+    service_key,
+    async () => {
+      await schema_products.findByIdAndDelete(req.body._id);
+      res.send({ found: req.body._id });
+    },
+    () => serviceErrorHandler.not_found(res)
+  );
 });
 
 // orders
 app.post("/create/order", (req, res) => {
-    req.addListener("data", async data => {
-        data = JSON.parse(data.toString());
-        if (await managerPassword.compare(process.env.APP_PASSWORD, data.REACT_APP_PASSWORD)) {
-            let newOrder = new schema_orders(data);
-            await newOrder.save();
-            res.send({ newOrder });
-        } else res.send({ not_found: true });
-    });
+  const { service_key } = req.headers;
+
+  verifyServer(
+    service_key,
+    async () => {
+      const newOrder = new schema_orders(req.body);
+      await newOrder.save();
+      res.send({ newOrder });
+    },
+    () => serviceErrorHandler.not_found(res)
+  );
 });
+
 app.put("/order", (req, res) => {
-    req.addListener("data", async data => {
-        data = JSON.parse(data.toString());
-        if (await managerPassword.compare(process.env.APP_PASSWORD, data.REACT_APP_PASSWORD)) {
-            let order = await schema_orders.findById(data._id);
-            order.productsAsked = data.productsAsked;
-            order.total = data.total;
-            await order.save();
-            res.send({ found: true });
-        } else res.send({ not_found: true });
-    });
+  const { service_key } = req.headers;
+
+  verifyServer(
+    service_key,
+    async () => {
+      const order = await schema_orders.findById(req.body._id);
+
+      order.productsAsked = req.body.productsAsked;
+      order.total = req.body.total;
+
+      await order.save();
+      res.send({ found: true });
+    },
+    () => serviceErrorHandler.not_found(res)
+  );
 });
+
 app.delete("/order", (req, res) => {
-    req.addListener("data", async data => {
-        data = JSON.parse(data.toString());
-        if (await managerPassword.compare(process.env.APP_PASSWORD, data.REACT_APP_PASSWORD)) {
-            await schema_orders.findByIdAndDelete(data._id);
-            res.send({ found: true });
-        } else res.send({ not_found: true });
-    });
+  const { service_key } = req.headers;
+
+  verifyServer(
+    service_key,
+    async () => {
+      await schema_orders.findByIdAndDelete(req.body._id);
+      res.send({ found: true });
+    },
+    () => serviceErrorHandler.not_found(res)
+  );
 });
+
 app.delete("/orders/table", (req, res) => {
-    req.addListener("data", async data => {
-        data = JSON.parse(data.toString());
-        if (await managerPassword.compare(process.env.APP_PASSWORD, data.REACT_APP_PASSWORD)) {
-            await schema_orders.deleteMany({ manager: data.manager, table: data.table }, { multi: true });
-            res.send({ found: true });
-        } else res.send({ not_found: true });
-    });
+  const { service_key } = req.headers;
+
+  verifyServer(
+    service_key,
+    async () => {
+      await schema_orders.deleteMany(
+        { manager: req.body.manager, table: req.body.table },
+        { multi: true }
+      );
+
+      res.send({ found: true });
+    },
+    () => serviceErrorHandler.not_found(res)
+  );
 });
 
 // tables
 app.post("/create/table", (req, res) => {
-    req.addListener("data", async data => {
-        data = JSON.parse(data.toString());
-        if (await managerPassword.compare(process.env.APP_PASSWORD, data.REACT_APP_PASSWORD)) {
-            let newTable = new schema_tables(data);
-            await newTable.save();
-            res.send({ newTable });
-        } else res.send({ not_found: true });
-    });
+  const { service_key } = req.headers;
+
+  verifyServer(
+    service_key,
+    async () => {
+      const newTable = new schema_tables(req.body);
+      await newTable.save();
+      res.send({ newTable });
+    },
+    () => serviceErrorHandler.not_found(res)
+  );
 });
+
 app.post("/tables/:page", (req, res) => {
-    req.addListener("data", async data => {
-        let page = parseInt(req.params.page);
-        data = JSON.parse(data.toString());
-        if (await managerPassword.compare(process.env.APP_PASSWORD, data.REACT_APP_PASSWORD)) {
-            let tables = await schema_tables.find({ manager: data.manager }).skip(page).limit(10);
-            res.send({ tables });
-        } else res.send({ not_found: true });
-    });
+  const { service_key } = req.headers;
+  const page = parseInt(req.params.page);
+
+  verifyServer(
+    service_key,
+    async () => {
+      const tables = await schema_tables
+        .find({ manager: req.body.manager })
+        .skip(page)
+        .limit(10);
+
+      res.send({ tables });
+    },
+    () => serviceErrorHandler.not_found(res)
+  );
 });
+
 app.post("/table", (req, res) => {
-    req.addListener("data", async data => {
-        data = JSON.parse(data.toString());
-        if (await managerPassword.compare(process.env.APP_PASSWORD, data.REACT_APP_PASSWORD)) {
-            let table = await schema_tables.findById(data._id);
-            if (table) {
-                let products = await schema_products.find({ manager: data.manager });
-                let orders = await schema_orders.find({ manager: data.manager, table: data._id }); // orders of the current table
-                res.send({ table, products, orders });
-            }
-            else res.send({ not_found: true });
-        } else res.send({ not_found: true });
-    });
+  const { service_key } = req.headers;
+
+  verifyServer(
+    service_key,
+    async () => {
+      const table = await schema_tables.findById(req.body._id);
+
+      if (table) {
+        const products = await schema_products.find({
+          manager: req.body.manager,
+        });
+        const orders = await schema_orders.find({
+          manager: req.body.manager,
+          table: req.body._id,
+        });
+
+        res.send({ table, products, orders });
+      } else serviceErrorHandler.not_found(res);
+    },
+    () => serviceErrorHandler.not_found(res)
+  );
 });
+
 app.put("/table", (req, res) => {
-    req.addListener("data", async data => {
-        data = JSON.parse(data.toString());
-        if (await managerPassword.compare(process.env.APP_PASSWORD, data.REACT_APP_PASSWORD)) {
-            let table = await schema_tables.findById(data._id);
-            table.number = data.number;
-            await table.save();
-            res.send({ table });
-        } else res.send({ not_found: true });
-    });
+  const { service_key } = req.headers;
+
+  verifyServer(
+    service_key,
+    async () => {
+      const table = await schema_tables.findById(req.body._id);
+
+      table.number = req.body.number;
+
+      await table.save();
+      res.send({ table });
+    },
+    () => serviceErrorHandler.not_found(res)
+  );
 });
+
 app.delete("/table", (req, res) => {
-    req.addListener("data", async data => {
-        data = JSON.parse(data.toString());
-        if (await managerPassword.compare(process.env.APP_PASSWORD, data.REACT_APP_PASSWORD)) {
-            await schema_tables.findByIdAndDelete(data._id);
-            res.send({ found: data._id });
-        } else res.send({ not_found: true });
-    });
+  const { service_key } = req.headers;
+
+  verifyServer(
+    service_key,
+    async () => {
+      await schema_tables.findByIdAndDelete(req.body._id);
+      res.send({ found: req.body._id });
+    },
+    () => serviceErrorHandler.not_found(res)
+  );
 });
 
 // workers from adm interface
 app.post("/create/worker", (req, res) => {
-    req.addListener("data", async data => {
-        data = JSON.parse(data.toString());
-        if (await managerPassword.compare(process.env.APP_PASSWORD, data.REACT_APP_PASSWORD)) {
-            let newWorker = new schema_workers(data);
-            await newWorker.save();
-            res.send({ newWorker });
-        } else res.send({ not_found: true });
-    });
+  const { service_key } = req.headers;
+
+  verifyServer(
+    service_key,
+    async () => {
+      const newWorker = new schema_workers(req.body);
+      await newWorker.save();
+      res.send({ newWorker });
+    },
+    () => serviceErrorHandler.not_found(res)
+  );
 });
+
 app.post("/workers/:page", (req, res) => {
-    req.addListener("data", async data => {
-        let page = parseInt(req.params.page);
-        data = JSON.parse(data.toString());
-        if (await managerPassword.compare(process.env.APP_PASSWORD, data.REACT_APP_PASSWORD)) {
-            let workers = await schema_workers.find({ manager: data.manager }).skip(page).limit(10);
-            res.send({ workers });
-        } else res.send({ not_found: true });
-    });
+  const { service_key } = req.headers;
+  const page = parseInt(req.params.page);
+
+  verifyServer(
+    service_key,
+    async () => {
+      const workers = await schema_workers
+        .find({ manager: req.body.manager })
+        .skip(page)
+        .limit(10);
+
+      res.send({ workers });
+    },
+    () => serviceErrorHandler.not_found(res)
+  );
 });
+
 app.put("/worker", (req, res) => {
-    req.addListener("data", async data => {
-        data = JSON.parse(data.toString());
-        if (await managerPassword.compare(process.env.APP_PASSWORD, data.REACT_APP_PASSWORD)) {
-            let worker = await schema_workers.findById(data._id);
-            worker.name = data.name;
-            worker.phone = data.phone;
-            worker.email = data.email;
-            worker.password = await managerPassword.encrypt(data.password);
-            await worker.save();
-            res.send({ worker });
-        } else res.send({ not_found: true });
-    });
+  const { service_key } = req.headers;
+
+  verifyServer(
+    service_key,
+    async () => {
+      const worker = await schema_workers.findById(req.body._id);
+
+      worker.name = req.body.name;
+      worker.phone = req.body.phone;
+      worker.email = req.body.email;
+      worker.password = await managerPassword.encrypt(req.body.password);
+
+      await worker.save();
+      res.send({ worker });
+    },
+    () => serviceErrorHandler.not_found(res)
+  );
 });
+
 app.delete("/worker", (req, res) => {
-    req.addListener("data", async data => {
-        data = JSON.parse(data.toString());
-        if (await managerPassword.compare(process.env.APP_PASSWORD, data.REACT_APP_PASSWORD)) {
-            await schema_workers.findByIdAndDelete(data._id);
-            res.send({ found: data._id });
-        } else res.send({ not_found: true });
-    });
+  const { service_key } = req.headers;
+
+  verifyServer(
+    service_key,
+    async () => {
+      await schema_workers.findByIdAndDelete(req.body._id);
+      res.send({ found: req.body._id });
+    },
+    () => serviceErrorHandler.not_found(res)
+  );
 });
 
 app.listen(4200);
