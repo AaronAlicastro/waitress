@@ -9,7 +9,7 @@
 .bigBoton {
     width: inherit;
     height: inherit;
-    border-radius: 48% 52% 36% 64% / 64% 45% 55% 36% ;
+    border-radius: 48% 52% 36% 64% / 64% 45% 55% 36%;
     border: none;
     outline: none;
     font-size: var(--font_big);
@@ -17,5 +17,5 @@
     box-sizing: border-box;
     background: var(--back);
     box-shadow: inset 3px 3px 2px 2px var(--shadow),
-    inset -3px -1px 2px 2px var(--shadow);
+        inset -3px -1px 2px 2px var(--shadow);
 }

@@ -64,16 +64,12 @@
 }
 
 .input-wrapper:focus-within label {
-  color: var(--action);
+  color: var(--unicode_thing);
 }
 
 .input-wrapper:focus-within input,
 .input-wrapper:focus-within textarea {
-  border-color: var(--action);
-}
-
-.input-wrapper+.input-wrapper {
-  margin-top: var(--space-l);
+  border-color: var(--unicode_thing);
 }
 
 .input-group {

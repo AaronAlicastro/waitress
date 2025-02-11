@@ -55,6 +55,7 @@ function AddProductToTable(props) {
         <SideBoardFloat
             userName={props.querys.user.name}
             userId={props.querys.user._id}
+            editUser={() => props.goToView("editUser", {})}
         />
         <FloatBack onClick={() => {
             let pre = window.confirm("¿Desea cancelar el pedido?");

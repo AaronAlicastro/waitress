@@ -16,6 +16,7 @@ function OneTableAdm(props) {
         <SideBoardFloat
             userName={props.querys.user.name}
             userId={props.querys.user._id}
+            editUser={() => props.goToView("editUser", {})}
         />
         <FloatBack
             onClick={() => props.goToView(props.lastView.view, props.lastView.dataView)}

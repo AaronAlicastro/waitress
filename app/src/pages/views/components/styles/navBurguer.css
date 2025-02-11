@@ -1,39 +1,51 @@
-.navBurguer {
-    position: relative;
+.navBurguer_container {
+    display: flex;
+    flex-direction: column;
 }
 
-.navBurguer > div {
+.navBurguer>div {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: var(--general_space);
 }
 
-.navBurguer_options {
+.navBurguer_optionTitle {
     font-size: var(--font_medium_big);
-    list-style: none;
+    color: var(--font_color);
+    margin: 0;
 }
 
 .navBurguerSide {
-    position: absolute;
-    width: 100%;
-    background: var(--back);
-    left: -100vw;
-    list-style: none;
+    position: fixed;
     z-index: 1000;
+    left: -100vw;
+    top: 0;
+    width: 100vw;
+    height: calc(100vh - var(--general_bottom_app));
+    padding-top: var(--general_space);
+    background: var(--app_back);
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: var(--general_space);
 }
 
 .navBurguerSide li {
     text-align: center;
-    font-size: var(--font_medium_big);
-    padding: 5px 0;
-    border-bottom: 1px solid var(--shadow);
+    font-size: var(--font_medium);
+    padding: var(--general_space);
+    background: var(--back);
+    min-width: 300px;
+    cursor: pointer;
 }
 
 @keyframes openNavBurguerSide {
     from {
         left: -100vw;
     }
+
     to {
         left: 0;
     }
@@ -43,6 +55,7 @@
     from {
         left: 0;
     }
+
     to {
         left: -100vw;
     }

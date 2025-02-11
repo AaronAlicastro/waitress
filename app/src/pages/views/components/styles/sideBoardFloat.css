@@ -1,6 +1,6 @@
 .sideBoardFloat_closer {
     position: relative;
-    z-index: 1;
+    z-index: var(--bigZindex);
 }
 
 .sideBoardFloat {
@@ -52,9 +52,9 @@
 
 .sideBoardFloat_container,
 .sideBoardFloat_container_only {
-    background: var(--back);
+    background: var(--app_back);
     flex-grow: 1;
-    z-index: 100;
+    z-index: var(--bigZindex);
     padding-top: var(--general_space);
     box-sizing: border-box;
 }
@@ -76,12 +76,20 @@
 }
 
 .account_events {
-    text-decoration: underline;
-    font-size: var(--font_small);
-    margin-top: var(--font_small);
+    display: flex;
+    flex-direction: column;
+    row-gap: calc(var(--general_space) / 3);
+    align-items: center;
+    list-style: none;
+}
+
+.account_events li {
+    background: var(--back);
+    font-size: var(--font_small_meduim);
+    padding: var(--general_space);
     cursor: pointer;
 }
 
-.account_events:nth-child(2) {
-    color: var(--unicode_thing);
+.account_events li:hover {
+    transform: scale(1.1);
 }

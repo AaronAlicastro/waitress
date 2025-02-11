@@ -19,6 +19,7 @@
   --general_top_app: 100px;
   --general_bottom_app: 60px;
   --general_space: 20px;
+  --bigZindex: 999999999;
 
   /* forms */
   --space-root: 1rem;
@@ -44,6 +45,8 @@
 body {
   font-size: var(--font_big);
   background: var(--app_back);
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .alertaPersonalizada {
@@ -51,11 +54,11 @@ body {
   justify-content: space-between;
   align-items: center;
   background: #fff;
-  border: .0000000001px solid var(--shadow);
   padding: var(--general_space);
   border-radius: 8px;
   min-width: 200px;
   z-index: 1000000000000000000000000000;
+  box-shadow: 0 1rem 3rem var(--shadow);
 }
 
 .alertaPersonalizada_span {

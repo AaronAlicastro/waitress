@@ -8,5 +8,5 @@
     background: var(--action);
     display: grid;
     place-items: center;
-    z-index: 100;
+    z-index: var(--bigZindex);
 }

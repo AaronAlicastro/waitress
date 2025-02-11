@@ -1,49 +1,54 @@
 import React, { useState } from "react";
-import { IconContext } from "react-icons";
-import {
-    FaBars
-} from "react-icons/fa";
 import "./styles/navBurguer.css";
+import { IconContext } from "react-icons";
+import { FaBars } from "react-icons/fa";
 
 function NavBurguer({ opciones, content, Pseleccion }) {
-    let key = 0;
-    let [seleccion, setSeleccion] = useState(Pseleccion || 0);
+  const [seleccion, setSeleccion] = useState(Pseleccion || 0);
 
-    return <div>
-        <nav className="navBurguer">
-            <div onClick={() => {
-                let navbur = document.querySelector(".navBurguerSide");
-                navbur.style.animation = "openNavBurguerSide .4s forwards";
-            }}>
-                <ul className="navBurguer_options">
-                    <li> {opciones[seleccion]} </li>
-                </ul>
-                <span className="navBurguer_burguer">
-                    <span className="closerSpan_2">
-                        <IconContext.Provider value={{ size: "0.7em" }}>
-                            <FaBars />
-                        </IconContext.Provider>
-                    </span>
-                </span>
-            </div>
+  const openNavBurber = () => {
+    const navbur = document.querySelector(".navBurguerSide");
+    navbur.style.animation = "openNavBurguerSide .4s forwards";
+  };
 
-            <ul className="navBurguerSide">
-                {
-                    opciones.map((op, i) => {
-                        key++;
-                        return <li key={key} onClick={() => {
-                            document.querySelector(".navBurguerSide").style.animation = "closeNavBurguerSide 0s forwards";
-                            setSeleccion(i);
-                        }}>{op}</li>;
-                    })
-                }
-            </ul>
-        </nav>
+  const selectOne = (index) => {
+    document.querySelector(".navBurguerSide").style.animation =
+      "closeNavBurguerSide .4s forwards";
 
-        <div className="navBurguer_content">
-            {content[seleccion]}
+    setSeleccion(index);
+  };
+
+  return (
+    <div className="navBurguer_container">
+      <nav className="navBurguer">
+        <div onClick={openNavBurber}>
+          <label className="navBurguer_optionTitle">
+            {opciones[seleccion]}
+          </label>
+
+          <span>
+            <IconContext.Provider value={{ size: "0.7em" }}>
+              <FaBars />
+            </IconContext.Provider>
+          </span>
         </div>
+
+        <ul className="navBurguerSide">
+          <h5>Selecciona</h5>
+
+          {opciones.map((op, index) => {
+            return (
+              <li key={index} onClick={() => selectOne(index)}>
+                {op}
+              </li>
+            );
+          })}
+        </ul>
+      </nav>
+
+      <div>{content[seleccion]}</div>
     </div>
+  );
 }
 
 export default NavBurguer;

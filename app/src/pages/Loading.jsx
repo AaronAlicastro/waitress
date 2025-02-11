@@ -1,5 +1,4 @@
 import React from "react";
-import "./views/components/styles/showInfoGeneral.css";
 import PointsWaiting from "./views/PointsWaiting";
 
 function Loading() {
