@@ -4,6 +4,7 @@
   --app_back: #f9fcfd;
   --second_back: #eb9d74e3;
   --action: #ffcd5076;
+  /* --action: #F00; */
   --unicode_thing: #000032;
   --shadow: #ebebeb;
 
@@ -53,7 +54,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #fff;
+  background: var(--back);
   padding: var(--general_space);
   border-radius: 8px;
   min-width: 200px;
@@ -89,9 +90,24 @@ body {
   padding: var(--general_space);
 }
 
+.flexRowBetween {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--general_space);
+}
+
 .info_text {
   margin: var(--general_space);
   box-sizing: border-box;
   text-align: justify;
   font-size: var(--font_small);
+}
+
+.min480 {
+  min-width: 480px;
+}
+
+.min300 {
+  min-width: 300px;
 }

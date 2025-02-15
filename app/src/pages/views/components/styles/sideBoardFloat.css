@@ -1,16 +1,16 @@
 .sideBoardFloat_closer {
     position: relative;
-    z-index: var(--bigZindex);
 }
 
 .sideBoardFloat {
-    position: absolute;
+    position: fixed;
     width: 100vw;
     height: 100vh;
     bottom: calc(100vh - 60px);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    z-index: var(--bigZindex);
 }
 
 .closerSpan {

@@ -1,0 +1,59 @@
+.orderCard_container {
+    display: grid;
+    grid-template-columns: 250px 250px;
+    grid-template-rows: repeat(auto-fill, 200px);
+    gap: var(--general_space);
+    justify-content: center;
+    align-items: center;
+}
+
+.orderCard_card {
+    position: relative;
+    width: 250px;
+    height: 200px;
+    background: var(--back);
+    box-shadow: 0 1rem 3rem var(--shadow);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    row-gap: var(--general_space);
+    padding: var(--general_space);
+    box-sizing: border-box;
+}
+
+.orderCard_card span {
+    position: absolute;
+    background: var(--second_back);
+    right: -16px;
+    top: -16px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+}
+
+.orderCard_card input {
+    outline: none;
+    border: none;
+    overflow-x: scroll;
+    text-align: center;
+    width: 100%;
+}
+
+.orderCard_card input:nth-child(3) {
+    font-size: var(--font_medium_big);
+    font-weight: bold;
+}
+
+.orderCard_card input:nth-child(4) {
+    color: var(--unique);
+}
+
+@media (max-width: 700px) {
+    .orderCard_container {
+        grid-template-columns: 250px;
+    }
+}

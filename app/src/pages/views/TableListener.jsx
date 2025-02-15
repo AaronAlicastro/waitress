@@ -53,16 +53,18 @@ function TableListener(props) {
       <FloatBack onClick={() => props.goToView("principalViewWorker")} />
 
       <h2 className="infoGeneral_tilte">
-        MS {props.querys.tableChoosen.number}
+        MS - {props.querys.tableChoosen.number}
       </h2>
-      <div className="flexRowAround">
-        {renderCheckButton()}
+      <div className="flexRowCenter">
+        <div className="flexRowBetween min300">
+          {renderCheckButton()}
 
-        <BotonAcc onClick={addOrderButton}>
-          <IconContext.Provider value={{ size: "0.7em" }}>
-            <FaPlus />
-          </IconContext.Provider>
-        </BotonAcc>
+          <BotonAcc onClick={addOrderButton}>
+            <IconContext.Provider value={{ size: "0.7em" }}>
+              <FaPlus />
+            </IconContext.Provider>
+          </BotonAcc>
+        </div>
       </div>
       <div className="flexRowCenter">Total: {total}</div>
 
