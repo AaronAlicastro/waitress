@@ -1,0 +1,71 @@
+.billcounter {
+    display: flex;
+    flex-direction: column;
+    height: fit-content;
+    min-height: 560px;
+    box-sizing: border-box;
+}
+
+.ballContainer_box {
+    min-height: 380px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    margin: calc(var(--general_space) * 2) 0;
+}
+
+.ballContainer_numeric {
+    min-height: 80px;
+    width: 100vw;
+    max-width: 500px;
+}
+
+#input_objectsInteractivesOver,
+.billBallNumbers {
+    position: absolute;
+    display: grid;
+    place-items: center;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: none;
+    background: var(--action);
+    font-size: var(--font_small_meduim);
+    box-shadow: var(--generalShadow);
+    z-index: var(--bigZindex);
+}
+
+#billBallNumbers1,
+#billBallNumbers5 {
+    left: calc(20% - 40px);
+}
+
+#billBallNumbers2,
+#billBallNumbers7 {
+    left: calc(50% - 40px);
+}
+
+#billBallNumbers3,
+#billBallNumbers10 {
+    left: calc(80% - 40px);
+}
+
+#input_objectsInteractivesOver {
+    text-align: center;
+    background: var(--back);
+    left: calc(50% - 40px);
+}
+
+.draggingOver {
+    animation: dragReaction .3s forwards;
+}
+
+@keyframes dragReaction {
+    from {}
+
+    to {
+        transform: scale(1.2);
+        color: #00ffa7;
+    }
+}

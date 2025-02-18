@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import "./components/styles/showInfoGeneral.css";
 import { IconContext } from "react-icons";
 import { FaUndoAlt, FaCheck, FaTrash } from "react-icons/fa";
 import Footer from "./components/Footer";

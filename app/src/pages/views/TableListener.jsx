@@ -1,5 +1,4 @@
 import React from "react";
-import "./components/styles/showInfoGeneral.css";
 import { IconContext } from "react-icons";
 import { FaCheck, FaPlus } from "react-icons/fa";
 import SideBoardFloat from "./components/SideBoardFloat";

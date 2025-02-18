@@ -12,7 +12,7 @@
     width: 250px;
     height: 200px;
     background: var(--back);
-    box-shadow: 0 1rem 3rem var(--shadow);
+    box-shadow: var(--generalShadow);
     border-radius: 8px;
     display: flex;
     flex-direction: column;

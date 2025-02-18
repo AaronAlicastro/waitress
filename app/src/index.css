@@ -4,17 +4,16 @@
   --app_back: #f9fcfd;
   --second_back: #eb9d74e3;
   --action: #ffcd5076;
-  /* --action: #F00; */
   --unicode_thing: #000032;
   --shadow: #ebebeb;
 
   /* font style */
   --font_color: #000;
-  --font_big: 48px;
-  --font_medium_big: 32px;
-  --font_medium: 26px;
-  --font_small_meduim: 20px;
-  --font_small: 16px;
+  --font_big: 2.4rem;
+  --font_medium_big: 2.1rem;
+  --font_medium: 1.9rem;
+  --font_small_meduim: 1.5rem;
+  --font_small: 1rem;
 
   /* margin */
   --general_top_app: 100px;
@@ -33,6 +32,9 @@
   --ease: cubic-bezier(0.075, 0.82, 0.165, 1);
   --duration: 350ms;
   --font-size: 1.25rem;
+
+  /* consts */
+  --generalShadow: 0 1rem 3rem var(--shadow);
 }
 
 * {
@@ -50,6 +52,8 @@ body {
   overflow-x: hidden;
 }
 
+/* alertas */
+
 .alertaPersonalizada {
   display: flex;
   justify-content: space-between;
@@ -59,7 +63,7 @@ body {
   border-radius: 8px;
   min-width: 200px;
   z-index: 1000000000000000000000000000;
-  box-shadow: 0 1rem 3rem var(--shadow);
+  box-shadow: var(--generalShadow);
 }
 
 .alertaPersonalizada_span {
@@ -110,4 +114,53 @@ body {
 
 .min300 {
   min-width: 300px;
+}
+
+/* to show Info */
+
+.infoGeneral_tilte {
+  font-size: var(--font_big);
+  text-align: center;
+  margin: var(--general_space) 0;
+  box-sizing: border-box;
+  word-break: break-word
+}
+
+.infoGeneral_subtitle {
+  font-size: var(--font_medium);
+  text-align: center;
+}
+
+.infoGeneral_details {
+  font-size: var(--font_small_meduim);
+  margin: var(--general_space);
+  box-sizing: border-box;
+  text-align: center;
+  list-style: none;
+}
+
+.general_btn {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  outline: none;
+  padding: var(--space-m) var(--space-l);
+  cursor: pointer;
+  border: 2px solid transparent;
+  border-radius: var(--base-border-radius);
+  font-size: calc(var(--font-size) / 1.65);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.065rem;
+  background-color: var(--second_back);
+  border-color: var(--second_back);
+}
+
+.general_btn:focus,
+.general_btn:hover {
+  background-color: var(--unicode_thing);
+  border-color: var(--unicode_thing);
+  color: var(--back);
 }

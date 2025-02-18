@@ -5,26 +5,25 @@ import "./components/styles/forms.css";
 import SideBoardFloat from "./components/SideBoardFloat";
 import Footer from "./components/Footer";
 import FloatBack from "./components/FloatBack";
-import Billcounter from "./components/Billcounter";
+import Billcounter from "./components/BillCounter";
 import BotonAcc from "./components/BotonAcc";
 import { areEquals } from "../../logic/generalFunctions";
 
 function EditProctToOrder(props) {
-  let [view, setView] = useState("billCounter");
+  const [view, setView] = useState("billCounter");
   // mientras is to avoid editing the principal product
-  let mientras = [...props.productChoosen.ingre];
-  let [ingreWorked, setIngreWorked] = useState(mientras);
+  const mientras = [...props.productChoosen.ingre];
+  const [ingreWorked, setIngreWorked] = useState(mientras);
 
   // this is the new order that the waiter is working on
-  let [currentProductsAsked, setCurrentProductsAsked] = useState([]);
-  let [without, setWithout] = useState([]); // to become individual the new order
+  const [currentProductsAsked, setCurrentProductsAsked] = useState([]);
+  const [without, setWithout] = useState([]); // to become individual the new order
 
   // to calculate the total new order
-  let [totalProduct, setTotalProduct] = useState(0); // current product's price in base of customer's order
-  let [productCount, setProductCount] = useState(0); // the current count of the current customer's order
-  let [currentProductCount, setCurrentProductCount] = useState(1); // to follow each order as individual order
-  let [currentTotal, setCurrentTotal] = useState(0); // to add the last total to the current total.
-  let key = 0;
+  const [totalProduct, setTotalProduct] = useState(0); // current product's price in base of customer's order
+  const [productCount, setProductCount] = useState(0); // the current count of the current customer's order
+  const [currentProductCount, setCurrentProductCount] = useState(1); // to follow each order as individual order
+  const [currentTotal, setCurrentTotal] = useState(0); // to add the last total to the current total.
 
   const addNewProductAsked = () => {
     currentProductsAsked.push({
@@ -36,8 +35,9 @@ function EditProctToOrder(props) {
     setCurrentProductsAsked(currentProductsAsked);
   };
   const addProductAskedOlder = () => {
-    let allWithout = currentProductsAsked.map((pr) => pr.without),
-      withoutEdited = false;
+    const allWithout = currentProductsAsked.map((pr) => pr.without);
+    let withoutEdited = false;
+
     allWithout.find((wh, i) => {
       if (areEquals(wh, without)) {
         withoutEdited = true;
@@ -56,13 +56,14 @@ function EditProctToOrder(props) {
     else setView("confirmIngre");
     setIngreWorked(change);
   };
-  let viewToShow = {
+
+  const viewToShow = {
     billCounter: () => (
       <Billcounter
-        title={props.productChoosen.name}
-        answer={(answer) => {
-          if (answer) {
-            setProductCount(answer);
+        producName={props.productChoosen.name}
+        answer={(amount) => {
+          if (amount) {
+            setProductCount(amount);
             setTotalProduct(props.productChoosen.price);
             setView("confirmIngre");
           } else props.goToView(props.lastView.view, props.lastView.dataView);
@@ -79,16 +80,15 @@ function EditProctToOrder(props) {
             Confirma los ingredientes del n° ({currentProductCount}){" "}
           </h3>
           {ingreWorked.map((ingre, i) => {
-            key++;
             return (
-              <div key={key} className="flexRowCenter">
+              <div key={"ingre" + i} className="flexRowCenter">
                 <span style={{ marginRight: "var(--general_space)" }}>
                   {ingre.name}
                 </span>
                 <button
                   className="btn_form"
                   onClick={() => {
-                    let ingreQuitado = ingreWorked.splice(i, 1)[0];
+                    const ingreQuitado = ingreWorked.splice(i, 1)[0];
                     without.push(ingreQuitado.name);
 
                     setTotalProduct(totalProduct - ingreQuitado.value);
@@ -107,7 +107,7 @@ function EditProctToOrder(props) {
             {ingreWorked.length != props.productChoosen.ingre.length ? (
               <BotonAcc
                 onClick={() => {
-                  let mientras = [...props.productChoosen.ingre];
+                  const mientras = [...props.productChoosen.ingre];
                   setTotalProduct(props.productChoosen.price);
                   setWithout([]);
                   confirmIngreChange(mientras);
@@ -124,7 +124,7 @@ function EditProctToOrder(props) {
             <BotonAcc
               onClick={() => {
                 if (currentProductCount < productCount) {
-                  let mientras = [...props.productChoosen.ingre];
+                  const mientras = [...props.productChoosen.ingre];
                   if (currentProductsAsked.length) addProductAskedOlder();
                   else addNewProductAsked();
 
@@ -167,9 +167,9 @@ function EditProctToOrder(props) {
         editUser={() => props.goToView("editUser", {})}
       />
       <FloatBack
-        onClick={() =>
-          props.goToView(props.lastView.view, props.lastView.dataView)
-        }
+        onClick={() => {
+          props.goToView(props.lastView.view, props.lastView.dataView);
+        }}
       />
 
       {viewToShow[view]()}

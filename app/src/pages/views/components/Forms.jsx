@@ -1,6 +1,6 @@
 import React from "react";
-import { useAlert } from "react-alert";
 import "./styles/forms.css";
+import { useAlert } from "react-alert";
 import { getDataOfForm } from "../../../logic/formData";
 
 function Forms(props) {
@@ -55,7 +55,11 @@ function Forms(props) {
         })}
 
         <div className="btn-group">
-          <button onClick={generalFormClick} type="submit" className="btn_form">
+          <button
+            onClick={generalFormClick}
+            type="submit"
+            className="general_btn"
+          >
             {props.btn_text}
           </button>
 

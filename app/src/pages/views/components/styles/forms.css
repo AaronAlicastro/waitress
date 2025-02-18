@@ -41,7 +41,7 @@
 .form:hover,
 .form:focus-within {
   transform: scale(1.0001);
-  box-shadow: 0 1rem 3rem var(--shadow);
+  box-shadow: var(--generalShadow);
 }
 
 .form:hover:before,
@@ -122,35 +122,6 @@ label {
   display: flex;
   align-items: center;
   justify-content: space-between;
-}
-
-.btn-group>*+* {
-  margin-left: var(--space-s);
-}
-
-.btn_form {
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  outline: none;
-  padding: var(--space-m) var(--space-l);
-  cursor: pointer;
-  border: 2px solid transparent;
-  border-radius: var(--base-border-radius);
-  font-size: calc(var(--font-size) / 1.65);
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.065rem;
-  background-color: var(--second_back);
-  border-color: var(--second_back);
-  color: var(--back);
-}
-
-.btn_form:focus {
-  background-color: var(--unicode_thing);
-  border-color: var(--unicode_thing);
 }
 
 .btn--text {

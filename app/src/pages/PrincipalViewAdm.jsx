@@ -1,5 +1,4 @@
 import React from "react";
-import "./views/components/styles/showInfoGeneral.css";
 import { IconContext } from "react-icons";
 import { FaPlus } from "react-icons/fa";
 import { useAlert } from "react-alert";

@@ -8,7 +8,7 @@
 
 .listItems_item {
     display: inline;
-    font-size: var(--font_medium);
+    font-size: var(--font_small_meduim);
     text-align: center;
     padding: 10px 0;
     background: var(--action);

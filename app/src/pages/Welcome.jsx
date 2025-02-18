@@ -2,7 +2,6 @@ import React from "react";
 import Footer from "./views/components/Footer";
 import Forms from "./views/components/Forms";
 import { useAlert } from "react-alert";
-import "./views/components/styles/showInfoGeneral.css";
 
 function Welcome(props) {
   const alert = useAlert();

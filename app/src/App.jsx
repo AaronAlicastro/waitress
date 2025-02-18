@@ -166,9 +166,9 @@ class App extends Component {
       editProctToOrder: (lastView, data) => (
         <EditProctToOrder
           lastView={lastView}
-          goToView={(view, dataView, fun) =>
-            this.putViewCarga(view, dataView, fun)
-          }
+          goToView={(view, dataView, fun) => {
+            this.putViewCarga(view, dataView, fun);
+          }}
           userName={this.querys.user.name}
           userId={this.querys.user._id}
           productChoosen={data.productChoosen}

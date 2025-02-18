@@ -88,6 +88,7 @@
     font-size: var(--font_small_meduim);
     padding: var(--general_space);
     cursor: pointer;
+    box-shadow: var(--generalShadow);
 }
 
 .account_events li:hover {
