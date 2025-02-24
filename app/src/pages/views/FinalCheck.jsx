@@ -16,9 +16,9 @@ function FinalCheck(props) {
         <SideBoardFloat
             userName={props.querys.user.name}
             userId={props.querys.user._id}
-            editUser={() => props.goToView("editUser", {})}
+            editUser={() => props.goToView("editUser")}
         />
-        <FloatBack onClick={() => props.goToView("tableListener", {})} />
+        <FloatBack onClick={() => props.goToView("tableListener")} />
         <Forms
             id="formFinalizarCheck"
             title={total}
@@ -32,7 +32,7 @@ function FinalCheck(props) {
             onClick={() => {
                 let pre = window.confirm("¿Cuenta nueva?");
                 if (pre) {
-                    props.goToView(false, {}, (fun) => {
+                    props.goToView(false, null, (fun) => {
                         let data = {
                             manager: props.querys.user.manager,
                             table: props.querys.tableChoosen._id
@@ -40,7 +40,7 @@ function FinalCheck(props) {
                         props.querys.deleteOrdersOfTable(data, (somethingWrong) => {
                             if (somethingWrong) alert.show("Algo ha salido mal, comprueba el internet");
                             else alert.show("Excelente, ¡sigue así!");
-                            fun("tableListener", {});
+                            fun("tableListener");
                         });
                     });
                 }

@@ -1,9 +1,13 @@
 import React from "react";
-import "./styles/billCounter.css";
+import "./components/styles/billCounter.css";
 import { IconContext } from "react-icons";
 import { FaCheck, FaTimes } from "react-icons/fa";
-import BotonAcc from "./BotonAcc";
-import { ObjectsInteractivesOver } from "../../../logic/generalFunctions";
+import BotonAcc from "./components/BotonAcc";
+import { ObjectsInteractivesOver } from "../../logic/generalFunctions";
+import SideBoardFloat from "./components/SideBoardFloat";
+import FloatBack from "./components/FloatBack";
+import Footer from "./components/Footer";
+import { useAlert } from "react-alert";
 
 const getInputWorked = () => {
   return document.getElementById("input_objectsInteractivesOver");
@@ -16,13 +20,30 @@ const quitDragOver = () => {
 };
 
 function Billcounter(props) {
+  const alert = useAlert();
   const objectsInteractivesOver = new ObjectsInteractivesOver();
   const currentDivPosition = { pageX: 0, pageY: 0 };
   const objectsUsed = { drag: null, over: null };
 
+  const rejectWork = () => {
+    props.goToView("addProductToTable", {
+      productsAsked: props.productsAsked,
+      total: props.total,
+    });
+  };
+
   const sendData = () => {
     const inputWorked = getInputWorked();
-    props.answer(inputWorked.value || false);
+    const amount = parseInt(inputWorked.value.trim());
+
+    if (amount) {
+      props.goToView("editProctToOrder", {
+        productCount: amount,
+        productChoosen: props.productChoosen,
+        productsAsked: props.productsAsked,
+        total: props.total,
+      });
+    } else alert.show("No has colocado la cantidad");
   };
 
   /*
@@ -110,8 +131,8 @@ function Billcounter(props) {
 
   // final event, this set the original data again
   const onDragEnd = (e, isToucheEvent = false) => {
-    e.target.style.zIndex = "var(--bigZindex)";
     document.body.style.overflow = "auto";
+    e.target.style.zIndex = "var(--bigZindex)";
     objectsUsed.drag.style.left = currentDivPosition.pageX + "px";
     objectsUsed.drag.style.top = currentDivPosition.pageY + "px";
 
@@ -128,8 +149,8 @@ function Billcounter(props) {
       );
 
       if (interaccion) {
-        if (e.target === inputWorked) onDrop({ target: interaccion });
-        else onDropInput({ target: inputWorked });
+        if (e.target === inputWorked) onDrop();
+        else onDropInput();
       }
     }
   };
@@ -162,60 +183,65 @@ function Billcounter(props) {
   };
 
   return (
-    <div className="billcounter">
-      <div className="flexRowCenter">
-        <div className="flexRowAround min480">
-          <BotonAcc onClick={() => props.answer(false)}>
-            <IconContext.Provider value={{ size: "0.7em" }}>
-              <FaTimes />
-            </IconContext.Provider>
-          </BotonAcc>
+    <div className="pageDivApp">
+      <SideBoardFloat
+        userName={props.userName}
+        userId={props.userId}
+        editUser={() => props.goToView("editUser")}
+      />
+      <FloatBack onClick={rejectWork} />
 
+      <div className="billcounter">
+        <div className="flexRowCenter">
           <BotonAcc onClick={() => sendData()}>
             <IconContext.Provider value={{ size: "0.7em" }}>
               <FaCheck />
             </IconContext.Provider>
           </BotonAcc>
         </div>
+
+        <h1 className="infoGeneral_tilte">Arrastra, sumar | restar</h1>
+        <h3 className="infoGeneral_subtitle">
+          ( {props.productChoosen.name} )
+        </h3>
+
+        <div className="ballContainer_box">
+          <div className="ballContainer_numeric">
+            {createBallNumber(1)}
+            {createBallNumber(2)}
+            {createBallNumber(3)}
+          </div>
+
+          <div className="ballContainer_numeric">
+            <input
+              type="text"
+              value="0"
+              id="input_objectsInteractivesOver"
+              disabled
+              draggable
+              // phones
+              onTouchStart={onDragStart}
+              onTouchMove={(e) => dragginObject(e, true)}
+              onTouchEnd={(e) => onDragEnd(e, true)}
+              // computers
+              onDragStart={onDragStart}
+              onDragOver={onDragOver}
+              onDragLeave={quitDragOver}
+              onDrag={dragginObject}
+              onDragEnd={onDragEnd}
+              onDrop={onDropInput}
+            />
+          </div>
+
+          <div className="ballContainer_numeric">
+            {createBallNumber(5)}
+            {createBallNumber(7)}
+            {createBallNumber(10)}
+          </div>
+        </div>
       </div>
 
-      <h1 className="infoGeneral_tilte">Arrastra, sumar | restar</h1>
-      <h3 className="infoGeneral_subtitle">( {props.producName} )</h3>
-
-      <div className="ballContainer_box">
-        <div className="ballContainer_numeric">
-          {createBallNumber(1)}
-          {createBallNumber(2)}
-          {createBallNumber(3)}
-        </div>
-
-        <div className="ballContainer_numeric">
-          <input
-            type="text"
-            value="0"
-            id="input_objectsInteractivesOver"
-            disabled
-            draggable
-            // phones
-            onTouchStart={onDragStart}
-            onTouchMove={(e) => dragginObject(e, true)}
-            onTouchEnd={(e) => onDragEnd(e, true)}
-            // computers
-            onDragStart={onDragStart}
-            onDragOver={onDragOver}
-            onDragLeave={quitDragOver}
-            onDrag={dragginObject}
-            onDragEnd={onDragEnd}
-            onDrop={onDropInput}
-          />
-        </div>
-
-        <div className="ballContainer_numeric">
-          {createBallNumber(5)}
-          {createBallNumber(7)}
-          {createBallNumber(10)}
-        </div>
-      </div>
+      <Footer />
     </div>
   );
 }

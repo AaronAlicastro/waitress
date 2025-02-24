@@ -17,6 +17,7 @@ import Welcome from "./pages/Welcome";
 import Loading from "./pages/Loading";
 import EditOrDeleteOrder from "./pages/views/EditOrDeleteOrder";
 import EditUser from "./pages/views/EditUser";
+import Billcounter from "./pages/views/BillCounter";
 
 class App extends Component {
   constructor(props) {
@@ -56,7 +57,7 @@ class App extends Component {
             this.putViewCarga(view, dataView, fun)
           }
           querys={this.querys}
-          seleccion={seleccion}
+          seleccion={seleccion >= 0 ? seleccion : 0}
         />
       ),
       oneItemAdm: (lastView, item) => (
@@ -159,8 +160,22 @@ class App extends Component {
             this.putViewCarga(view, dataView, fun)
           }
           querys={this.querys}
+          // order
           productsAsked={data.productsAsked || []}
           total={data.total || 0}
+        />
+      ),
+      billcounter: (_, data) => (
+        <Billcounter
+          goToView={(view, dataView, fun) => {
+            this.putViewCarga(view, dataView, fun);
+          }}
+          userName={this.querys.user.name}
+          userId={this.querys.user._id}
+          // order
+          productChoosen={data.productChoosen}
+          productsAsked={data.productsAsked}
+          total={data.total}
         />
       ),
       editProctToOrder: (lastView, data) => (
@@ -171,19 +186,23 @@ class App extends Component {
           }}
           userName={this.querys.user.name}
           userId={this.querys.user._id}
+          // order
+          productCount={data.productCount}
           productChoosen={data.productChoosen}
           productsAsked={data.productsAsked}
-          total={data.total || 0}
+          total={data.total}
         />
       ),
       editOrDeleteOrder: (_, data) => (
         <EditOrDeleteOrder
-          goToView={(view, dataView, fun) =>
-            this.putViewCarga(view, dataView, fun)
-          }
+          goToView={(view, dataView, fun) => {
+            this.putViewCarga(view, dataView, fun);
+          }}
           querys={this.querys}
+          // orders
           orderChoosen={data.orderChoosen}
-          orderChoosen_index={data.orderChoosen_index}
+          orderCopy_x={data.orderCopy_x}
+          orderIndex_x={data.orderIndex_x}
         />
       ),
       finalCheck: (_, data) => (
@@ -206,7 +225,7 @@ class App extends Component {
     };
   }
 
-  setWindow(vista, dataView) {
+  setWindow(vista, dataView = {}) {
     this.setState({
       lastView: {
         view: this.state.view,
@@ -221,9 +240,13 @@ class App extends Component {
     if (vista) this.setWindow(vista, dataView);
     else {
       const actualView = this.state.view;
+      const actualDataView = this.state.dataView;
+
       this.setState({ view: "loading" });
       fun((vista2, dataView2) => {
-        setTimeout(() => this.setWindow(vista2 || actualView, dataView2), 300);
+        setTimeout(() => {
+          this.setWindow(vista2 || actualView, dataView2 || actualDataView);
+        }, 300);
       });
     }
   }

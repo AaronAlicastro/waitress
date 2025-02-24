@@ -1,0 +1,17 @@
+.ingreCardsContainer {
+    padding: var(--general_space);
+    padding-left: calc(var(--general_space) * 4);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    row-gap: var(--general_space);
+}
+
+.ingreCardsContainer li {
+    background: var(--back);
+    width: fit-content;
+    padding: var(--general_space);
+    box-shadow: var(--generalShadow);
+    border-radius: 4px;
+    font-size: var(--font_small);
+}

@@ -1,22 +1,3 @@
-export function areEquals(...arrays) {
-  const uniqueArray = [];
-  let totalLengthArrays = 0;
-
-  arrays.forEach((ar) => {
-    totalLengthArrays += ar.length;
-    uniqueArray.push(...ar);
-  });
-
-  const averageLength = totalLengthArrays / arrays.length + "";
-
-  if (!averageLength.includes(".")) {
-    const totalLength = [...new Set(uniqueArray)].length;
-    return totalLength === averageLength;
-  }
-
-  return false;
-}
-
 export class ObjectsInteractivesOver {
   constructor() {
     this.objectsWorked = [];
@@ -46,4 +27,14 @@ export class ObjectsInteractivesOver {
       this.objectsWorked = [...document.querySelectorAll(".billBallNumbers")];
     } else this.objectsWorked = [inputWorked];
   }
+}
+
+export function createOrderCopy(order) {
+  return {
+    manager: order.manager,
+    table: order.table,
+    tableNumber: order.tableNumber,
+    productsAsked: [...order.productsAsked],
+    total: order.total,
+  };
 }

@@ -15,7 +15,7 @@ function OneItemAdm(props) {
       <SideBoardFloat
         userName={props.querys.user.name}
         userId={props.querys.user._id}
-        editUser={() => props.goToView("editUser", {})}
+        editUser={() => props.goToView("editUser")}
       />
       <FloatBack
         onClick={() =>
@@ -56,7 +56,7 @@ function OneItemAdm(props) {
           onClick={() => {
             let pre = window.confirm("¿Desea eliminar este producto?");
             if (pre) {
-              props.goToView(false, {}, (fun) => {
+              props.goToView(false, null, (fun) => {
                 props.querys.deleteProduct(
                   { _id: props.product._id },
                   (somethingWrog) => {

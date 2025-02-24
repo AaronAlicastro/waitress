@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { IconContext } from "react-icons";
 import { FaUndoAlt, FaCheck, FaTrash } from "react-icons/fa";
 import Footer from "./components/Footer";
@@ -7,40 +7,35 @@ import FloatBack from "./components/FloatBack";
 import SideBoardFloat from "./components/SideBoardFloat";
 import { useAlert } from "react-alert";
 import OrderCards from "./components/OrderCards";
-
-function createOrderCopy(order) {
-  return {
-    manager: order.manager,
-    table: order.table,
-    tableNumber: order.tableNumber,
-    productsAsked: [...order.productsAsked],
-    total: order.total,
-  };
-}
+import { createOrderCopy } from "../../logic/generalFunctions";
 
 function EditOrDeleteOrder(props) {
   const alert = useAlert();
-  const [currentOrderAsked, setCurrentOrderAsked] = useState(
-    createOrderCopy(props.orderChoosen)
-  );
+  const currentOrder = props.orderCopy_x
+    ? props.orderCopy_x
+    : createOrderCopy(props.orderChoosen);
 
   const reLoadPage = (base = false) => {
-    setCurrentOrderAsked(
-      createOrderCopy(base ? props.orderChoosen : currentOrderAsked)
-    );
+    props.goToView(false, null, (fun) => {
+      fun("editOrDeleteOrder", {
+        orderChoosen: props.orderChoosen,
+        orderCopy_x: base ? null : currentOrder,
+        orderIndex_x: props.orderIndex_x,
+      });
+    });
   };
 
   const quitProducFromList = (pr, index) => {
-    currentOrderAsked.total -= pr.totalProduct;
-    currentOrderAsked.productsAsked.splice(index, 1);
+    currentOrder.total -= pr.totalProduct;
+    currentOrder.productsAsked.splice(index, 1);
     reLoadPage();
   };
 
   const renderDeepList = () => {
-    if (currentOrderAsked.productsAsked.length) {
+    if (currentOrder.productsAsked.length) {
       return (
         <OrderCards
-          productsAsked={currentOrderAsked.productsAsked}
+          productsAsked={currentOrder.productsAsked}
           onClick={(pr, index) => quitProducFromList(pr, index)}
         />
       );
@@ -50,17 +45,17 @@ function EditOrDeleteOrder(props) {
   };
 
   const deleteOrderButton = () => {
-    let pre = window.confirm("¿Desea eliminarlo?");
+    const pre = window.confirm("¿Desea eliminarlo?");
     if (pre) {
-      props.goToView(false, {}, (fun) => {
-        props.querys.orders.splice(props.orderChoosen_index, 1);
-
-        const data = { _id: props.orderChoosen._id };
+      props.goToView(false, null, (fun) => {
+        props.querys.orders.splice(props.orderIndex_x, 1);
+        const data = { _id: props.orderIndex_x._id };
 
         props.querys.deleteOrder(data, (somethingWrong) => {
           if (somethingWrong) alert.show("Algo salio mal, revisa el internet");
           else alert.show("Eliminado con éxito");
-          fun("tableListener", {});
+
+          fun("tableListener");
         });
       });
     }
@@ -68,16 +63,18 @@ function EditOrDeleteOrder(props) {
   const editOrderButton = () => {
     const pre = window.confirm("¿Desea editarlo?");
     if (pre) {
-      props.goToView(false, {}, (fun) => {
-        props.querys.orders[props.orderChoosen_index].productsAsked =
-          currentOrderAsked.productsAsked;
-        props.querys.orders[props.orderChoosen_index].total =
-          currentOrderAsked.total;
-
-        props.querys.editOrder(currentOrderAsked, (somethingWrong) => {
+      props.goToView(false, null, (fun) => {
+        props.querys.editOrder(currentOrder, (somethingWrong) => {
           if (somethingWrong) alert.show("Algo salio mal, revisa el internet");
-          else alert.show("Editado con éxito");
-          fun("tableListener", {});
+          else {
+            props.querys.orders[props.orderIndex_x].productsAsked =
+              currentOrder.productsAsked;
+            props.querys.orders[props.orderIndex_x].total = currentOrder.total;
+
+            alert.show("Editado con éxito");
+          }
+
+          fun("tableListener");
         });
       });
     }
@@ -85,8 +82,8 @@ function EditOrDeleteOrder(props) {
 
   const chargeEditOrderButton = () => {
     if (
-      currentOrderAsked.productsAsked.length &&
-      currentOrderAsked.productsAsked.length <
+      currentOrder.productsAsked.length &&
+      currentOrder.productsAsked.length <
         props.orderChoosen.productsAsked.length
     ) {
       return (
@@ -101,7 +98,7 @@ function EditOrDeleteOrder(props) {
   };
   const chargeReLoadButton = () => {
     if (
-      currentOrderAsked.productsAsked.length <
+      currentOrder.productsAsked.length <
       props.orderChoosen.productsAsked.length
     ) {
       return (
@@ -120,12 +117,12 @@ function EditOrDeleteOrder(props) {
       <SideBoardFloat
         userName={props.querys.user.name}
         userId={props.querys.user._id}
-        editUser={() => props.goToView("editUser", {})}
+        editUser={() => props.goToView("editUser")}
       />
-      <FloatBack onClick={() => props.goToView("tableListener", {})} />
+      <FloatBack onClick={() => props.goToView("tableListener")} />
 
       <h2 className="infoGeneral_details">
-        Pedido n° {props.orderChoosen_index + 1}
+        Pedido n° {props.orderIndex_x + 1}
       </h2>
       <div className="flexRowCenter">
         <div className="flexRowAround min480">
@@ -140,7 +137,9 @@ function EditOrDeleteOrder(props) {
         </div>
       </div>
 
-      <div className="flexRowCenter">total: {currentOrderAsked.total}</div>
+      <div className="flexRowCenter">
+        total: {currentOrder.total.toLocaleString()}
+      </div>
       {renderDeepList()}
 
       <Footer />

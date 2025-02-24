@@ -145,7 +145,7 @@ export default class Querys {
       if (r.not_found) fun(r.not_found);
       else {
         const indexDeleted = this.products.findIndex(
-          (pr) => pr._id === r.found
+          (pr) => pr._id === data._id
         );
 
         this.products.splice(indexDeleted, 1);
@@ -156,8 +156,6 @@ export default class Querys {
 
   // orders
   async createOrder(data, fun) {
-    data.manager = this.user.manager;
-
     const pt = await fetch(
       this.URL + "/create/order",
       this.generalRequestConfig.setUp("POST", data)
@@ -205,7 +203,7 @@ export default class Querys {
     pt.json().then((r) => {
       if (r.not_found) fun(r.not_found);
       else {
-        this.orders = [];
+        this.orders.splice(0);
         fun();
       }
     });
@@ -299,7 +297,7 @@ export default class Querys {
     pt.json().then((r) => {
       if (r.not_found) fun(r.not_found);
       else {
-        const indexDeleted = this.tables.findIndex((tb) => tb._id === r.found);
+        const indexDeleted = this.tables.findIndex((tb) => tb._id === data._id);
 
         this.tables.splice(indexDeleted, 1);
         fun();
@@ -375,7 +373,9 @@ export default class Querys {
     pt.json().then((r) => {
       if (r.not_found) fun(r.not_found);
       else {
-        const indexDeleted = this.workers.findIndex((wr) => wr._id === r.found);
+        const indexDeleted = this.workers.findIndex(
+          (wr) => wr._id === data._id
+        );
 
         this.workers.splice(indexDeleted, 1);
         fun();

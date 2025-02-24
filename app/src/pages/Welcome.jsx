@@ -6,7 +6,7 @@ import { useAlert } from "react-alert";
 function Welcome(props) {
   const alert = useAlert();
   const logIn = (entrences) => {
-    props.goToView(false, {}, (fun) => {
+    props.goToView(false, null, (fun) => {
       props.querys.verifiUser(entrences, (not_found, IsManager) => {
         if (not_found) {
           alert.show("Usuario no encontrado");

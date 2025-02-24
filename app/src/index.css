@@ -101,6 +101,14 @@ body {
   padding: var(--general_space);
 }
 
+.flexAllGap {
+  gap: var(--general_space);
+}
+
+.flexNormalWrap {
+  flex-wrap: wrap;
+}
+
 .info_text {
   margin: var(--general_space);
   box-sizing: border-box;

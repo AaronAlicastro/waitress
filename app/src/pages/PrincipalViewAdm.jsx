@@ -15,9 +15,9 @@ function PrincipalViewAdm(props) {
     if (message) {
       alert.show(message);
       fun(false, field);
-    } else if (somethingWrong)
+    } else if (somethingWrong) {
       alert.show("Algo ha salido mal, revise su internet");
-    else fun(false, field);
+    } else fun(false, field);
   };
 
   const constAddButton = (fun) => {
@@ -50,21 +50,21 @@ function PrincipalViewAdm(props) {
   };
 
   const loadProducts = () => {
-    props.goToView(false, {}, (fun) => {
+    props.goToView(false, null, (fun) => {
       props.querys.getProducts((somethingWrong, message) =>
         list_db_response(fun, somethingWrong, message, 0)
       );
     });
   };
   const loadWorkers = () => {
-    props.goToView(false, {}, (fun) => {
+    props.goToView(false, null, (fun) => {
       props.querys.getWorkers((somethingWrong, message) =>
         list_db_response(fun, somethingWrong, message, 1)
       );
     });
   };
   const loadTables = () => {
-    props.goToView(false, {}, (fun) => {
+    props.goToView(false, null, (fun) => {
       props.querys.getTables((somethingWrong, message) =>
         list_db_response(fun, somethingWrong, message, 2)
       );
@@ -134,7 +134,7 @@ function PrincipalViewAdm(props) {
       <SideBoardFloat
         userName={props.querys.user.name}
         userId={props.querys.user._id}
-        editUser={() => props.goToView("editUser", {})}
+        editUser={() => props.goToView("editUser")}
       />
 
       <NavBurguer
@@ -143,15 +143,15 @@ function PrincipalViewAdm(props) {
         content={[
           <div>
             {seeProducts()}
-            {constAddButton(() => props.goToView("addProductAdm", {}))}
+            {constAddButton(() => props.goToView("addProductAdm"))}
           </div>,
           <div>
             {seeWorkers()}
-            {constAddButton(() => props.goToView("addWorkerAdm", {}))}
+            {constAddButton(() => props.goToView("addWorkerAdm"))}
           </div>,
           <div>
             {seeTables()}
-            {constAddButton(() => props.goToView("addTableAdm", {}))}
+            {constAddButton(() => props.goToView("addTableAdm"))}
           </div>,
         ]}
       />

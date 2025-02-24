@@ -8,10 +8,12 @@ import List from "./components/List";
 import BotonAcc from "./components/BotonAcc";
 
 function TableListener(props) {
-  let total = 0;
-  props.querys.orders.forEach((or) => {
-    total += or.total;
-  });
+  const total = props.querys.orders.reduce(
+    (accumulator, orden) => accumulator + orden.total,
+    0
+  );
+
+  const addOrderButton = () => props.goToView("addProductToTable");
 
   const renderCheckButton = () => {
     if (total) {
@@ -26,19 +28,12 @@ function TableListener(props) {
     return "";
   };
 
-  const addOrderButton = () => {
-    props.goToView("addProductToTable", {
-      tableChoosen: props.querys.tableChoosen,
-      products: props.querys.products,
-    });
-  };
-
   const editOrDeleteOrder = (ls) => {
     const index = parseInt(ls.replace("Pedido ", "")) - 1;
 
     props.goToView("editOrDeleteOrder", {
       orderChoosen: props.querys.orders[index],
-      orderChoosen_index: index,
+      orderIndex_x: index,
     });
   };
 
@@ -47,7 +42,7 @@ function TableListener(props) {
       <SideBoardFloat
         userName={props.querys.user.name}
         userId={props.querys.user._id}
-        editUser={() => props.goToView("editUser", {})}
+        editUser={() => props.goToView("editUser")}
       />
       <FloatBack onClick={() => props.goToView("principalViewWorker")} />
 
@@ -68,7 +63,7 @@ function TableListener(props) {
       <div className="flexRowCenter">Total: {total}</div>
 
       <List
-        list={props.querys.orders.map((or, i) => "Pedido " + (i + 1))}
+        list={props.querys.orders.map((_, i) => "Pedido " + (i + 1))}
         onClick={editOrDeleteOrder}
       />
       <Footer />

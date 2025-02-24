@@ -12,7 +12,7 @@ function OneWorkerAdm(props) {
       <SideBoardFloat
         userName={props.querys.user.name}
         userId={props.querys.user._id}
-        editUser={() => props.goToView("editUser", {})}
+        editUser={() => props.goToView("editUser")}
       />
       <FloatBack onClick={() => props.goToView("principalViewAdm", 1)} />
 
@@ -40,7 +40,7 @@ function OneWorkerAdm(props) {
           onClick={() => {
             let pre = window.confirm("¿Desea eliminar este trabajador?");
             if (pre) {
-              props.goToView(false, {}, (fun) => {
+              props.goToView(false, null, (fun) => {
                 props.querys.deleteWorker(
                   { _id: props.worker._id },
                   (somethingWrong) => {

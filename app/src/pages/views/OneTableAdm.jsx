@@ -13,7 +13,7 @@ function OneTableAdm(props) {
       <SideBoardFloat
         userName={props.querys.user.name}
         userId={props.querys.user._id}
-        editUser={() => props.goToView("editUser", {})}
+        editUser={() => props.goToView("editUser")}
       />
       <FloatBack
         onClick={() =>
@@ -43,7 +43,7 @@ function OneTableAdm(props) {
           onClick={() => {
             let pre = window.confirm("¿Desea eliminar esta mesa?");
             if (pre) {
-              props.goToView(false, {}, (fun) => {
+              props.goToView(false, null, (fun) => {
                 props.querys.deleteTable(
                   { _id: props.table._id },
                   (somethingWrong) => {

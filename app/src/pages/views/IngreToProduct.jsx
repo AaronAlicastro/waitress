@@ -9,7 +9,7 @@ function IngreToProduct(props) {
         <SideBoardFloat
             userName={props.userName}
             userId={props.userId}
-            editUser={() => props.goToView("editUser", {})}
+            editUser={() => props.goToView("editUser")}
         />
         <FloatBack
             onClick={() => props.goToView(props.lastView.view, props.lastView.dataView)}

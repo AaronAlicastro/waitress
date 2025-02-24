@@ -80,8 +80,7 @@ app.delete("/user", (req, res) => {
       const manager = await schema_managers.findByIdAndDelete(req.body._id);
       const worker = await schema_workers.findByIdAndDelete(req.body._id);
 
-      if (manager) res.send({ found: true });
-      else if (worker) res.send({ found: true });
+      if (manager || worker) res.send({ found: true });
       else serviceErrorHandler.not_found(res);
     },
     () => serviceErrorHandler.not_found(res)
@@ -148,7 +147,7 @@ app.delete("/product", (req, res) => {
     service_key,
     async () => {
       await schema_products.findByIdAndDelete(req.body._id);
-      res.send({ found: req.body._id });
+      res.send({ found: true });
     },
     () => serviceErrorHandler.not_found(res)
   );
@@ -298,7 +297,7 @@ app.delete("/table", (req, res) => {
     service_key,
     async () => {
       await schema_tables.findByIdAndDelete(req.body._id);
-      res.send({ found: req.body._id });
+      res.send({ found: true });
     },
     () => serviceErrorHandler.not_found(res)
   );
@@ -364,7 +363,7 @@ app.delete("/worker", (req, res) => {
     service_key,
     async () => {
       await schema_workers.findByIdAndDelete(req.body._id);
-      res.send({ found: req.body._id });
+      res.send({ found: true });
     },
     () => serviceErrorHandler.not_found(res)
   );

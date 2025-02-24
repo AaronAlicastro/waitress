@@ -6,7 +6,7 @@ import FloatBack from "./components/FloatBack";
 import { useAlert } from "react-alert";
 
 function AddWorkerAdm(props) {
-  let alert = useAlert();
+  const alert = useAlert();
   let chooseView = (invert) => {
     let workerWorked = props.worker || {};
 
@@ -15,7 +15,7 @@ function AddWorkerAdm(props) {
         <SideBoardFloat
           userName={props.querys.user.name}
           userId={props.querys.user._id}
-          editUser={() => props.goToView("editUser", {})}
+          editUser={() => props.goToView("editUser")}
         />
         <FloatBack
           onClick={() =>
@@ -62,7 +62,7 @@ function AddWorkerAdm(props) {
 
               if (invert) {
                 entrences._id = workerWorked._id;
-                props.goToView(false, {}, (fun) => {
+                props.goToView(false, null, (fun) => {
                   props.querys.editWorker(entrences, (somethingWrong) => {
                     if (somethingWrong) {
                       alert.show(
@@ -73,7 +73,7 @@ function AddWorkerAdm(props) {
                   });
                 });
               } else {
-                props.goToView(false, {}, (fun) => {
+                props.goToView(false, null, (fun) => {
                   props.querys.createWorker(entrences, (somethingWrong) => {
                     if (somethingWrong) {
                       alert.show(

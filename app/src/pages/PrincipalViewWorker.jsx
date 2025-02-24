@@ -7,7 +7,7 @@ import FloatBack from "./views/components/FloatBack";
 
 function PrincipalViewWorker(props) {
   const [view, setView] = useState("principal");
-  const putBackArrow = () => {
+  const chargeBackArrow = () => {
     if (view === "QRscanner") {
       return <FloatBack onClick={() => setView("principal")} />;
     }
@@ -16,7 +16,7 @@ function PrincipalViewWorker(props) {
 
   const scanTable = (result) => {
     if (view === "QRscanner") {
-      props.goToView(false, {}, (fun) => {
+      props.goToView(false, null, (fun) => {
         props.querys.getOneTable(result, (somethingWrong) => {
           if (somethingWrong) fun();
           else fun("tableListener");
@@ -47,10 +47,10 @@ function PrincipalViewWorker(props) {
       <SideBoardFloat
         userName={props.querys.user.name}
         userId={props.querys.user._id}
-        editUser={() => props.goToView("editUser", {})}
+        editUser={() => props.goToView("editUser")}
       />
+      {chargeBackArrow()}
 
-      {putBackArrow()}
       {viewToShow[view]}
       <Footer />
     </div>

@@ -70,7 +70,7 @@ function AddProductAdm(props) {
                 btn_text={(props.invertView) ? "Editar" : "Registrar"}
                 onClick={(entrences) => {
                     entrences.ingre = ingres;
-                    props.goToView(false, {}, (fun) => {
+                    props.goToView(false, null, (fun) => {
                         if (props.invertView) {
                             entrences._id = productWorked._id;
                             props.querys.editProduct(entrences, (somethingWrog) => {
@@ -98,7 +98,7 @@ function AddProductAdm(props) {
         <SideBoardFloat
             userName={props.querys.user.name}
             userId={props.querys.user._id}
-            editUser={() => props.goToView("editUser", {})}
+            editUser={() => props.goToView("editUser")}
         />
         <FloatBack
             onClick={() => props.goToView("principalViewAdm", 0)}

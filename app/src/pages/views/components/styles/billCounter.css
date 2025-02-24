@@ -62,8 +62,6 @@
 }
 
 @keyframes dragReaction {
-    from {}
-
     to {
         transform: scale(1.2);
         color: #00ffa7;
