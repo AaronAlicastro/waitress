@@ -30,8 +30,12 @@ function SideBoardFloat(props) {
         <h4>{props.userName}</h4>
         <div>{props.userId}</div>
         <ul className="account_events">
-          <li onClick={editUser}>Editar cuenta</li>
-          <li onClick={logOut}>Cerrar sesión</li>
+          <li className="whiteBoxShadow" onClick={editUser}>
+            Editar cuenta
+          </li>
+          <li className="whiteBoxShadow" onClick={logOut}>
+            Cerrar sesión
+          </li>
         </ul>
       </div>
 

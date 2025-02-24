@@ -118,6 +118,23 @@ label {
   border: none !important;
 }
 
+.labelToRemoveContainer {
+  position: relative;
+  padding: 0 !important;
+}
+
+.labelToRemoveContainer .closer {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--second_back);
+  top: -10px;
+  right: -10px;
+  display: grid;
+  place-items: center;
+}
+
 .btn-group {
   display: flex;
   align-items: center;

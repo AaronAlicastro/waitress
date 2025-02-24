@@ -5,14 +5,15 @@ footer {
     left: 0;
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    padding: 0 var(--general_space);
+    align-items: end;
+    padding: 0;
+    padding-left: 10px;
     box-sizing: border-box;
     font-size: var(--font_small);
     background: var(--app_back);
 }
 
-footer > div {
+footer>div {
     width: 50px;
     height: 50px;
     background: var(--unicode_thing);

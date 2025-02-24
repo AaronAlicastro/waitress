@@ -38,7 +38,11 @@ function NavBurguer({ opciones, content, Pseleccion }) {
 
           {opciones.map((op, index) => {
             return (
-              <li key={index} onClick={() => selectOne(index)}>
+              <li
+                className="whiteBoxShadow"
+                key={index}
+                onClick={() => selectOne(index)}
+              >
                 {op}
               </li>
             );

@@ -8,6 +8,29 @@ import BotonAcc from "./components/BotonAcc";
 import QrMaker from "./components/QrMaker";
 
 function OneTableAdm(props) {
+  const addTableAdm = () => {
+    props.goToView("addTableAdm", {
+      invertView: true,
+      table: props.table,
+    });
+  };
+
+  const deleteTable = () => {
+    const pre = window.confirm("¿Desea eliminar esta mesa?");
+    if (pre) {
+      props.goToView(false, null, (fun) => {
+        const data = { _id: props.table._id };
+
+        props.querys.deleteTable(data, (somethingWrong) => {
+          if (somethingWrong) {
+            alert.show("Algo ha salido mal, comprueba la conexión a internet");
+            fun(false, props.table);
+          } else fun("principalViewAdm", 2);
+        });
+      });
+    }
+  };
+
   return (
     <div className="pageDivApp">
       <SideBoardFloat
@@ -15,54 +38,30 @@ function OneTableAdm(props) {
         userId={props.querys.user._id}
         editUser={() => props.goToView("editUser")}
       />
-      <FloatBack
-        onClick={() =>
-          props.goToView(props.lastView.view, props.lastView.dataView)
-        }
-      />
+      <FloatBack onClick={() => props.goToView("principalViewAdm", 2)} />
 
+      <div className="flexRowCenter">
+        <div className="flexRowBetween min300">
+          <BotonAcc onClick={addTableAdm}>
+            <IconContext.Provider value={{ size: "0.7em" }}>
+              <FaPen />
+            </IconContext.Provider>
+          </BotonAcc>
+
+          <BotonAcc onClick={deleteTable}>
+            <IconContext.Provider value={{ size: "0.7em" }}>
+              <FaTrash />
+            </IconContext.Provider>
+          </BotonAcc>
+        </div>
+      </div>
+
+      <div className="flexRowCenter">
+        <h3> {props.table.number} </h3>
+      </div>
       <QrMaker value={props.table._id} />
-      <span className="infoGeneral_subtitle"> {props.table._id} </span>
-      <h3 style={{ textAlign: "center" }}> {props.table.number} </h3>
-
-      <div>
-        <BotonAcc
-          onClick={() =>
-            props.goToView("addTableAdm", {
-              invertView: true,
-              table: props.table,
-            })
-          }
-        >
-          <IconContext.Provider value={{ size: "0.7em" }}>
-            <FaPen />
-          </IconContext.Provider>
-        </BotonAcc>
-
-        <BotonAcc
-          onClick={() => {
-            let pre = window.confirm("¿Desea eliminar esta mesa?");
-            if (pre) {
-              props.goToView(false, null, (fun) => {
-                props.querys.deleteTable(
-                  { _id: props.table._id },
-                  (somethingWrong) => {
-                    if (somethingWrong) {
-                      alert.show(
-                        "Algo ha salido mal, comprueba la conexión a internet"
-                      );
-                      fun(false, props.table);
-                    } else fun("principalViewAdm", 2);
-                  }
-                );
-              });
-            }
-          }}
-        >
-          <IconContext.Provider value={{ size: "0.7em" }}>
-            <FaTrash />
-          </IconContext.Provider>
-        </BotonAcc>
+      <div className="flexRowCenter">
+        <span> {props.table._id} </span>
       </div>
 
       <Footer />

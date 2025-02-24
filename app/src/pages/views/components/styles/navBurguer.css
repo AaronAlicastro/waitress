@@ -33,17 +33,8 @@
 }
 
 .navBurguerSide li {
-    text-align: center;
     font-size: var(--font_medium);
-    padding: var(--general_space);
-    background: var(--back);
     min-width: 300px;
-    cursor: pointer;
-    box-shadow: var(--generalShadow);
-}
-
-.navBurguerSide li:hover {
-    transform: scale(1.1);
 }
 
 @keyframes openNavBurguerSide {

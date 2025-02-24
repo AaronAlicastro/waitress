@@ -93,34 +93,34 @@ class App extends Component {
       addWorkerAdm: (lastView, data) => (
         <AddWorkerAdm
           lastView={lastView}
+          querys={this.querys}
           goToView={(view, dataView, fun) =>
             this.putViewCarga(view, dataView, fun)
           }
           invertView={data.invertView}
           worker={data.worker}
-          querys={this.querys}
         />
       ),
       addTableAdm: (lastView, data) => (
         <AddTableAdm
           lastView={lastView}
+          querys={this.querys}
           goToView={(view, dataView, fun) =>
             this.putViewCarga(view, dataView, fun)
           }
           invertView={data.invertView}
           table={data.table}
-          querys={this.querys}
         />
       ),
       addProductAdm: (_, data) => (
         <AddProductAdm
-          goToView={(view, dataView, fun) =>
-            this.putViewCarga(view, dataView, fun)
-          }
+          querys={this.querys}
+          goToView={(view, dataView, fun) => {
+            this.putViewCarga(view, dataView, fun);
+          }}
           invertView={data.invertView}
           ingres={data.ingres}
           product={data.product}
-          querys={this.querys}
         />
       ),
       ingreToProduct: (lastView, data) => (

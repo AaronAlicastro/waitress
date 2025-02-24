@@ -1,7 +1,7 @@
 import React from "react";
 import "./styles/list.css";
 
-function List({ list, onClick, constData }) {
+function List({ list, onClick = () => {}, constData }) {
   return (
     <ul className="listItems">
       {list.map((ls, i) => {

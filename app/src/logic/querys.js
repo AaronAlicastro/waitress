@@ -54,15 +54,17 @@ export default class Querys {
   }
 
   async editUser(data, fun) {
-    const pt = await fetch(
-      this.URL + "/user",
-      this.generalRequestConfig.setUp("PUT", data)
-    );
+    if (this.IsManager) {
+      const pt = await fetch(
+        this.URL + "/user",
+        this.generalRequestConfig.setUp("PUT", data)
+      );
 
-    pt.json().then((r) => {
-      if (r.not_found) fun(r.not_found);
-      else fun();
-    });
+      pt.json().then((r) => {
+        if (r.not_found) fun(r.not_found);
+        else fun();
+      });
+    } else fun(false);
   }
 
   async deleteUser(userId, fun) {

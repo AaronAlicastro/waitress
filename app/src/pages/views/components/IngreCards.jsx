@@ -1,7 +1,7 @@
 import React from "react";
 import "./styles/ingreCards.css";
 
-function IngreCards({ ingrex, action }) {
+function IngreCards({ ingrex, action = () => {} }) {
   return (
     <ul className="ingreCardsContainer">
       {ingrex.map((inx, i) => {

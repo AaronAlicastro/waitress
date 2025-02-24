@@ -101,6 +101,12 @@ body {
   padding: var(--general_space);
 }
 
+.flexColumnStart {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .flexAllGap {
   gap: var(--general_space);
 }
@@ -110,7 +116,7 @@ body {
 }
 
 .info_text {
-  margin: var(--general_space);
+  margin: var(--general_space) 0;
   box-sizing: border-box;
   text-align: justify;
   font-size: var(--font_small);
@@ -145,6 +151,18 @@ body {
   box-sizing: border-box;
   text-align: center;
   list-style: none;
+}
+
+.whiteBoxShadow {
+  text-align: center;
+  background: var(--back);
+  box-shadow: var(--generalShadow);
+  padding: var(--general_space);
+  cursor: pointer;
+}
+
+.whiteBoxShadow:hover {
+  transform: scale(1.1);
 }
 
 .general_btn {

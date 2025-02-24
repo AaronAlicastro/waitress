@@ -5,6 +5,7 @@ import { getDataOfForm } from "../../../logic/formData";
 
 function Forms(props) {
   const alert = useAlert();
+
   const generalFormClick = (e) => {
     e.preventDefault();
     const { filled, entrences, error } = getDataOfForm("#" + props.id);
@@ -22,6 +23,7 @@ function Forms(props) {
         defaultValue={cp.value}
       ></textarea>
     );
+
     const input = (
       <input
         name={cp.leyenda}
@@ -35,7 +37,7 @@ function Forms(props) {
       <div className="input-wrapper" key={props.id + "-fields-" + key}>
         <label htmlFor={cp.leyenda}>{cp.placeholder}</label>
         <div className="input-group">
-          {cp.type == "textarea" ? textarea : input}
+          {cp.type === "textarea" ? textarea : input}
         </div>
       </div>
     );
@@ -47,7 +49,7 @@ function Forms(props) {
         <h2>{props.title}</h2>
 
         {props.campos.map((cp, key) => {
-          if (cp.type == "no-input") {
+          if (cp.type === "no-input") {
             return cp.data;
           }
 
