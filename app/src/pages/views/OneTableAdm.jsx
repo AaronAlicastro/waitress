@@ -8,6 +8,9 @@ import BotonAcc from "./components/BotonAcc";
 import QrMaker from "./components/QrMaker";
 
 function OneTableAdm(props) {
+  const STYLE = {
+    spanFlexPadding: { padding: "0" },
+  };
   const addTableAdm = () => {
     props.goToView("addTableAdm", {
       invertView: true,
@@ -60,8 +63,8 @@ function OneTableAdm(props) {
         <h3> {props.table.number} </h3>
       </div>
       <QrMaker value={props.table._id} />
-      <div className="flexRowCenter">
-        <span> {props.table._id} </span>
+      <div className="flexColumnStart">
+        <span style={{ fontSize: "var(--font_small)" }}>{props.table._id}</span>
       </div>
 
       <Footer />

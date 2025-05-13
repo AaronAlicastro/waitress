@@ -76,11 +76,8 @@ function PrincipalViewAdm(props) {
       return (
         <List
           list={props.querys.products.map((pr) => pr.name)}
-          onClick={(productName) => {
-            const product = props.querys.products.find(
-              (pr) => pr.name === productName
-            );
-
+          onClick={(index) => {
+            const product = props.querys.products[index];
             props.goToView("oneItemAdm", product);
           }}
           constData={constLoadButton(loadProducts)}
@@ -95,11 +92,8 @@ function PrincipalViewAdm(props) {
       return (
         <List
           list={props.querys.workers.map((wr) => wr.name)}
-          onClick={(workerName) => {
-            const worker = props.querys.workers.find(
-              (wr) => wr.name === workerName
-            );
-
+          onClick={(index) => {
+            const worker = props.querys.workers[index];
             props.goToView("oneWorkerAdm", worker);
           }}
           constData={constLoadButton(loadWorkers)}
@@ -114,11 +108,8 @@ function PrincipalViewAdm(props) {
       return (
         <List
           list={props.querys.tables.map((tb) => tb.number)}
-          onClick={(tableNumber) => {
-            const table = props.querys.tables.find(
-              (tb) => tb.number === tableNumber
-            );
-
+          onClick={(index) => {
+            const table = props.querys.tables[index];
             props.goToView("oneTableAdm", table);
           }}
           constData={constLoadButton(loadTables)}
@@ -138,6 +129,7 @@ function PrincipalViewAdm(props) {
       />
 
       <NavBurguer
+        id="principalViewAdm_navBurger"
         Pseleccion={props.seleccion}
         opciones={["Productos", "Trabajadores", "Mesas"]}
         content={[

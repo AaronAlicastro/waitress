@@ -14,22 +14,22 @@ const createIngreCopy = (ingre) => {
 function EditProctToOrder(props) {
   const [without, setWithout] = useState([]); // to become individual the new order
   const [currentFinalPrice, setCurrentFinalPrice] = useState(
-    props.productChoosen.price * props.productCount
+    props.querys.productChoosen.price * props.productCount
   );
   const [ingreWorked, setIngreWorked] = useState(
-    createIngreCopy(props.productChoosen.ingre)
+    createIngreCopy(props.querys.productChoosen.ingre)
   );
 
   const renderUndoButton = () => {
-    if (ingreWorked.length !== props.productChoosen.ingre.length) {
+    if (ingreWorked.length !== props.querys.productChoosen.ingre.length) {
       return (
         <BotonAcc
           onClick={() => {
             setWithout([]);
             setCurrentFinalPrice(
-              props.productChoosen.price * props.productCount
+              props.querys.productChoosen.price * props.productCount
             );
-            setIngreWorked(createIngreCopy(props.productChoosen.ingre));
+            setIngreWorked(createIngreCopy(props.querys.productChoosen.ingre));
           }}
         >
           <IconContext.Provider value={{ size: "0.7em" }}>
@@ -42,19 +42,30 @@ function EditProctToOrder(props) {
     return "";
   };
 
+  const setProductStatus = () => {
+    if (props.querys.productChoosen.isPreparable) {
+      return "pendiente";
+    }
+
+    return "terminado";
+  };
+
   const confirmAll = () => {
-    props.goToView("addProductToTable", {
-      productsAsked: [
-        ...props.productsAsked,
-        {
-          product: props.productChoosen.name,
-          productCount: props.productCount,
-          totalProduct: currentFinalPrice,
-          without,
-        },
-      ],
-      total: props.total + currentFinalPrice,
-    });
+    props.querys.orderChoosen.productsAsked = [
+      ...props.querys.orderChoosen.productsAsked,
+      {
+        status: setProductStatus(),
+        product: props.querys.productChoosen.name,
+        productCount: props.productCount,
+        totalProduct: currentFinalPrice,
+        without,
+      },
+    ];
+
+    props.querys.orderChoosen.total =
+      props.querys.orderChoosen.total + currentFinalPrice;
+
+    props.goToView("addProductToTable");
   };
 
   const deleteIngre = (oneIngre) => {
@@ -68,8 +79,8 @@ function EditProctToOrder(props) {
   return (
     <div className="pageDivApp">
       <SideBoardFloat
-        userName={props.userName}
-        userId={props.userId}
+        userName={props.querys.user.name}
+        userId={props.querys.user._id}
         editUser={() => props.goToView("editUser")}
       />
       <FloatBack
@@ -79,7 +90,7 @@ function EditProctToOrder(props) {
       />
 
       <h2 className="infoGeneral_tilte">
-        {props.productChoosen.name}, elimina ingredientes
+        {props.querys.productChoosen.name}, elimina ingredientes
       </h2>
       <h3 className="infoGeneral_details">
         Has elegido ({props.productCount}) ~ $

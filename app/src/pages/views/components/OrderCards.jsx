@@ -3,11 +3,50 @@ import "./styles/orderCards.css";
 import { IconContext } from "react-icons";
 import { FaTimes } from "react-icons/fa";
 
-function OrderCards({ productsAsked, onClick }) {
-  const renderWithout = (without) => {
+function OrderCards({
+  isWaitress = true,
+  productsAsked,
+  clickOnClose = () => {},
+  clickOnStatus = () => {},
+  clickOnWithout = () => {},
+}) {
+  const renderWithout = (productName, without) => {
     if (without.length) {
       return (
-        <input readOnly type="text" defaultValue={"[ " + without + " ]"} />
+        <input
+          onClick={() => clickOnWithout(productName, without)}
+          className="orderCard_input_without"
+          readOnly
+          type="text"
+          defaultValue={"[ " + without + " ]"}
+        />
+      );
+    }
+    return "";
+  };
+
+  const renderTotal = (pr) => {
+    if (isWaitress) {
+      return (
+        <input
+          readOnly
+          className="orderCard_card_bigInput"
+          type="text"
+          defaultValue={"$" + pr.totalProduct.toLocaleString()}
+        />
+      );
+    }
+    return "";
+  };
+
+  const renderCloseSpan = (pr, i) => {
+    if (isWaitress) {
+      return (
+        <span onClick={() => clickOnClose(pr, i)}>
+          <IconContext.Provider value={{ size: "0.4em" }}>
+            <FaTimes />
+          </IconContext.Provider>
+        </span>
       );
     }
     return "";
@@ -18,25 +57,18 @@ function OrderCards({ productsAsked, onClick }) {
       {productsAsked.map((pr, i) => {
         return (
           <div key={i} className="orderCard_card">
-            <span onClick={() => onClick(pr, i)}>
-              <IconContext.Provider value={{ size: "0.4em" }}>
-                <FaTimes />
-              </IconContext.Provider>
-            </span>
+            <label onClick={clickOnStatus}>{pr.status}</label>
+            {renderCloseSpan(pr, i)}
 
             <input
               readOnly
+              className={isWaitress ? "" : "orderCard_card_mediumInput"}
               type="text"
               defaultValue={`( ${pr.productCount} ) ${pr.product}`}
             />
 
-            <input
-              readOnly
-              type="text"
-              defaultValue={pr.totalProduct.toLocaleString()}
-            />
-
-            {renderWithout(pr.without)}
+            {renderTotal(pr)}
+            {renderWithout(pr.product, pr.without)}
           </div>
         );
       })}

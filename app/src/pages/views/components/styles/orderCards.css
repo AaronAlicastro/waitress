@@ -24,6 +24,17 @@
     box-sizing: border-box;
 }
 
+.orderCard_card label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: var(--second_back);
+    color: var(--font_color);
+    border-top-left-radius: 8px;
+    padding: 4px;
+    margin: 0;
+}
+
 .orderCard_card span {
     position: absolute;
     background: var(--second_back);
@@ -44,13 +55,20 @@
     width: 100%;
 }
 
-.orderCard_card input:nth-child(3) {
+.orderCard_card_bigInput {
     font-size: var(--font_medium_big);
     font-weight: bold;
 }
 
-.orderCard_card input:nth-child(4) {
-    color: var(--unique);
+.orderCard_card_mediumInput {
+    font-size: var(--font_small);
+    font-weight: bold;
+}
+
+.orderCard_input_without {
+    color: var(--unicode_thing);
+    border-bottom: 1px solid var(--unicode_thing) !important;
+    padding-bottom: 4px;
 }
 
 @media (max-width: 700px) {

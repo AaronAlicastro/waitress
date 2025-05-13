@@ -5,6 +5,10 @@ const products = new Schema({
   manager: String,
   name: String,
   price: Number,
+  isPreparable: {
+    type: Boolean,
+    default: false,
+  },
   ingre: [
     {
       name: String,

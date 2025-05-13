@@ -25,12 +25,7 @@ function Billcounter(props) {
   const currentDivPosition = { pageX: 0, pageY: 0 };
   const objectsUsed = { drag: null, over: null };
 
-  const rejectWork = () => {
-    props.goToView("addProductToTable", {
-      productsAsked: props.productsAsked,
-      total: props.total,
-    });
-  };
+  const rejectWork = () => props.goToView("addProductToTable");
 
   const sendData = () => {
     const inputWorked = getInputWorked();
@@ -39,9 +34,6 @@ function Billcounter(props) {
     if (amount) {
       props.goToView("editProctToOrder", {
         productCount: amount,
-        productChoosen: props.productChoosen,
-        productsAsked: props.productsAsked,
-        total: props.total,
       });
     } else alert.show("No has colocado la cantidad");
   };
@@ -132,7 +124,7 @@ function Billcounter(props) {
   // final event, this set the original data again
   const onDragEnd = (e, isToucheEvent = false) => {
     document.body.style.overflow = "auto";
-    e.target.style.zIndex = "var(--bigZindex)";
+    e.target.style.zIndex = "1000";
     objectsUsed.drag.style.left = currentDivPosition.pageX + "px";
     objectsUsed.drag.style.top = currentDivPosition.pageY + "px";
 
@@ -164,6 +156,7 @@ function Billcounter(props) {
       <div
         className="billBallNumbers"
         id={"billBallNumbers" + number}
+        style={{ zIndex: "100" }}
         // phones
         onTouchStart={onDragStart}
         onTouchMove={(e) => dragginObject(e, true)}
@@ -185,25 +178,21 @@ function Billcounter(props) {
   return (
     <div className="pageDivApp">
       <SideBoardFloat
-        userName={props.userName}
-        userId={props.userId}
+        userName={props.querys.user.name}
+        userId={props.querys.user._id}
         editUser={() => props.goToView("editUser")}
       />
       <FloatBack onClick={rejectWork} />
 
       <div className="billcounter">
-        <div className="flexRowCenter">
+        <div className="flexRowCenter flexAllGap">
           <BotonAcc onClick={() => sendData()}>
             <IconContext.Provider value={{ size: "0.7em" }}>
               <FaCheck />
             </IconContext.Provider>
           </BotonAcc>
+          <span>${props.querys.productChoosen.price.toLocaleString()}</span>
         </div>
-
-        <h1 className="infoGeneral_tilte">Arrastra, sumar | restar</h1>
-        <h3 className="infoGeneral_subtitle">
-          ( {props.productChoosen.name} )
-        </h3>
 
         <div className="ballContainer_box">
           <div className="ballContainer_numeric">
@@ -217,6 +206,7 @@ function Billcounter(props) {
               type="text"
               value="0"
               id="input_objectsInteractivesOver"
+              style={{ zIndex: "100" }}
               disabled
               draggable
               // phones

@@ -43,7 +43,9 @@ function OneWorkerAdm(props) {
       <div className="flexRowCenter">
         <h1> {props.worker.name} </h1>
       </div>
-      <List list={[props.worker.email, props.worker.phone]} />
+      <List
+        list={[props.worker.hierarchy, props.worker.email, props.worker.phone]}
+      />
 
       <div className="flexRowCenter">
         <div className="flexRowBetween min300">

@@ -13,7 +13,7 @@ app.use(cors());
 // data base connection
 mongoose
   .connect(process.env.LINK_DB)
-  .then((e) => console.log("Data base is connected"))
+  .then(() => console.log("Data base is connected"))
   .catch((error) => console.log("Something is wrong", error));
 
 // data base schemas
@@ -34,6 +34,7 @@ const {
 app.post("/verify/user", (req, res) => {
   const { service_key } = req.headers;
   const { email, password } = req.body;
+
   const verifyPasswords = async (user) => {
     if (await compare(password, user.password)) res.send({ user });
     else serviceErrorHandler.not_found(res);
@@ -47,6 +48,7 @@ app.post("/verify/user", (req, res) => {
 
       if (manager) verifyPasswords(manager);
       else if (worker) verifyPasswords(worker);
+      else serviceErrorHandler.not_found(res);
     },
     () => serviceErrorHandler.not_found(res)
   );
@@ -62,7 +64,7 @@ app.put("/user", (req, res) => {
 
       manager.name = req.body.name;
       manager.email = req.body.email;
-      manager.password = await managerPassword.encrypt(req.body.password);
+      manager.password = req.body.password;
 
       await manager.save();
       res.send({ edited: true });
@@ -129,6 +131,7 @@ app.put("/product", (req, res) => {
     async () => {
       const product = await schema_products.findById(req.body._id);
 
+      product.isPreparable = req.body.isPreparable;
       product.name = req.body.name;
       product.price = req.body.price;
       product.ingre = req.body.ingre;
@@ -231,6 +234,20 @@ app.post("/create/table", (req, res) => {
   );
 });
 
+app.get("/tables/:idManager", (req, res) => {
+  const { service_key } = req.headers;
+  const idManager = req.params.idManager;
+
+  verifyServer(
+    service_key,
+    async () => {
+      const tables = await schema_tables.find({ manager: idManager });
+      res.send({ tables });
+    },
+    () => serviceErrorHandler.not_found(res)
+  );
+});
+
 app.post("/tables/:page", (req, res) => {
   const { service_key } = req.headers;
   const page = parseInt(req.params.page);
@@ -244,6 +261,27 @@ app.post("/tables/:page", (req, res) => {
         .limit(10);
 
       res.send({ tables });
+    },
+    () => serviceErrorHandler.not_found(res)
+  );
+});
+
+app.post("/tableBySupervisor", (req, res) => {
+  const { service_key } = req.headers;
+
+  verifyServer(
+    service_key,
+    async () => {
+      const table = await schema_tables.findById(req.body._id);
+
+      if (table) {
+        const orders = await schema_orders.find({
+          manager: req.body.manager,
+          table: req.body._id,
+        });
+
+        res.send({ table, orders });
+      } else serviceErrorHandler.not_found(res);
     },
     () => serviceErrorHandler.not_found(res)
   );
@@ -282,6 +320,8 @@ app.put("/table", (req, res) => {
       const table = await schema_tables.findById(req.body._id);
 
       table.number = req.body.number;
+      table.customerName = req.body.customerName;
+      table.customerPhone = req.body.customerPhone;
 
       await table.save();
       res.send({ table });
@@ -303,7 +343,7 @@ app.delete("/table", (req, res) => {
   );
 });
 
-// workers from adm interface
+// workers ~ supervisors from adm interface
 app.post("/create/worker", (req, res) => {
   const { service_key } = req.headers;
 
@@ -344,10 +384,11 @@ app.put("/worker", (req, res) => {
     async () => {
       const worker = await schema_workers.findById(req.body._id);
 
+      worker.hierarchy = req.body.hierarchy;
       worker.name = req.body.name;
       worker.phone = req.body.phone;
       worker.email = req.body.email;
-      worker.password = await managerPassword.encrypt(req.body.password);
+      worker.password = req.body.password;
 
       await worker.save();
       res.send({ worker });

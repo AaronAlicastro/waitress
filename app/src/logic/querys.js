@@ -24,9 +24,11 @@ export default class Querys {
 
     // products
     this.products = [];
+    this.productChoosen = {}
 
     // orders
     this.orders = [];
+    this.orderChoosen = {}
   }
 
   // security
@@ -45,16 +47,16 @@ export default class Querys {
       if (r.not_found) fun(r.not_found);
       else {
         this.user = r.user;
-        if (!r.user.manager) {
-          this.IsManager = true;
-          fun(false, this.IsManager);
-        } else fun(false, this.IsManager);
+        if (!r.user.manager) this.IsManager = true;
+        fun(false);
       }
     });
   }
 
   async editUser(data, fun) {
     if (this.IsManager) {
+      data.password = await this.encrypt(data.password);
+
       const pt = await fetch(
         this.URL + "/user",
         this.generalRequestConfig.setUp("PUT", data)
@@ -62,9 +64,9 @@ export default class Querys {
 
       pt.json().then((r) => {
         if (r.not_found) fun(r.not_found);
-        else fun();
+        else fun(false);
       });
-    } else fun(false);
+    } else fun(true);
   }
 
   async deleteUser(userId, fun) {
@@ -98,7 +100,7 @@ export default class Querys {
   }
 
   async getProducts(fun) {
-    let data = {
+    const data = {
       manager: this.IsManager ? this.user._id : this.user.manager,
     };
 
@@ -229,8 +231,40 @@ export default class Querys {
     });
   }
 
+  async getAllTablesBySupervisor(fun) {
+    const idManager = this.IsManager ? this.user._id : this.user.manager;
+
+    const pt = await fetch(
+      this.URL + "/tables/" + idManager,
+      this.generalRequestConfig.setUp("GET")
+    );
+
+    pt.json().then((r) => {
+      this.tables = r.tables;
+      fun();
+    });
+  }
+
+  async getOneTableBySupervisor(tableId, fun) {
+    const data = {
+      _id: tableId,
+      manager: this.user.manager,
+    };
+
+    const pt = await fetch(
+      this.URL + "/tableBySupervisor",
+      this.generalRequestConfig.setUp("POST", data)
+    );
+
+    pt.json().then((r) => {
+      this.tableChoosen = r.table;
+      this.orders = r.orders;
+      fun();
+    });
+  }
+
   async getTables(fun) {
-    let data = {
+    const data = {
       manager: this.IsManager ? this.user._id : this.user.manager,
     };
 
@@ -251,7 +285,7 @@ export default class Querys {
   }
 
   async getOneTable(tableId, fun) {
-    let data = {
+    const data = {
       _id: tableId,
       manager: this.user.manager,
     };
@@ -327,7 +361,7 @@ export default class Querys {
   }
 
   async getWorkers(fun) {
-    let data = {
+    const data = {
       manager: this.IsManager ? this.user._id : this.user.manager,
     };
 
@@ -348,6 +382,8 @@ export default class Querys {
   }
 
   async editWorker(data, fun) {
+    data.password = await this.encrypt(data.password);
+
     const pt = await fetch(
       this.URL + "/worker",
       this.generalRequestConfig.setUp("PUT", data)

@@ -146,3 +146,53 @@ label {
   cursor: pointer;
   padding: 0;
 }
+
+/* for radios */
+
+.input-wrapper:has(input[type=radio]) {
+  display: flex;
+  position: relative;
+  align-items: center;
+  justify-content: end;
+}
+
+.input-wrapper:has(input[type=radio]) * {
+  margin: 0;
+  padding: 0;
+}
+
+.input-wrapper:has(input[type=radio]) label::before {
+  content: "";
+  display: inline-block;
+  position: absolute;
+  left: 0;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: none;
+  border: .5px solid var(--font_color);
+}
+
+.input-wrapper:has(input[type=radio]) label {
+  width: calc(100% - 40px);
+}
+
+.input-wrapper:has(input:checked) label {
+  color: var(--unicode_thing);
+}
+
+.input-wrapper:has(input:checked) label::before {
+  background: var(--unicode_thing);
+}
+
+.input-wrapper:has(input[type=radio])>div {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+input[type=radio] {
+  opacity: 0;
+  width: 100%;
+}

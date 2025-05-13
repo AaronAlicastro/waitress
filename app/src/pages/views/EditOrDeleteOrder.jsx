@@ -13,12 +13,11 @@ function EditOrDeleteOrder(props) {
   const alert = useAlert();
   const currentOrder = props.orderCopy_x
     ? props.orderCopy_x
-    : createOrderCopy(props.orderChoosen);
+    : createOrderCopy(props.querys.orderChoosen);
 
   const reLoadPage = (base = false) => {
     props.goToView(false, null, (fun) => {
       fun("editOrDeleteOrder", {
-        orderChoosen: props.orderChoosen,
         orderCopy_x: base ? null : currentOrder,
         orderIndex_x: props.orderIndex_x,
       });
@@ -36,7 +35,7 @@ function EditOrDeleteOrder(props) {
       return (
         <OrderCards
           productsAsked={currentOrder.productsAsked}
-          onClick={(pr, index) => quitProducFromList(pr, index)}
+          clickOnClose={(pr, index) => quitProducFromList(pr, index)}
         />
       );
     }
@@ -48,8 +47,13 @@ function EditOrDeleteOrder(props) {
     const pre = window.confirm("¿Desea eliminarlo?");
     if (pre) {
       props.goToView(false, null, (fun) => {
-        props.querys.orders.splice(props.orderIndex_x, 1);
-        const data = { _id: props.orderIndex_x._id };
+        const [orderDeleted] = props.querys.orders.splice(
+          props.orderIndex_x,
+          1
+        );
+        console.log(orderDeleted);
+
+        const data = { _id: orderDeleted._id };
 
         props.querys.deleteOrder(data, (somethingWrong) => {
           if (somethingWrong) alert.show("Algo salio mal, revisa el internet");
@@ -84,7 +88,7 @@ function EditOrDeleteOrder(props) {
     if (
       currentOrder.productsAsked.length &&
       currentOrder.productsAsked.length <
-        props.orderChoosen.productsAsked.length
+        props.querys.orderChoosen.productsAsked.length
     ) {
       return (
         <BotonAcc onClick={editOrderButton}>
@@ -99,7 +103,7 @@ function EditOrDeleteOrder(props) {
   const chargeReLoadButton = () => {
     if (
       currentOrder.productsAsked.length <
-      props.orderChoosen.productsAsked.length
+      props.querys.orderChoosen.productsAsked.length
     ) {
       return (
         <BotonAcc onClick={() => reLoadPage(true)}>
@@ -138,7 +142,7 @@ function EditOrDeleteOrder(props) {
       </div>
 
       <div className="flexRowCenter">
-        total: {currentOrder.total.toLocaleString()}
+        ${currentOrder.total.toLocaleString()}
       </div>
       {renderDeepList()}
 

@@ -33,6 +33,19 @@ function OneItemAdm(props) {
     }
   };
 
+  const chargeIngres = () => {
+    if (props.product.ingre.length) {
+      return (
+        <div>
+          <span className="infoGeneral_details">Ingredientes:</span>
+          <IngreCards ingrex={props.product.ingre} />
+        </div>
+      );
+    }
+
+    return "";
+  };
+
   return (
     <div className="pageDivApp">
       <SideBoardFloat
@@ -63,12 +76,13 @@ function OneItemAdm(props) {
         <h4> ${props.product.price.toLocaleString()} </h4>
       </div>
 
-      <span className="infoGeneral_details">Ingredientes:</span>
-      <IngreCards ingrex={props.product.ingre} />
+      {chargeIngres()}
 
       <QrMaker value={props.product._id} />
-      <div className="flexRowCenter">
-        <span> {props.product._id} </span>
+      <div className="flexColumnStart">
+        <span style={{ fontSize: "var(--font_small)" }}>
+          {props.product._id}
+        </span>
       </div>
 
       <Footer />

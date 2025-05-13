@@ -1,0 +1,30 @@
+.leftSliderWindow_container {
+    position: fixed;
+    z-index: 1000;
+    width: 100vw;
+    left: -100vw;
+    top: 0;
+    height: calc(100vh - var(--general_bottom_app));
+    padding-top: var(--general_space) !important;
+    background: var(--app_back);
+}
+
+@keyframes openLeftSliderWindow {
+    from {
+        left: -100vw;
+    }
+
+    to {
+        left: 0;
+    }
+}
+
+@keyframes closeLeftSliderWindow {
+    from {
+        left: 0;
+    }
+
+    to {
+        left: -100vw;
+    }
+}

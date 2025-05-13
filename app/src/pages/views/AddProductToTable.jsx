@@ -12,34 +12,30 @@ import OrderCards from "./components/OrderCards";
 function AddProductToTable(props) {
   const alert = useAlert();
 
-  const billcounter = (ls) => {
-    props.goToView("billcounter", {
-      productChoosen: props.querys.products.find((pr) => pr.name === ls),
-      productsAsked: props.productsAsked,
-      total: props.total,
-    });
+  const billcounter = (index) => {
+    props.querys.productChoosen = props.querys.products[index];
+    props.goToView("billcounter");
   };
 
   const finishOrder = () => {
-    if (props.productsAsked.length) {
+    if (props.querys.orderChoosen.productsAsked.length) {
       const pre = window.confirm("¿Confirma el pedido?");
 
       if (pre) {
         props.goToView(false, null, (fun) => {
-          const data = {
-            manager: props.querys.user.manager,
-            table: props.querys.tableChoosen._id,
-            tableNumber: props.querys.tableChoosen.number,
-            productsAsked: props.productsAsked,
-            total: props.total,
-          };
+          props.querys.createOrder(
+            props.querys.orderChoosen,
+            (somethingWrong) => {
+              if (somethingWrong) alert.show("Error, comprueba tu internet");
+              else {
+                props.querys.productChoosen = null;
+                props.querys.orderChoosen = null;
+                alert.show("¡Arriba pedido!");
+              }
 
-          props.querys.createOrder(data, (somethingWrong) => {
-            if (somethingWrong) alert.show("Error, comprueba tu internet");
-            else alert.show("¡Arriba pedido!");
-
-            fun("tableListener");
-          });
+              fun("tableListener");
+            }
+          );
         });
       }
     } else alert.show("Primero, selecciona un producto a la orden");
@@ -48,14 +44,10 @@ function AddProductToTable(props) {
   const deleteProduct = (pr, index) => {
     const pre = confirm("¿Eliminarlo?");
     if (pre) {
-      props.productsAsked.splice(index, 1);
+      props.querys.orderChoosen.productsAsked.splice(index, 1);
+      props.querys.orderChoosen.total -= pr.totalProduct;
 
-      props.goToView(false, null, (fun) => {
-        fun("addProductToTable", {
-          productsAsked: props.productsAsked,
-          total: props.total - pr.totalProduct,
-        });
-      });
+      props.goToView(false, null, (fun) => fun());
     }
   };
 
@@ -79,16 +71,19 @@ function AddProductToTable(props) {
             <FaCheck />
           </IconContext.Provider>
         </BotonAcc>
-        <span>Total: {props.total.toLocaleString()}</span>
+        <span>${props.querys.orderChoosen.total.toLocaleString()}</span>
       </div>
 
-      <h2 className="infoGeneral_tilte">Añade Producto | finaliza</h2>
+      <h2 className="infoGeneral_details">Añade Producto | finaliza</h2>
       <List
         list={props.querys.products.map((pr) => pr.name)}
         onClick={billcounter}
       />
 
-      <OrderCards productsAsked={props.productsAsked} onClick={deleteProduct} />
+      <OrderCards
+        productsAsked={props.querys.orderChoosen.productsAsked}
+        clickOnClose={deleteProduct}
+      />
 
       <Footer />
     </div>

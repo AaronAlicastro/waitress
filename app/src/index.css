@@ -35,6 +35,8 @@
 
   /* consts */
   --generalShadow: 0 1rem 3rem var(--shadow);
+  --initialBoardSide: calc(100dvh - 60px);
+  --finalBoardSide: 0px;
 }
 
 * {
@@ -73,12 +75,12 @@ body {
   font-size: var(--font_small_meduim);
 }
 
+/* generales */
+
 .pageDivApp {
   margin-top: var(--general_top_app);
   margin-bottom: var(--general_bottom_app);
 }
-
-/* generales */
 
 .flexRowCenter {
   display: flex;
@@ -115,6 +117,10 @@ body {
   flex-wrap: wrap;
 }
 
+.flexWhitoutPadding {
+  padding: 0 !important;
+}
+
 .info_text {
   margin: var(--general_space) 0;
   box-sizing: border-box;
@@ -123,11 +129,11 @@ body {
 }
 
 .min480 {
-  min-width: 480px;
+  width: 480px !important;
 }
 
 .min300 {
-  min-width: 300px;
+  width: 300px !important;
 }
 
 /* to show Info */
@@ -156,6 +162,7 @@ body {
 .whiteBoxShadow {
   text-align: center;
   background: var(--back);
+  color: var(--font_color);
   box-shadow: var(--generalShadow);
   padding: var(--general_space);
   cursor: pointer;
@@ -182,6 +189,7 @@ body {
   letter-spacing: 0.065rem;
   background-color: var(--second_back);
   border-color: var(--second_back);
+  color: var(--font_color);
 }
 
 .general_btn:focus,

@@ -28,6 +28,7 @@ function Forms(props) {
       <input
         name={cp.leyenda}
         type={cp.type || "text"}
+        defaultChecked={cp.checked}
         placeholder={cp.placeholder}
         defaultValue={cp.value}
       />

@@ -23,6 +23,7 @@
 
 #input_objectsInteractivesOver,
 .billBallNumbers {
+    z-index: 1;
     position: absolute;
     display: grid;
     place-items: center;
@@ -33,7 +34,6 @@
     background: var(--action);
     font-size: var(--font_small_meduim);
     box-shadow: var(--generalShadow);
-    z-index: var(--bigZindex);
 }
 
 #billBallNumbers1,

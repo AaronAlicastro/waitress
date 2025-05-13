@@ -5,16 +5,31 @@ import { useAlert } from "react-alert";
 
 function Welcome(props) {
   const alert = useAlert();
+
+  const selectViewToGo = () => {
+    if (props.querys.user.hierarchy === "waitress") {
+      return "principalViewWorker";
+    } else if (props.querys.user.hierarchy === "supervisor") {
+      return "principalViewSupervisor";
+    }
+
+    return "principalViewAdm";
+  };
+
+  const changeView = (changeTo) => {
+    const viewToGo = selectViewToGo();
+    if (viewToGo === "principalViewSupervisor") {
+      props.querys.getAllTablesBySupervisor(() => changeTo(viewToGo));
+    } else changeTo(viewToGo);
+  };
+
   const logIn = (entrences) => {
     props.goToView(false, null, (fun) => {
-      props.querys.verifiUser(entrences, (not_found, IsManager) => {
+      props.querys.verifiUser(entrences, (not_found) => {
         if (not_found) {
           alert.show("Usuario no encontrado");
           fun();
-        } else {
-          if (IsManager) fun("principalViewAdm");
-          else fun("principalViewWorker");
-        }
+        } else changeView(fun);
       });
     });
   };

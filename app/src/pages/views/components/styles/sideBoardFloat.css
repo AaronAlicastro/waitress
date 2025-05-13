@@ -6,7 +6,7 @@
     position: fixed;
     width: 100vw;
     height: 100vh;
-    bottom: calc(100vh - 60px);
+    bottom: var(--initialBoardSide);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -32,30 +32,29 @@
 
 @keyframes openSideBoard {
     from {
-        bottom: calc(100vh - 60px);
+        bottom: var(--initialBoardSide);
     }
 
     to {
-        bottom: 0;
+        bottom: var(--finalBoardSide);
     }
 }
 
 @keyframes closeSideBoard {
     from {
-        bottom: 0;
+        bottom: var(--finalBoardSide);
     }
 
     to {
-        bottom: calc(100vh - 60px);
+        bottom: var(--initialBoardSide);
     }
 }
 
-.sideBoardFloat_container,
-.sideBoardFloat_container_only {
+.sideBoardFloat_container {
     background: var(--app_back);
     flex-grow: 1;
     z-index: var(--bigZindex);
-    padding-top: var(--general_space);
+    padding-top: 12svh;
     box-sizing: border-box;
 }
 

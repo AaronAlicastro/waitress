@@ -16,7 +16,9 @@ function AddProductAdm(props) {
 
   const addIngre = (e) => {
     e.preventDefault();
-    const [inputName, inputPrice] = document.querySelectorAll("INPUT");
+    const [inputName, inputPrice] = [
+      ...document.querySelectorAll("INPUT"),
+    ].splice(2, 2);
     productWorked.name = inputName.value;
     productWorked.price = inputPrice.value;
 
@@ -73,6 +75,7 @@ function AddProductAdm(props) {
         fun("principalViewAdm", 0);
       };
       entrences.ingre = ingres;
+      entrences.isPreparable = entrences.isPreparable === "true" ? true : false;
 
       if (props.invertView) {
         entrences._id = productWorked._id;
@@ -94,6 +97,19 @@ function AddProductAdm(props) {
         id="form_editProductAdm_form_createProductAdm"
         title={props.invertView ? "Editar producto" : "Crear producto"}
         campos={[
+          {
+            leyenda: "isPreparable",
+            type: "radio",
+            checked: true,
+            placeholder: "Se debe preparar",
+            value: "true",
+          },
+          {
+            leyenda: "isPreparable",
+            type: "radio",
+            placeholder: "No es necesario prepararlo",
+            value: "false",
+          },
           {
             leyenda: "name",
             placeholder: "Nombre",

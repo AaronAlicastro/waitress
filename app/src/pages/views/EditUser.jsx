@@ -4,6 +4,10 @@ import Forms from "./components/Forms";
 import Footer from "./components/Footer";
 import FloatBack from "./components/FloatBack";
 
+/*
+this only is used for the ADM, it edits his own data
+*/
+
 function EditUser(props) {
   const editUser = (entrences) => {
     if (entrences.password1 === entrences.password2) {
@@ -14,7 +18,7 @@ function EditUser(props) {
       delete entrences.password2;
 
       props.querys.editUser(entrences, (somthingWrong) => {
-        if (somthingWrong) alert.show("No tienes permiso para editar");
+        if (somthingWrong) window.alert("No tienes permiso para editar");
         else {
           window.alert(
             "Editado con éxito. Ahora cerraremos sesión para actualizar datos"
@@ -22,7 +26,7 @@ function EditUser(props) {
           window.history.go(0);
         }
       });
-    } else alert.show("Las contraseñas no son iguales");
+    } else window.alert("Las contraseñas no son iguales");
   };
 
   return (

@@ -18,6 +18,9 @@ import Loading from "./pages/Loading";
 import EditOrDeleteOrder from "./pages/views/EditOrDeleteOrder";
 import EditUser from "./pages/views/EditUser";
 import Billcounter from "./pages/views/BillCounter";
+import PrincipalViewSupervisor from "./pages/PrincipalViewSupervisor";
+import OneTableSuperVisor from "./pages/views/OneTableSuperVisor";
+import OneOrderSupervisor from "./pages/views/OneOrderSupervisor";
 
 class App extends Component {
   constructor(props) {
@@ -154,28 +157,20 @@ class App extends Component {
           querys={this.querys}
         />
       ),
-      addProductToTable: (_, data) => (
+      addProductToTable: () => (
         <AddProductToTable
           goToView={(view, dataView, fun) =>
             this.putViewCarga(view, dataView, fun)
           }
           querys={this.querys}
-          // order
-          productsAsked={data.productsAsked || []}
-          total={data.total || 0}
         />
       ),
-      billcounter: (_, data) => (
+      billcounter: () => (
         <Billcounter
           goToView={(view, dataView, fun) => {
             this.putViewCarga(view, dataView, fun);
           }}
-          userName={this.querys.user.name}
-          userId={this.querys.user._id}
-          // order
-          productChoosen={data.productChoosen}
-          productsAsked={data.productsAsked}
-          total={data.total}
+          querys={this.querys}
         />
       ),
       editProctToOrder: (lastView, data) => (
@@ -184,13 +179,8 @@ class App extends Component {
           goToView={(view, dataView, fun) => {
             this.putViewCarga(view, dataView, fun);
           }}
-          userName={this.querys.user.name}
-          userId={this.querys.user._id}
-          // order
+          querys={this.querys}
           productCount={data.productCount}
-          productChoosen={data.productChoosen}
-          productsAsked={data.productsAsked}
-          total={data.total}
         />
       ),
       editOrDeleteOrder: (_, data) => (
@@ -199,14 +189,39 @@ class App extends Component {
             this.putViewCarga(view, dataView, fun);
           }}
           querys={this.querys}
-          // orders
-          orderChoosen={data.orderChoosen}
+          // for logic
           orderCopy_x={data.orderCopy_x}
           orderIndex_x={data.orderIndex_x}
         />
       ),
-      finalCheck: (_, data) => (
+      finalCheck: () => (
         <FinalCheck
+          goToView={(view, dataView, fun) =>
+            this.putViewCarga(view, dataView, fun)
+          }
+          querys={this.querys}
+        />
+      ),
+
+      // supervisors
+      principalViewSupervisor: () => (
+        <PrincipalViewSupervisor
+          goToView={(view, dataView, fun) =>
+            this.putViewCarga(view, dataView, fun)
+          }
+          querys={this.querys}
+        />
+      ),
+      oneTableSuperVisor: () => (
+        <OneTableSuperVisor
+          goToView={(view, dataView, fun) =>
+            this.putViewCarga(view, dataView, fun)
+          }
+          querys={this.querys}
+        />
+      ),
+      oneOrderSupervisor: () => (
+        <OneOrderSupervisor
           goToView={(view, dataView, fun) =>
             this.putViewCarga(view, dataView, fun)
           }

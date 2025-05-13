@@ -6,7 +6,7 @@ function List({ list, onClick = () => {}, constData }) {
     <ul className="listItems">
       {list.map((ls, i) => {
         return (
-          <li key={i} className="listItems_item" onClick={() => onClick(ls)}>
+          <li key={i} className="listItems_item" onClick={() => onClick(i, ls)}>
             {ls}
           </li>
         );

@@ -13,7 +13,17 @@ function TableListener(props) {
     0
   );
 
-  const addOrderButton = () => props.goToView("addProductToTable");
+  const addOrderButton = () => {
+    props.querys.orderChoosen = {
+      manager: props.querys.user.manager,
+      table: props.querys.tableChoosen._id,
+      tableNumber: props.querys.tableChoosen.number,
+      productsAsked: props.productsAsked || [],
+      total: props.total || 0,
+    };
+
+    props.goToView("addProductToTable");
+  };
 
   const renderCheckButton = () => {
     if (total) {
@@ -28,11 +38,10 @@ function TableListener(props) {
     return "";
   };
 
-  const editOrDeleteOrder = (ls) => {
-    const index = parseInt(ls.replace("Pedido ", "")) - 1;
+  const editOrDeleteOrder = (index) => {
+    props.querys.orderChoosen = props.querys.orders[index];
 
     props.goToView("editOrDeleteOrder", {
-      orderChoosen: props.querys.orders[index],
       orderIndex_x: index,
     });
   };
@@ -60,7 +69,7 @@ function TableListener(props) {
           </BotonAcc>
         </div>
       </div>
-      <div className="flexRowCenter">Total: {total}</div>
+      <div className="flexRowCenter">${total.toLocaleString()}</div>
 
       <List
         list={props.querys.orders.map((_, i) => "Pedido " + (i + 1))}

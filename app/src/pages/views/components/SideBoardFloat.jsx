@@ -4,10 +4,8 @@ import { IconContext } from "react-icons";
 import { FaAngleDown, FaAngleUp } from "react-icons/fa";
 
 function SideBoardFloat(props) {
-  const logOut = () => {
-    const pre = window.confirm("¿Desea cerrar sesión?");
-    if (pre) window.history.go(0);
-  };
+  const logOut = () => window.history.go(0);
+
   const openCloseIt = (open = true) => {
     const sideBoardFloat = document.querySelector(".sideBoardFloat");
     const closerSpan = document.querySelectorAll(".closerSpan");
@@ -18,6 +16,7 @@ function SideBoardFloat(props) {
     closerSpan[0].style.display = open ? "none" : "flex";
     closerSpan[1].style.display = open ? "flex" : "none";
   };
+
   const editUser = () => {
     openCloseIt(false);
     props.editUser();

@@ -7,6 +7,10 @@ const orders = new Schema({
   tableNumber: Number,
   productsAsked: [
     {
+      status: {
+        type: String,
+        default: "pendiente", // ~ preparando, terminado, entregado
+      },
       product: String,
       productCount: Number,
       totalProduct: Number,

@@ -17,42 +17,15 @@
 }
 
 .navBurguerSide {
-    position: fixed;
-    z-index: 1000;
-    left: -100vw;
-    top: 0;
-    width: 100vw;
-    height: calc(100vh - var(--general_bottom_app));
-    padding-top: var(--general_space);
-    background: var(--app_back);
     list-style: none;
     display: flex;
     flex-direction: column;
     align-items: center;
     row-gap: var(--general_space);
+    width: 100%;
 }
 
 .navBurguerSide li {
     font-size: var(--font_medium);
     min-width: 300px;
-}
-
-@keyframes openNavBurguerSide {
-    from {
-        left: -100vw;
-    }
-
-    to {
-        left: 0;
-    }
-}
-
-@keyframes closeNavBurguerSide {
-    from {
-        left: 0;
-    }
-
-    to {
-        left: -100vw;
-    }
 }

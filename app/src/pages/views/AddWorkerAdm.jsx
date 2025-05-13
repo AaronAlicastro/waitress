@@ -48,6 +48,19 @@ function AddWorkerAdm(props) {
         title={props.invertView ? "Editar trabajador" : "Registrar trabajador"}
         campos={[
           {
+            leyenda: "hierarchy",
+            type: "radio",
+            checked: true,
+            placeholder: "Mesero",
+            value: "waitress",
+          },
+          {
+            leyenda: "hierarchy",
+            type: "radio",
+            placeholder: "Supervisor",
+            value: "supervisor",
+          },
+          {
             leyenda: "name",
             placeholder: "Nombre",
             value: workerToEdit.name,
@@ -55,7 +68,7 @@ function AddWorkerAdm(props) {
           {
             leyenda: "phone",
             placeholder: "Teléfono",
-            type: "Number",
+            type: "number",
             value: workerToEdit.phone,
           },
           {

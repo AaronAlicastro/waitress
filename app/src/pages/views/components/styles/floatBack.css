@@ -3,8 +3,8 @@
     width: 80px;
     height: 60px;
     border-bottom-left-radius: 30px;
-    right: 0;
-    top: 0;
+    left: calc(100dvw - 80px);
+    bottom: calc(100dvh - 60px);
     background: var(--action);
     display: grid;
     place-items: center;
