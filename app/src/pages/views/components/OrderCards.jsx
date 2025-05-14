@@ -2,6 +2,7 @@ import React from "react";
 import "./styles/orderCards.css";
 import { IconContext } from "react-icons";
 import { FaTimes } from "react-icons/fa";
+import { setOrderStatusStyle } from "../../../logic/generalFunctions";
 
 function OrderCards({
   isWaitress = true,
@@ -57,7 +58,13 @@ function OrderCards({
       {productsAsked.map((pr, i) => {
         return (
           <div key={i} className="orderCard_card">
-            <label onClick={clickOnStatus}>{pr.status}</label>
+            <label
+              style={setOrderStatusStyle(pr.status)}
+              onClick={() => clickOnStatus(pr, i)}
+            >
+              {pr.status}
+            </label>
+
             {renderCloseSpan(pr, i)}
 
             <input

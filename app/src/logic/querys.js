@@ -1,5 +1,6 @@
 import bcryptjs from "bcryptjs";
 import GeneralRequestConfig from "./generalRequestConfig";
+import WorkersListening from "./workersListening";
 
 export default class Querys {
   constructor() {
@@ -12,8 +13,9 @@ export default class Querys {
       this.generalRequestConfig = new GeneralRequestConfig(service_key);
     });
 
-    // user
+    // users
     this.user = {};
+    this.workersListening = new WorkersListening(() => {});
 
     // workers
     this.workers = [];
@@ -24,11 +26,11 @@ export default class Querys {
 
     // products
     this.products = [];
-    this.productChoosen = {}
+    this.productChoosen = {};
 
     // orders
     this.orders = [];
-    this.orderChoosen = {}
+    this.orderChoosen = {};
   }
 
   // security
@@ -186,6 +188,15 @@ export default class Querys {
     });
   }
 
+  async editOneProductAsked_status(data, fun) {
+    const pt = await fetch(
+      this.URL + "/oneProductAsked/status",
+      this.generalRequestConfig.setUp("PUT", data)
+    );
+
+    pt.json().then(() => fun());
+  }
+
   async deleteOrder(data, fun) {
     const pt = await fetch(
       this.URL + "/order",
@@ -196,6 +207,16 @@ export default class Querys {
       if (r.not_found) fun(r.not_found);
       else fun();
     });
+  }
+
+  // orders ~ workers listening
+  async getPendingOrdersBySupervisor(fun) {
+    const pt = await fetch(
+      this.URL + "/supervisor/pendingOrders",
+      this.generalRequestConfig.setUp("GET")
+    );
+
+    pt.json().then((r) => fun(r));
   }
 
   async deleteOrdersOfTable(data, fun) {

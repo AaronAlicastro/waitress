@@ -38,3 +38,13 @@ export function createOrderCopy(order) {
     total: order.total,
   };
 }
+
+export function setOrderStatusStyle(status) {
+  let background = "var(--order_pending)";
+
+  if (status === "preparando") background = "var(--order_making)";
+  else if (status === "terminado") background = "var(--order_finished)";
+  else if (status === "entregado") background = "var(--order_delivered)";
+
+  return { background };
+}

@@ -1,15 +1,16 @@
 import React from "react";
 import "./styles/tablesMarked.css";
 
-function TablesMarked(props) {
+function TablesMarked({ tableList = [], styleList = [], onClick = () => {} }) {
   return (
     <div className="roundTable_container">
-      {props.tableList.map((tb, i) => {
+      {tableList.map((tb, i) => {
         return (
           <div
             key={"roundTable" + i}
             className="roundTable"
-            onClick={() => props.onClick(i)}
+            style={styleList[tb._id] || {}}
+            onClick={() => onClick(i)}
           >
             {tb.number}
           </div>

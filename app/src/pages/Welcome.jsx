@@ -19,7 +19,14 @@ function Welcome(props) {
   const changeView = (changeTo) => {
     const viewToGo = selectViewToGo();
     if (viewToGo === "principalViewSupervisor") {
-      props.querys.getAllTablesBySupervisor(() => changeTo(viewToGo));
+      props.querys.workersListening.requestDataBase = (fun) => {
+        props.querys.getPendingOrdersBySupervisor(fun);
+      };
+
+      props.querys.getAllTablesBySupervisor(() => {
+        props.querys.workersListening.startListening();
+        changeTo(viewToGo);
+      });
     } else changeTo(viewToGo);
   };
 

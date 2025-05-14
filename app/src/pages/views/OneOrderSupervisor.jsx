@@ -9,6 +9,7 @@ import FloatBack from "./components/FloatBack";
 import LeftFloatButtonAcc from "./components/LeftFloatButtonAcc";
 import Footer from "./components/Footer";
 import OrderCards from "./components/OrderCards";
+import OrdersArrivedSupervisor from "./components/OrdersArrivedSupervisor";
 
 const sliderArrivedId = "oneOrderSupervisor_slider";
 const sliderOrderStatusId = "oneOrderSupervisor_slider_orderStatus";
@@ -16,6 +17,7 @@ const sliderwithoutListId = "oneOrderSupervisor_slider_withoutList";
 
 function OneOrderSupervisor(props) {
   const [currentWithoutList, setCurrentWithoutList] = useState([]);
+  const [closeOrdersStauts, setCloseOrdersStauts] = useState(() => {});
 
   const orderIndex = props.querys.orders.findIndex((or) => {
     return props.querys.orderChoosen._id === or._id;
@@ -24,10 +26,33 @@ function OneOrderSupervisor(props) {
   const openOrdersArrived = () => openLeftSliderWindow(sliderArrivedId);
   const closeOrdersArrived = () => closeLeftSliderWindow(sliderArrivedId);
 
-  const openOrdersStauts = () => openLeftSliderWindow(sliderOrderStatusId);
-  const closeOrdersStauts = () => closeLeftSliderWindow(sliderOrderStatusId);
+  const openOrdersStauts = (thisProductAsked, index) => {
+    setCloseOrdersStauts(() => (e) => {
+      if (e.target.innerHTML !== "cerrar") {
+        props.querys.orderChoosen.productsAsked[index] = {
+          ...thisProductAsked,
+          status: e.target.innerHTML,
+        };
 
-  const closeOrderWithout = () => closeLeftSliderWindow(sliderwithoutListId);
+        props.goToView(false, null, (fun) => {
+          props.querys.editOneProductAsked_status(
+            {
+              _id: thisProductAsked._id,
+              status: e.target.innerHTML,
+            },
+            () => fun()
+          );
+        });
+      } else closeLeftSliderWindow(sliderOrderStatusId);
+    });
+
+    openLeftSliderWindow(sliderOrderStatusId);
+  };
+
+  const closeOrderWithout = () => {
+    setCurrentWithoutList([]);
+    closeLeftSliderWindow(sliderwithoutListId);
+  };
   const openOrderWithout = (productName, without) => {
     setCurrentWithoutList([
       productName,
@@ -60,7 +85,7 @@ function OneOrderSupervisor(props) {
     {
       onClick: closeOrdersStauts,
       className: "general_btn",
-      text: "Cerrar",
+      text: "cerrar",
     },
   ];
 
@@ -70,7 +95,6 @@ function OneOrderSupervisor(props) {
         <label
           key={box.text + i}
           onClick={box.onClick}
-          name={box.text}
           className={box.className ? box.className : "whiteBoxShadow"}
         >
           {box.text}
@@ -91,8 +115,11 @@ function OneOrderSupervisor(props) {
       <LeftFloatButtonAcc onClick={openOrdersArrived} />
 
       <LeftSliderWindow id={sliderArrivedId}>
-        <h1>Llegadas</h1>
-        <button onClick={closeOrdersArrived}>Cerrar</button>
+        <OrdersArrivedSupervisor
+          querys={props.querys}
+          goToView={props.goToView}
+          closeOrdersArrived={closeOrdersArrived}
+        />
       </LeftSliderWindow>
 
       <LeftSliderWindow id={sliderOrderStatusId}>

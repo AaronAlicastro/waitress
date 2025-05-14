@@ -189,6 +189,29 @@ app.put("/order", (req, res) => {
   );
 });
 
+app.put("/oneProductAsked/status", (req, res) => {
+  const { service_key } = req.headers;
+
+  verifyServer(
+    service_key,
+    async () => {
+      await schema_orders.findOneAndUpdate(
+        {
+          "productsAsked._id": req.body._id,
+        },
+        {
+          $set: {
+            "productsAsked.$.status": req.body.status,
+          },
+        }
+      );
+
+      res.send({ found: true });
+    },
+    () => serviceErrorHandler.not_found(res)
+  );
+});
+
 app.delete("/order", (req, res) => {
   const { service_key } = req.headers;
 
@@ -214,6 +237,26 @@ app.delete("/orders/table", (req, res) => {
       );
 
       res.send({ found: true });
+    },
+    () => serviceErrorHandler.not_found(res)
+  );
+});
+
+// orders ~ workers listening
+app.get("/supervisor/pendingOrders", (req, res) => {
+  const { service_key } = req.headers;
+
+  verifyServer(
+    service_key,
+    async () => {
+      const ordenDataList = await schema_orders.find({
+        $or: [
+          { "productsAsked.status": "pendiente" },
+          { "productsAsked.status": "preparando" },
+        ],
+      });
+
+      res.send({ ordenDataList });
     },
     () => serviceErrorHandler.not_found(res)
   );

@@ -7,6 +7,12 @@
   --unicode_thing: #000032;
   --shadow: #ebebeb;
 
+  /* orders status colors */
+  --order_pending: var(--second_back);
+  --order_making: var(--shadow);
+  --order_finished: #0F0;
+  --order_delivered: var(--back);
+
   /* font style */
   --font_color: #000;
   --font_big: 2.4rem;

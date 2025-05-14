@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import SideBoardFloat from "./views/components/SideBoardFloat";
 import Footer from "./views/components/Footer";
 import TablesMarked from "./views/components/TablesMarked";
@@ -8,10 +8,14 @@ import {
   openLeftSliderWindow,
 } from "./views/components/LeftSliderWindow";
 import LeftFloatButtonAcc from "./views/components/LeftFloatButtonAcc";
+import OrdersArrivedSupervisor from "./views/components/OrdersArrivedSupervisor";
 
 const sliderArrivedId = "principalViewSupervisor_slider";
+const eventModuleID_tableList = "principalViewSupervisor_eventModule_tableList";
 
 function PrincipalViewSupervisor(props) {
+  const [tableStyleList, setTableStyleList] = useState([]);
+
   const openOrdersArrived = () => openLeftSliderWindow(sliderArrivedId);
   const closeOrdersArrived = () => closeLeftSliderWindow(sliderArrivedId);
 
@@ -25,6 +29,20 @@ function PrincipalViewSupervisor(props) {
     });
   };
 
+  props.querys.workersListening.setEventModule(
+    eventModuleID_tableList,
+    (orderList) => {
+      const newTableStyles = [];
+      const idUpdated = [...new Set(orderList.map((order) => order.table))];
+
+      idUpdated.forEach((id) => {
+        newTableStyles[id] = { background: "var(--second_back)" };
+      });
+
+      setTableStyleList(newTableStyles);
+    }
+  );
+
   return (
     <div className="pageDivApp">
       <SideBoardFloat
@@ -34,14 +52,21 @@ function PrincipalViewSupervisor(props) {
       />
 
       <LeftSliderWindow id={sliderArrivedId}>
-        <h1>Llegadas</h1>
-        <button onClick={closeOrdersArrived}>Cerrar</button>
+        <OrdersArrivedSupervisor
+          querys={props.querys}
+          goToView={props.goToView}
+          closeOrdersArrived={closeOrdersArrived}
+        />
       </LeftSliderWindow>
 
       <LeftFloatButtonAcc onClick={openOrdersArrived} />
 
       <h1 className="flexRowCenter infoGeneral_details">Mesas</h1>
-      <TablesMarked tableList={props.querys.tables} onClick={selectTable} />
+      <TablesMarked
+        styleList={tableStyleList}
+        tableList={props.querys.tables}
+        onClick={selectTable}
+      />
 
       <Footer />
     </div>

@@ -241,6 +241,10 @@ class App extends Component {
   }
 
   setWindow(vista, dataView = {}) {
+    console.log("deleting events from module");
+    this.querys.workersListening.eventNamesList.splice(0);
+    this.querys.workersListening.eventModule.splice(0);
+
     this.setState({
       lastView: {
         view: this.state.view,

@@ -28,7 +28,6 @@
     position: absolute;
     top: 0;
     left: 0;
-    background: var(--second_back);
     color: var(--font_color);
     border-top-left-radius: 8px;
     padding: 4px;
