@@ -4,6 +4,7 @@ import Footer from "./views/components/Footer";
 import BigBoton from "./views/components/BigBoton";
 import QrScanner from "./views/components/QrScanner";
 import FloatBack from "./views/components/FloatBack";
+import OrdersArrivedWaitress from "./views/components/OrdersArrivedWaitress";
 
 function PrincipalViewWorker(props) {
   const [view, setView] = useState("principal");
@@ -36,7 +37,7 @@ function PrincipalViewWorker(props) {
       <div className="flexRowCenter">
         <div style={{ minWidth: "300px", minHeight: "450px" }}>
           {/* <QrScanner getResult={scanTable} /> */}
-          {scanTable("68218a2f7ecd202eae8c9ac3")}
+          {scanTable("68218a237ecd202eae8c9abe")}
         </div>
       </div>
     ),
@@ -52,6 +53,11 @@ function PrincipalViewWorker(props) {
       {chargeBackArrow()}
 
       {viewToShow[view]}
+
+      <OrdersArrivedWaitress
+        querys={props.querys}
+        goToView={props.goToView}
+      />
       <Footer />
     </div>
   );

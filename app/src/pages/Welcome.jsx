@@ -18,6 +18,7 @@ function Welcome(props) {
 
   const changeView = (changeTo) => {
     const viewToGo = selectViewToGo();
+
     if (viewToGo === "principalViewSupervisor") {
       props.querys.workersListening.requestDataBase = (fun) => {
         props.querys.getPendingOrdersBySupervisor(fun);
@@ -27,6 +28,13 @@ function Welcome(props) {
         props.querys.workersListening.startListening();
         changeTo(viewToGo);
       });
+    } else if (viewToGo === "principalViewWorker") {
+      props.querys.workersListening.requestDataBase = (fun) => {
+        props.querys.getFinishedOrdersByWaitress(fun);
+      };
+
+      props.querys.workersListening.startListening();
+      changeTo(viewToGo);
     } else changeTo(viewToGo);
   };
 

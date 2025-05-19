@@ -27,26 +27,28 @@ function OneOrderSupervisor(props) {
   const closeOrdersArrived = () => closeLeftSliderWindow(sliderArrivedId);
 
   const openOrdersStauts = (thisProductAsked, index) => {
-    setCloseOrdersStauts(() => (e) => {
-      if (e.target.innerHTML !== "cerrar") {
-        props.querys.orderChoosen.productsAsked[index] = {
-          ...thisProductAsked,
-          status: e.target.innerHTML,
-        };
+    if (thisProductAsked.status !== "terminado") {
+      setCloseOrdersStauts(() => (e) => {
+        if (e.target.innerHTML !== "cerrar") {
+          props.querys.orderChoosen.productsAsked[index] = {
+            ...thisProductAsked,
+            status: e.target.innerHTML,
+          };
 
-        props.goToView(false, null, (fun) => {
-          props.querys.editOneProductAsked_status(
-            {
-              _id: thisProductAsked._id,
-              status: e.target.innerHTML,
-            },
-            () => fun()
-          );
-        });
-      } else closeLeftSliderWindow(sliderOrderStatusId);
-    });
+          props.goToView(false, null, (fun) => {
+            props.querys.editOneProductAsked_status(
+              {
+                _id: thisProductAsked._id,
+                status: e.target.innerHTML,
+              },
+              () => fun()
+            );
+          });
+        } else closeLeftSliderWindow(sliderOrderStatusId);
+      });
 
-    openLeftSliderWindow(sliderOrderStatusId);
+      openLeftSliderWindow(sliderOrderStatusId);
+    }
   };
 
   const closeOrderWithout = () => {
@@ -72,7 +74,7 @@ function OneOrderSupervisor(props) {
   const statusBoxList = [
     {
       onClick: closeOrdersStauts,
-      text: "pendiente",
+      text: "terminado",
     },
     {
       onClick: closeOrdersStauts,
@@ -80,7 +82,7 @@ function OneOrderSupervisor(props) {
     },
     {
       onClick: closeOrdersStauts,
-      text: "terminado",
+      text: "pendiente",
     },
     {
       onClick: closeOrdersStauts,

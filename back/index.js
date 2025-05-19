@@ -243,17 +243,37 @@ app.delete("/orders/table", (req, res) => {
 });
 
 // orders ~ workers listening
-app.get("/supervisor/pendingOrders", (req, res) => {
+app.get("/supervisor/pendingOrders/:idManager", (req, res) => {
   const { service_key } = req.headers;
+  const idManager = req.params.idManager;
 
   verifyServer(
     service_key,
     async () => {
       const ordenDataList = await schema_orders.find({
+        manager: idManager,
         $or: [
           { "productsAsked.status": "pendiente" },
           { "productsAsked.status": "preparando" },
         ],
+      });
+
+      res.send({ ordenDataList });
+    },
+    () => serviceErrorHandler.not_found(res)
+  );
+});
+
+app.get("/waitress/finishedOrders/:idManager", (req, res) => {
+  const { service_key } = req.headers;
+  const idManager = req.params.idManager;
+
+  verifyServer(
+    service_key,
+    async () => {
+      const ordenDataList = await schema_orders.find({
+        manager: idManager,
+        "productsAsked.status": "terminado",
       });
 
       res.send({ ordenDataList });

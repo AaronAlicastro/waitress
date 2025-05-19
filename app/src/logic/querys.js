@@ -209,16 +209,6 @@ export default class Querys {
     });
   }
 
-  // orders ~ workers listening
-  async getPendingOrdersBySupervisor(fun) {
-    const pt = await fetch(
-      this.URL + "/supervisor/pendingOrders",
-      this.generalRequestConfig.setUp("GET")
-    );
-
-    pt.json().then((r) => fun(r));
-  }
-
   async deleteOrdersOfTable(data, fun) {
     const pt = await fetch(
       this.URL + "/orders/table",
@@ -232,6 +222,29 @@ export default class Querys {
         fun();
       }
     });
+  }
+
+  // orders ~ workers listening
+  async getPendingOrdersBySupervisor(fun) {
+    const idManager = this.user.manager;
+
+    const pt = await fetch(
+      this.URL + "/supervisor/pendingOrders/" + idManager,
+      this.generalRequestConfig.setUp("GET")
+    );
+
+    pt.json().then((r) => fun(r));
+  }
+
+  async getFinishedOrdersByWaitress(fun) {
+    const idManager = this.user.manager;
+
+    const pt = await fetch(
+      this.URL + "/waitress/finishedOrders/" + idManager,
+      this.generalRequestConfig.setUp("GET")
+    );
+
+    pt.json().then((r) => fun(r));
   }
 
   // tables

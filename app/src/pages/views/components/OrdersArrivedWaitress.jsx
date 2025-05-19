@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import "./styles/ordersArrivedSupervisor.css";
+import "./styles/ordersArrivedWaitress.css";
 import { setOrderStatusStyle } from "../../../logic/generalFunctions";
 
-const eventModuleID_ordersArrived = "ordersArrivedSupervisor";
+const eventModuleID_ordersArrived = "ordersArrivedWaitress";
 
-function OrdersArrivedSupervisor(props) {
+function OrdersArrivedWaitress(props) {
   const [orderList, setOrderList] = useState([]);
   const validStatus = (status) => {
-    return status === "pendiente" || status === "preparando";
+    return status === "terminado";
   };
 
   props.querys.workersListening.setEventModule(
@@ -23,9 +23,16 @@ function OrdersArrivedSupervisor(props) {
               tableNumber: order.tableNumber,
               onClick: () => {
                 props.goToView(false, null, (fun) => {
-                  props.querys.getOneTableBySupervisor(order.table, () => {
+                  props.querys.getOneTable(order.table, () => {
+                    const index = props.querys.orders.findIndex(
+                      (ors) => ors._id === order._id
+                    );
+
                     props.querys.orderChoosen = order;
-                    fun("oneOrderSupervisor");
+
+                    fun("editOrDeleteOrder", {
+                      orderIndex_x: index,
+                    });
                   });
                 });
               },
@@ -39,12 +46,10 @@ function OrdersArrivedSupervisor(props) {
   );
 
   return (
-    <div className="ordersArrived_container">
-      <h1 className="infoGeneral_details">Ordenes en lista</h1>
-
+    <div className="ordersFinished_container">
       {orderList.map((order, i) => {
         return (
-          <p onClick={order.onClick} key={"ordersArrived" + i}>
+          <p onClick={order.onClick} key={"ordersFinished" + i}>
             <span style={setOrderStatusStyle(order.status)}>
               {order.status}
             </span>
@@ -53,12 +58,8 @@ function OrdersArrivedSupervisor(props) {
           </p>
         );
       })}
-
-      <button className="general_btn" onClick={props.closeOrdersArrived}>
-        cerrar
-      </button>
     </div>
   );
 }
 
-export default OrdersArrivedSupervisor;
+export default OrdersArrivedWaitress;

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { IconContext } from "react-icons";
 import { FaUndoAlt, FaCheck, FaTrash } from "react-icons/fa";
 import Footer from "./components/Footer";
@@ -8,9 +8,18 @@ import SideBoardFloat from "./components/SideBoardFloat";
 import { useAlert } from "react-alert";
 import OrderCards from "./components/OrderCards";
 import { createOrderCopy } from "../../logic/generalFunctions";
+import {
+  closeLeftSliderWindow,
+  LeftSliderWindow,
+  openLeftSliderWindow,
+} from "./components/LeftSliderWindow";
+
+const sliderOrderStatusId = "editOrDeleteOrder_slider_orderStatus";
 
 function EditOrDeleteOrder(props) {
+  const [prAsk_index, setPrAsk_index] = useState(0);
   const alert = useAlert();
+
   const currentOrder = props.orderCopy_x
     ? props.orderCopy_x
     : createOrderCopy(props.querys.orderChoosen);
@@ -30,12 +39,19 @@ function EditOrDeleteOrder(props) {
     reLoadPage();
   };
 
+  const openOrdersStatus = (index) => {
+    setPrAsk_index(index);
+    openLeftSliderWindow(sliderOrderStatusId);
+  };
+  const closeOrdersStatus = () => closeLeftSliderWindow(sliderOrderStatusId);
+
   const renderDeepList = () => {
     if (currentOrder.productsAsked.length) {
       return (
         <OrderCards
           productsAsked={currentOrder.productsAsked}
           clickOnClose={(pr, index) => quitProducFromList(pr, index)}
+          clickOnStatus={(_, index) => openOrdersStatus(index)}
         />
       );
     }
@@ -116,6 +132,66 @@ function EditOrDeleteOrder(props) {
     return "";
   };
 
+  const markOrderAsDelivered = () => {
+    const _id = props.querys.orderChoosen.productsAsked[prAsk_index]._id;
+    const status = "entregado";
+
+    const orderIndex = props.querys.orders.findIndex((order) =>
+      order.productsAsked.find((product) => product._id === _id)
+    );
+
+    props.querys.orders[orderIndex].productsAsked[prAsk_index].status = status;
+    props.querys.orderChoosen.productsAsked[prAsk_index].status = status;
+
+    props.goToView(false, null, (fun) => {
+      props.querys.editOneProductAsked_status(
+        {
+          _id,
+          status,
+        },
+        () => fun()
+      );
+    });
+  };
+
+  const chargeSliderStatusContent = () => {
+    const status = props.querys.orderChoosen.productsAsked[prAsk_index].status;
+
+    if (status === "terminado") {
+      return (
+        <div className="flexColumnStart flexAllGap">
+          <br />
+          <br />
+
+          <h1 className="infoGeneral_details">Marcar como:</h1>
+          <label onClick={markOrderAsDelivered} className="whiteBoxShadow">
+            entregado
+          </label>
+
+          <button onClick={closeOrdersStatus} className="general_btn">
+            cerrar
+          </button>
+        </div>
+      );
+    }
+
+    return (
+      <div className="flexColumnStart flexAllGap">
+        <br />
+        <br />
+
+        <button onClick={closeOrdersStatus} className="general_btn">
+          cerrar
+        </button>
+
+        <p style={{ fontSize: "var(--font_small)", textAlign: "center" }}>
+          El pedido no está terminado, regresa para marcarlo como entregado en
+          cuanto este terminado y lo hayas entregado
+        </p>
+      </div>
+    );
+  };
+
   return (
     <div className="pageDivApp">
       <SideBoardFloat
@@ -123,7 +199,14 @@ function EditOrDeleteOrder(props) {
         userId={props.querys.user._id}
         editUser={() => props.goToView("editUser")}
       />
+
       <FloatBack onClick={() => props.goToView("tableListener")} />
+
+      <LeftSliderWindow id={sliderOrderStatusId}>
+        <div className="flexRowCenter flexWhitoutPadding">
+          {chargeSliderStatusContent()}
+        </div>
+      </LeftSliderWindow>
 
       <h2 className="infoGeneral_details">
         Pedido n° {props.orderIndex_x + 1}
