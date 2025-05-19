@@ -1,0 +1,30 @@
+.productListFilter_container {
+    display: flex;
+    flex-direction: column;
+    row-gap: var(--general_space);
+}
+
+.productListFilter_inputSearch {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    column-gap: var(--general_space);
+    padding: var(--general_space);
+}
+
+.productListFilter_inputSearch input {
+    border: none;
+    height: 40px;
+    width: 300px;
+    box-shadow: var(--generalShadow);
+    padding: 8px;
+    border-radius: 4px;
+}
+
+.productListFilter_inputSearch button {
+    background: var(--second_back);
+    border: none;
+    padding: 0 8px;
+    border-radius: 4px;
+    font-size: 40px;
+}

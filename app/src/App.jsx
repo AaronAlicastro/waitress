@@ -21,6 +21,7 @@ import Billcounter from "./pages/views/BillCounter";
 import PrincipalViewSupervisor from "./pages/PrincipalViewSupervisor";
 import OneTableSuperVisor from "./pages/views/OneTableSuperVisor";
 import OneOrderSupervisor from "./pages/views/OneOrderSupervisor";
+import QRwindow from "./pages/views/QRwindow";
 
 class App extends Component {
   constructor(props) {
@@ -50,6 +51,16 @@ class App extends Component {
             this.putViewCarga(view, dataView, fun)
           }
           querys={this.querys}
+        />
+      ),
+      qr_window: (lastView, qr_function) => (
+        <QRwindow
+          lastView={lastView}
+          goToView={(view, dataView, fun) =>
+            this.putViewCarga(view, dataView, fun)
+          }
+          querys={this.querys}
+          qr_function={qr_function}
         />
       ),
 

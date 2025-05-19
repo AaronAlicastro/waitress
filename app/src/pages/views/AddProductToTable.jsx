@@ -4,10 +4,10 @@ import { FaCheck } from "react-icons/fa";
 import SideBoardFloat from "./components/SideBoardFloat";
 import Footer from "./components/Footer";
 import FloatBack from "./components/FloatBack";
-import List from "./components/List";
 import BotonAcc from "./components/BotonAcc";
 import { useAlert } from "react-alert";
 import OrderCards from "./components/OrderCards";
+import ProductListFilter from "./components/ProductListFilter";
 
 function AddProductToTable(props) {
   const alert = useAlert();
@@ -51,6 +51,13 @@ function AddProductToTable(props) {
     }
   };
 
+  const scanProduct = (id_result) => {
+    props.querys.productChoosen = props.querys.products.find(
+      (pr) => pr._id === id_result
+    );
+    props.goToView("billcounter");
+  };
+
   return (
     <div className="pageDivApp">
       <SideBoardFloat
@@ -75,9 +82,11 @@ function AddProductToTable(props) {
       </div>
 
       <h2 className="infoGeneral_details">Añade Producto | finaliza</h2>
-      <List
-        list={props.querys.products.map((pr) => pr.name)}
-        onClick={billcounter}
+      <ProductListFilter
+        products={props.querys.products}
+        chargeQR={true}
+        QRfunction={() => props.goToView("qr_window", scanProduct)}
+        productClick={billcounter}
       />
 
       <OrderCards
